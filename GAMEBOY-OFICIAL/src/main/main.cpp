@@ -20,8 +20,12 @@
 TFT_eSPI tft = TFT_eSPI();  // Invoke library
 
 int eixoY = 33;
-int eixoX = 25;
-int botao = 26;
+int eixoX = 32;
+
+int botaoA = 36;
+int botaoB = 39;
+int botaoC = 34;
+int botaoD = 35;
 
 int menuIndex = 0;
 
@@ -32,7 +36,7 @@ void menu();
 void setup(void) {
   tft.init();
   tft.setRotation(2);
-  pinMode(botao, INPUT_PULLUP);
+  pinMode(botaoA, INPUT_PULLUP);
 
   init1();
   delay(1000);
@@ -48,7 +52,7 @@ void loop() {
 
 void init1() {
   tft.fillScreen(TFT_BLACK);
-  tft.setCursor(100, 100, 2);
+  tft.setCursor(60, 130, 2);
   tft.setTextColor(TFT_WHITE);
   tft.setTextSize(2);
 
@@ -66,10 +70,10 @@ void drawMenu() {
 
   tft.setTextColor(TFT_BLACK);
   tft.setTextSize(2);
-  tft.setCursor(115, 20);
+  tft.setCursor(60, 20);
   tft.print("MENU");
 
-  tft.setCursor(100, 80);
+  tft.setCursor(60, 80);
   if (menuIndex == 0) {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.println(" GAMES ");
@@ -78,7 +82,7 @@ void drawMenu() {
     tft.println(" GAMES ");
   }
 
-  tft.setCursor(100, 120);
+  tft.setCursor(60, 120);
   if (menuIndex == 1) {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.println(" SETTINGS ");
@@ -87,7 +91,7 @@ void drawMenu() {
     tft.println(" SETTINGS ");
   }
 
-  tft.setCursor(100, 150);
+  tft.setCursor(60, 150);
   if (menuIndex == 2) {
     tft.setTextColor(TFT_WHITE, TFT_BLACK);
     tft.println(" CREDITS ");
@@ -96,7 +100,7 @@ void drawMenu() {
     tft.println(" CREDITS ");
   }
   tft.fillCircle(200, 225, 10, TFT_RED);
-  tft.setCursor(110, 255);
+  tft.setCursor(60, 255);
   tft.print("select");
   delay(1000);
 
@@ -124,7 +128,7 @@ void menu(){
   }
 
   // Lógica para executar a ação selecionada no menu
-  if (digitalRead(botao) == HIGH) {
+  if (digitalRead(botaoA) == HIGH) {
     // Executar a ação com base na opção selecionada no menu
     Serial.print("Funciona");
     switch (menuIndex) {
@@ -152,7 +156,7 @@ void menu(){
 
 
 void joy(){
-   if(digitalRead(botao) == 0){
+   if(digitalRead(botaoA) == 0){
 
     tft.println("Botao Joy acionado");
   }
