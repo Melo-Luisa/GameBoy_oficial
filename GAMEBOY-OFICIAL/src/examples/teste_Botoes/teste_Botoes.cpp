@@ -10,6 +10,12 @@ int botaoB = 39;
 int botaoC = 34;
 int botaoD = 35;
 
+bool estadoA = 0;
+bool estadoB = 0;
+bool estadoC = 0;
+bool estadoD = 0;
+
+
 
 void setup(){
     d.init();
@@ -32,39 +38,51 @@ void loop(){
 
     d.fillScreen(TFT_BLACK);
     if(digitalRead(botaoA) == 0){
-        d.setCursor(60, 130, 2);
-        d.setTextColor(TFT_WHITE);
-        d.setTextSize(2);
-        d.print("Botão Branco Pressionado");
+        estadoA = !estadoA;
+        while(digitalRead(botaoA) == LOW){
+            d.setCursor(60, 130, 2);
+            d.setTextColor(TFT_WHITE);
+            d.setTextSize(2);
+            d.print("Botao Branco Pressionado");
+        }
     } else {
         d.fillScreen(TFT_BLACK);
     }
 
     if(digitalRead(botaoB) == 0){
-        d.setCursor(60, 130, 2);
-        d.setTextColor(TFT_RED);
-        d.setTextSize(2);
-        d.print("Botao Vermelho Pressionado");
+        estadoB = !estadoB;
+        while(digitalRead(botaoB) == LOW){
+            d.setCursor(60, 130, 2);
+            d.setTextColor(TFT_RED);
+            d.setTextSize(2);
+            d.print("Botao Vermelho Pressionado");
+        }
     } else {
         d.fillScreen(TFT_BLACK);
     }
 
     if(digitalRead(botaoC) == 0){
-        d.setCursor(60, 130, 2);
-        d.setTextColor(TFT_BLUE);
-        d.setTextSize(2);
-        d.print("Botao Azul Pressionado");
+        estadoC = !estadoC;
+        while(digitalRead(botaoC) == LOW){
+            d.setCursor(60, 130, 2);
+            d.setTextColor(TFT_BLUE);
+            d.setTextSize(2);
+            d.print("Botao Azul Pressionado");
+        }
     } else {
         d.fillScreen(TFT_BLACK);
     }
 
-    if(digitalRead(botaoD) == 0){
+   if(digitalRead(botaoD) == 0){
+    estadoD = !estadoD;
+    while (digitalRead(botaoD) == LOW){
         d.setCursor(60, 130, 2);
         d.setTextColor(TFT_YELLOW);
         d.setTextSize(2);
         d.print("Botao Amarelo Pressionado");
-    } else {
-        d.fillScreen(TFT_BLACK);
     }
+   } else {
+    d.fillScreen(TFT_BLACK);
+   }
     
 }
