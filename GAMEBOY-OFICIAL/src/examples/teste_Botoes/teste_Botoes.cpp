@@ -7,8 +7,8 @@ TFT_eSPI d = TFT_eSPI();  // Invoke library
 
 int botaoA = 36;
 int botaoB = 39;
-int botaoC = 34;
-int botaoD = 35;
+int botaoC = 34; //azul
+int botaoD = 35; // amarelo
 
 bool estadoA = 0;
 bool estadoB = 0;
