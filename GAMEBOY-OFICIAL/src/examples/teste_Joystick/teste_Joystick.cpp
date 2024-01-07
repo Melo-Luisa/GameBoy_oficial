@@ -80,5 +80,7 @@ void loop(void) {
     d.fillCircle(old_x, old_y, squareWidth, TFT_BLACK);
     d.fillCircle(x,y,squareWidth, TFT_RED);
     delay(20);
+
+/*TEste de github*/
 }
 
