@@ -81,9 +81,6 @@ void loop(void) {
     d.fillCircle(x,y,squareWidth, TFT_RED);
     delay(20);
 
-/*TEste de github*/
-
-d.print('sla2');
 }
 
 
