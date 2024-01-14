@@ -81,6 +81,8 @@ void loop(void) {
     d.fillCircle(x,y,squareWidth, TFT_RED);
     delay(0);
 
+    d.printf("teste");
+
 }
 
 
