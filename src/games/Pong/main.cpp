@@ -8,7 +8,7 @@ TFT_eSPI d = TFT_eSPI();
 
 int circleRadius = 10;
 int squareWidth = 5;
-int vx = 5, vy = 5; //velocidade da bolinha
+int vx = 2, vy = 2; //velocidade da bolinha
 int x = 100, y = 50;
 
 int botaoC = 34; //azul
@@ -50,7 +50,7 @@ void loop(void) {
     barX += coordX;
     d.fillRect(oldX_bar, barY, 240,100, TFT_BLACK); // baixo
     d.fillRect(barX, barY, 70, 10, TFT_WHITE); // cima, coordenada X altera , controla pelo joy
-    delay(100);
+    //delay(100);
 
     /*BOTOES*/
     //1 - NÃO PRESSIONADO
@@ -79,7 +79,7 @@ void loop(void) {
 
     d.fillCircle(old_x, old_y, squareWidth, TFT_BLACK);
     d.fillCircle(x,y,squareWidth, TFT_RED);
-    delay(20);
+    delay(0);
 
 }
 
