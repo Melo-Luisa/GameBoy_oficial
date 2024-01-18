@@ -30,7 +30,7 @@ void setup() {
    
 }
 
-void loop(void) {
+void loop() {
     //JOYSTICK
     int old_x = x;
     int old_y = y;
@@ -46,7 +46,8 @@ void loop(void) {
     
 
     /*JOYSTICK*/
-    coordX = map(analogRead(EIXO_Y), 0, 550, 0, 25);
+    
+    coordX = map(analogRead(EIXO_X), 0, 550, 0, 25);
     barX += coordX;
     d.fillRect(oldX_bar, barY, 240,100, TFT_BLACK); // baixo
     d.fillRect(barX, barY, 70, 10, TFT_WHITE); // cima, coordenada X altera , controla pelo joy
@@ -55,6 +56,7 @@ void loop(void) {
     /*BOTOES*/
     //1 - NÃO PRESSIONADO
     //0 - PRECIONADO 
+    /*
     d.fillRect(barX, barY, 70, 10, TFT_WHITE);
     if(digitalRead(botaoC)==0){
         d.fillRect(barX_botton, barY_botton, 100, 10, TFT_WHITE);
@@ -62,6 +64,8 @@ void loop(void) {
         d.print("Botão amarelo");
         d.print("oi");
     }
+    */
+
 
 
 /*ANIMAÇÃO DA BOLA*/
@@ -83,4 +87,17 @@ void loop(void) {
 
 }
 
+/* CODIGO EXEMPLO DAS SPRITES
 
+    img.fillCircle(x, 50, 10, TFT_BLACK); //desenha um circulo preto pra apagar o antigo
+    //atualiza as coordenadas pra ele se mover
+    x=x+1;
+    if(x>320){
+      x=0;
+    }
+
+    img.fillCircle(x, 50, 10, TFT_WHITE); //circulo branco, que está aparecendo
+    img.fillRect(18, 70, 100, 100, TFT_BLACK); //retangulo preto pra apagar os numeros antigos
+    img.drawString(String(x), 20, 74, 7); //posicao do circulo
+
+*/

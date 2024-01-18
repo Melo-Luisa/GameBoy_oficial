@@ -6,81 +6,114 @@
 
 TFT_eSPI d = TFT_eSPI();  
 
-int circleRadius = 10;
-int squareWidth = 5;
-int vx = 5, vy = 5; //velocidade da bolinha
-int x = 100, y = 50;
+TFT_eSprite ball = TFT_eSprite(&d);
 
-int botaoC = 34; //azul
-int botaoD = 35; // amarelo
-
-
+int old_coordX, old_coordY;
 
 void setup() {
+    Serial.begin(115200);
     d.init();
-    d.setRotation(2);
+    d.fillScreen(TFT_BLACK);
+    d.setRotation(1); //Origem no canto superior esquerdo (Fita Verde)
+    ball.setColorDepth(8);
+    ball.createSprite(320, 240); //sprite funcionando full width and height
     //joystick
     pinMode(EIXO_X, INPUT);
     pinMode(EIXO_Y, INPUT);
-    //buttons
-    pinMode(botaoC, INPUT_PULLUP);
-    pinMode(botaoD, INPUT_PULLUP);
-    Serial.begin(115200);
-    d.fillScreen(TFT_BLACK);
-   
 }
 
-void loop(void) {
-    //JOYSTICK
-    int old_x = x;
-    int old_y = y;
 
-    int barX = 0;
-    int barY = 10; // distancia no eixo y
-    int coordX = 0;
-    int oldX_bar = coordX;
-
-    //BOTOES
-    int barX_botton = 0;
-    int barY_botton = 30;
+void loop() {
     
+    //Visualização sistema de coordenadas com orientação = 1
+    //Flickering pq não está como sprite
+    d.setCursor(0, 0);
+    d.setTextSize(3);
+    d.setTextColor(TFT_BLUE);
+    d.print("A");
+
+    d.setCursor(300, 0);
+    d.setTextSize(3);
+    d.setTextColor(TFT_RED);
+    d.print("B");
+
+    d.setCursor(0, 220); //Ao colocar 240, ele vai para 240, mas o ponto inicial é o superior, dai não aparece
+    d.setTextSize(3);
+    d.setTextColor(TFT_GREEN);
+    d.print("C");
+
+    d.setCursor(300, 220); //Ao colocar 240, ele vai para 240, mas o ponto inicial é o superior, dai não aparece
+    d.setTextSize(3);
+    d.setTextColor(TFT_YELLOW);
+    d.print("D");
+
+    //JOYSTICK
+    int coordX = 0;
+    int coordY = 0;
+
+    ball.fillCircle(old_coordX, old_coordY, 10, TFT_BLACK);
+
 
     /*JOYSTICK*/
-    coordX = map(analogRead(EIXO_Y), 0, 550, 0, 25);
-    barX += coordX;
-    d.fillRect(oldX_bar, barY, 240,100, TFT_BLACK); // baixo
-    d.fillRect(barX, barY, 70, 10, TFT_WHITE); // cima, coordenada X altera , controla pelo joy
-    delay(100);
+    coordX = map(analogRead(EIXO_X), 0, 4095, 0, 300);
+    coordY = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
 
-    /*BOTOES*/
-    //1 - NÃO PRESSIONADO
-    //0 - PRECIONADO 
-    d.fillRect(barX, barY, 70, 10, TFT_WHITE);
-    if(digitalRead(botaoC)==0){
-        d.fillRect(barX_botton, barY_botton, 100, 10, TFT_WHITE);
-    }else if(digitalRead(botaoD) == 0){
-        d.print("Botão amarelo");
-        d.print("oi");
-    }
+    int old_coordX = coordX;
+    int old_coordY = coordY;
+
+    Serial.print("X: "+String(analogRead(EIXO_X)));
+    Serial.println("Y: "+String(analogRead(EIXO_Y)));
 
 
-/*ANIMAÇÃO DA BOLA*/
-    x += vx;
-    y += vy;
-
-    if((x<=0) || (x>= d.width() - squareWidth)){
-        vx = -vx;
-    }
-    if((y<= 0)|| (y >= d.height() - squareWidth)){
-        vy = -vy;
-        Serial.print("Toquei nos cantos - Y");
-    }
 
 
-    d.fillCircle(old_x, old_y, squareWidth, TFT_BLACK);
-    d.fillCircle(x,y,squareWidth, TFT_RED);
-    delay(20);
+    ball.fillCircle(coordX, coordY, 10, TFT_WHITE);
+
+
+
+
+    ball.pushSprite(0,0);
+
+
 
 }
 
 
+//essa função desse jogo aqui https://github.com/dorsheed455k/programs/blob/master/Hardware/Arduino%20Pong%20Ball/Pongball.ino
+//ele pega a leitura do joy, e usa alguns IFs pra determinar se ta indo pra um lado ou pro outro
+//a depender disso, ele mexe o quadrado
+
+/*
+void joyStickControl() {
+
+
+  if(millis() - lastToggle > 50) {
+
+    currentPos = xPosition;
+  
+    if(currentPos > 512 && (currentPos != 512 || prevPos != 512)) {
+        xPaddle += 10;
+      }
+    
+      if(currentPos < 512 && (currentPos != 512 || currentPos != 512)) {
+        xPaddle -= 10;
+      }
+    
+      if(xPaddle < 0) {
+        xPaddle = 0;
+      }
+    
+      if(xPaddle + 40 > WIDTH) {
+        xPaddle = WIDTH - 40;
+      }
+  
+    prevPos = currentPos;
+  }
+
+  //lastToggle = millis();
+
+
+  tft.fillRect(xPaddle, yPaddle, 40, 10, color);
+  
+}
+*/
