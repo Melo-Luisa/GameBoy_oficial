@@ -8,7 +8,7 @@ TFT_eSPI d = TFT_eSPI();
 
 TFT_eSprite ball = TFT_eSprite(&d);
 
-int old_coordX, old_coordY;
+int coordX, coordY;
 
 void setup() {
     Serial.begin(115200);
@@ -51,20 +51,15 @@ void loop() {
     int coordX = 0;
     int coordY = 0;
 
-    ball.fillCircle(old_coordX, old_coordY, 10, TFT_BLACK);
+
 
 
     /*JOYSTICK*/
     coordX = map(analogRead(EIXO_X), 0, 4095, 0, 300);
     coordY = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
 
-    int old_coordX = coordX;
-    int old_coordY = coordY;
-
     Serial.print("X: "+String(analogRead(EIXO_X)));
     Serial.println("Y: "+String(analogRead(EIXO_Y)));
-
-
 
 
     ball.fillCircle(coordX, coordY, 10, TFT_WHITE);
@@ -73,6 +68,7 @@ void loop() {
 
 
     ball.pushSprite(0,0);
+    ball.fillCircle(coordX, coordY, 10, TFT_BLACK); //Pra apagar a antiga. Só foi se colocado abaixo do push
 
 
 
