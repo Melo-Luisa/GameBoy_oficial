@@ -70,7 +70,7 @@ void loop() {
     ball.pushSprite(0,0);
     ball.fillCircle(coordX, coordY, 10, TFT_BLACK); //Pra apagar a antiga. Só foi se colocado abaixo do push
 
-
+    //TODO: IMPLEMENTAR A FUNCAO ABAIXO:
 
 }
 
