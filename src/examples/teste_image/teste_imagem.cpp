@@ -9,7 +9,6 @@ void setup(){
     d.setSwapBytes(true);
     d.fillScreen(TFT_BLACK);
     d.pushImage(20,20,196,240,image);
-
 }
 
 void loop(){
