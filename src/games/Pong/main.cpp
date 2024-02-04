@@ -4,12 +4,21 @@
 #define EIXO_X  33
 #define EIXO_Y  32
 
-TFT_eSPI d = TFT_eSPI();  
+TFT_eSPI d = TFT_eSPI();  //init display
 
+TFT_eSprite ball = TFT_eSprite(&d);
+TFT_eSprite barra1 = TFT_eSprite(&d);
+
+//Ball Settings
 int circleRadius = 10;
-int squareWidth = 5;
-int vx = 2, vy = 2; //velocidade da bolinha
+int vx = 15, vy = 15; //velocidade da bolinha
 int x = 100, y = 50;
+
+//Barra Settings 
+int coordX_S1 = 0;
+int coordY_S1 = 0;
+int square_Width = 10;
+int square_Height = 60;
 
 int botaoC = 34; //azul
 int botaoD = 35; // amarelo
@@ -17,75 +26,58 @@ int botaoD = 35; // amarelo
 
 
 void setup() {
+    Serial.begin(115200);
     d.init();
-    d.setRotation(2);
+    d.fillScreen(TFT_BLACK);
+    d.setRotation(1); //origem fita verde
+
+    //Ball sprite
+    ball.setColorDepth(8);
+    ball.createSprite(320, 240);
+
+    //Barra 1 Sprite
+    barra1.setColorDepth(8);
+    barra1.createSprite(50, 240);
+
     //joystick
     pinMode(EIXO_X, INPUT);
     pinMode(EIXO_Y, INPUT);
     //buttons
     pinMode(botaoC, INPUT_PULLUP);
     pinMode(botaoD, INPUT_PULLUP);
-    Serial.begin(115200);
-    d.fillScreen(TFT_BLACK);
+
    
 }
 
 void loop() {
-    //JOYSTICK
-    int old_x = x;
-    int old_y = y;
-
-    int barX = 0;
-    int barY = 10; // distancia no eixo y
-    int coordX = 0;
-    int oldX_bar = coordX;
-
-    //BOTOES
-    int barX_botton = 0;
-    int barY_botton = 30;
-    
-
-    /*JOYSTICK*/
-    
-    coordX = map(analogRead(EIXO_X), 0, 550, 0, 25);
-    barX += coordX;
-    d.fillRect(oldX_bar, barY, 240,100, TFT_BLACK); // baixo
-    d.fillRect(barX, barY, 70, 10, TFT_WHITE); // cima, coordenada X altera , controla pelo joy
-    //delay(100);
-
-    /*BOTOES*/
-    //1 - NÃO PRESSIONADO
-    //0 - PRECIONADO 
-    /*
-    d.fillRect(barX, barY, 70, 10, TFT_WHITE);
-    if(digitalRead(botaoC)==0){
-        d.fillRect(barX_botton, barY_botton, 100, 10, TFT_WHITE);
-    }else if(digitalRead(botaoD) == 0){
-        d.print("Botão amarelo");
-        d.print("oi");
-    }
-    */
-
-
-
+    ball.fillCircle(x, y, circleRadius, TFT_BLACK); //apaga a bola antiga
 /*ANIMAÇÃO DA BOLA*/
     x += vx;
     y += vy;
 
-    if((x<=0) || (x>= d.width() - squareWidth)){
+    if((x<=0) || (x>= d.width() - circleRadius)){
         vx = -vx;
     }
-    if((y<= 0)|| (y >= d.height() - squareWidth)){
+    if((y<= 0)|| (y >= d.height() - circleRadius)){
         vy = -vy;
-        Serial.print("Toquei nos cantos - Y");
+        //Serial.print("Toquei nos cantos - Y");
     }
 
+    ball.fillCircle(x,y,circleRadius, TFT_RED);
+    ball.pushSprite(0,0);
 
-    d.fillCircle(old_x, old_y, squareWidth, TFT_BLACK);
-    d.fillCircle(x,y,squareWidth, TFT_RED);
-    delay(0);
+    coordX_S1 = map(analogRead(EIXO_X), 0, 4095, 0, 300);
+    coordY_S1 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
 
-    d.printf("teste");
+    barra1.fillRect(15, coordY_S1, square_Width, square_Height, TFT_WHITE);
+    barra1.pushToSprite(&ball, 0, 0);
+    
+    barra1.fillRect(15, coordY_S1, square_Width, square_Height, TFT_BLACK);
+
+    Serial.print("X: "+String(coordX_S1));
+    Serial.println("  Y: "+String(coordY_S1));
+
+
 
 }
 
