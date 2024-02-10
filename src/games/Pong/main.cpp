@@ -8,17 +8,25 @@ TFT_eSPI d = TFT_eSPI();  //init display
 
 TFT_eSprite ball = TFT_eSprite(&d);
 TFT_eSprite barra1 = TFT_eSprite(&d);
+TFT_eSprite barra2 = TFT_eSprite(&d);
 
 //Ball Settings
 int circleRadius = 10;
 int vx = 15, vy = 15; //velocidade da bolinha
 int x = 100, y = 50;
 
-//Barra Settings 
-int coordX_S1 = 0;
-int coordY_S1 = 0;
 int square_Width = 10;
 int square_Height = 60;
+
+//Barra 1 Settings 
+int coordX_B1 = 0;
+int coordY_B1 = 0;
+
+//Barra 2 Settings
+int coordX_B2 = 0;
+int coordY_B2 = 0;
+
+
 
 int botaoC = 34; //azul
 int botaoD = 35; // amarelo
@@ -38,6 +46,10 @@ void setup() {
     //Barra 1 Sprite
     barra1.setColorDepth(8);
     barra1.createSprite(50, 240);
+
+    //Barra 2 Sprite
+    barra2.setColorDepth(8);
+    barra2.createSprite(100, 240);
 
     //joystick
     pinMode(EIXO_X, INPUT);
@@ -66,16 +78,24 @@ void loop() {
     ball.fillCircle(x,y,circleRadius, TFT_RED);
     ball.pushSprite(0,0);
 
-    coordX_S1 = map(analogRead(EIXO_X), 0, 4095, 0, 300);
-    coordY_S1 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
+    coordX_B1 = map(analogRead(EIXO_X), 0, 4095, 0, 300);
+    coordY_B1 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
 
-    barra1.fillRect(15, coordY_S1, square_Width, square_Height, TFT_WHITE);
+    coordX_B2 = map(analogRead(EIXO_X), 0, 4095, 0, 300);
+    coordY_B2 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
+
+    barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_WHITE);
     barra1.pushToSprite(&ball, 0, 0);
-    
-    barra1.fillRect(15, coordY_S1, square_Width, square_Height, TFT_BLACK);
+    barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_BLACK);
 
-    Serial.print("X: "+String(coordX_S1));
-    Serial.println("  Y: "+String(coordY_S1));
+    //não sei pq não está aparecendo a barra
+    barra2.fillRect(80, coordY_B2, square_Width, square_Height, TFT_WHITE);
+    barra2.pushToSprite(&barra1, 80, 0);
+    barra2.fillRect(80, coordY_B2, square_Width, square_Height, TFT_BLACK);
+    
+
+    Serial.print("X: "+String(coordX_B1));
+    Serial.println("  Y: "+String(coordY_B1));
 
 
 
