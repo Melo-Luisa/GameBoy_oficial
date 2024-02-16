@@ -1,3 +1,4 @@
 {
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "cmake.sourceDirectory": "C:/Users/luhco/GameBoy_oficial/.pio/libdeps/Pong/TFT_eSPI"
 }
