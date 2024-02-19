@@ -90,14 +90,14 @@ void loop() {
     //coordY_B2 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
     //Serial.print("X" +String(coordX_B1));
     //Serial.print("Y" + String(coordY_B1));
-    if (x + circleRadius >= coordX_B1 && x - circleRadius <= coordX_B1 + square_Width &&
-        y + circleRadius >= coordY_B1 && y - circleRadius <= coordY_B1 + square_Height) {
-        // Inverte a velocidade da bola
-        x -= vx;
-        y -= vy;
+    // if (x + circleRadius >= coordX_B1 && x - circleRadius <= coordX_B1 + square_Width &&
+    //     y + circleRadius >= coordY_B1 && y - circleRadius <= coordY_B1 + square_Height) {
+    //     // Inverte a velocidade da bola
+    //     x -= vx;
+    //     y -= vy;
     
-        Serial.print("Toquei");
-    }
+    //     Serial.print("Toquei");
+    // }
     ball.fillCircle(x,y,circleRadius, TFT_RED);
     ball.pushSprite(0,0);
 
@@ -110,38 +110,45 @@ void loop() {
 
     //Serial.print(digitalRead(botaoC));
     coordXD_button = digitalRead(botaoC);//le dos buttons azul
-    coordXU_button = digitalRead(botaoD);
+    coordXU_button = digitalRead(botaoD); // amarelo
 
 
     //CIMA
     if(coordXD_button == 0){ //se o botao azul for apertado 
-        if(botao_up > d.height()){
+        if(botao_up+(square_Height) < d.height()){
+            botao_up += 10;
+            botao_down += 10;
+            Serial.println(botao_up);
+        }else if(coordXU_button == 0){
             botao_up = 10;
             botao_down = 10;
+            Serial.println(botao_up);
         }
+        
+    
 
-    }else{
-        botao_down -= 30;
-        botao_up -= 30;
-    }
+     }//else{
+    //     botao_down = 85;
+    //     botao_up = 85;
+    // }
 
-    //BAIXO
-    if(coordXU_button == 0){ //se o botao azul for apertado 
-        if(botao_up < d.height()){
-            botao_up = 10;
-            botao_down = 10;
-        }
+    // //BAIXO
+    // if(coordXU_button == 0){ //se o botao azul for apertado 
+    //     if(botao_up < d.height()){
+    //         botao_up = 10;
+    //         botao_down = 10;
+    //     }
 
-    }else{
-        botao_down += 30;
-        botao_up += 30;
-    }
+    // }else{
+    //     botao_down += 30;
+    //     botao_up += 30;
+    // }
     
 
     //barra do botoes
     barra2.fillRect(80, botao_up, square_Width, square_Height, TFT_WHITE);
     barra2.pushToSprite(&ball, 220, 0);
-    barra2.fillRect(80, botao_down, square_Width, square_Height, TFT_BLACK);
+    barra2.fillRect(80, botao_down, square_Width, square_Height, TFT_RED);
 
 
     //Serial.print("X: "+String(coordX_B1));
