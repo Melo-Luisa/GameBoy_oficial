@@ -18,25 +18,18 @@ int x = 100, y = 50;
 int square_Width = 10;
 int square_Height = 60;
 
-//Barra 1 Settings 
-int coordX_B1 = 0;
-int coordY_B1 = 0;
+//Barra joystick
+int coordY_B1 = 100;
 
-//Barra 2 Settings
-int coordX_B2 = 0;
-int coordY_B2 = 0;
+int coordY_B1_atual = 100;
+int coordY_B1_antiga = 100;
 
 
-int botaoC = 34; //azul
-int botaoD = 35; // amarelo
+//Barra botoes
+int coordY_B2 = 100; //eh y
 
-int coordXU_button; // coordinate X up
-int coordXD_button; //coordinate X down
-
-int botao_down = 100;
-int botao_up = 100;
-
-
+int botao_azul = 34; //azul
+int botao_amarelo = 35; // amarelo
 
 
 void setup() {
@@ -58,16 +51,18 @@ void setup() {
     barra2.createSprite(100, 240);
 
     //joystick
-    pinMode(EIXO_X, INPUT);
+    //pinMode(EIXO_X, INPUT);
     pinMode(EIXO_Y, INPUT);
     //buttons
-    pinMode(botaoC, INPUT_PULLUP);
-    pinMode(botaoD, INPUT_PULLUP);
+    pinMode(botao_azul, INPUT_PULLUP);
+    pinMode(botao_amarelo, INPUT_PULLUP);
 
    
 }
 
 void loop() {
+
+    //--------------BOLINHA---------------
     ball.fillCircle(x, y, circleRadius, TFT_BLACK); //apaga a bola antiga
     /*ANIMAÇÃO DA BOLA*/
     x += vx;
@@ -81,80 +76,91 @@ void loop() {
         //Serial.print("Toquei nos cantos - Y");
     }
     
-
-
-    coordX_B1 = map(analogRead(EIXO_X), 0, 4095, 0, 300); //coordenadas do joystick
-    coordY_B1 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
-
-    //coordX_B2 = map(analogRead(EIXO_X), 0, 4095, 0, 300); 
-    //coordY_B2 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
-    //Serial.print("X" +String(coordX_B1));
-    //Serial.print("Y" + String(coordY_B1));
-    // if (x + circleRadius >= coordX_B1 && x - circleRadius <= coordX_B1 + square_Width &&
-    //     y + circleRadius >= coordY_B1 && y - circleRadius <= coordY_B1 + square_Height) {
-    //     // Inverte a velocidade da bola
-    //     x -= vx;
-    //     y -= vy;
     
-    //     Serial.print("Toquei");
-    // }
+    //BOLINHA TELA
     ball.fillCircle(x,y,circleRadius, TFT_RED);
     ball.pushSprite(0,0);
+
+    //----------------BARRA JOYSTICK-------------
+
+    //coordenadas do joystick
+    // coordY_B1 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
+
+    coordY_B1_antiga = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
+
+
+
 
     //barra do joystick
     barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_WHITE);
     barra1.pushToSprite(&ball, 0, 0);
     barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_BLACK);
+    //Serial.println(analogRead(EIXO_Y));
 
+    coordY_B1_atual = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
+    //cima
+    if(coordY_B1_atual > coordY_B1_antiga){
+        coordY_B1 += 10;
+    }//baixo
+    if(coordY_B1_atual < coordY_B1_antiga){
+        coordY_B1 -= 10;
 
+    }
+    Serial.print(coordY_B1_antiga);
+    Serial.println(coordY_B1_atual);
 
-    //Serial.print(digitalRead(botaoC));
-    coordXD_button = digitalRead(botaoC);//le dos buttons azul
-    coordXU_button = digitalRead(botaoD); // amarelo
+    //-----------------BARRA BOTOES-----------------
 
-
-    //CIMA
-    if(coordXD_button == 0){ //se o botao azul for apertado 
-        if(botao_up+(square_Height) < d.height()){
-            botao_up += 10;
-            botao_down += 10;
-            Serial.println(botao_up);
-        }else if(coordXU_button == 0){
-            botao_up = 10;
-            botao_down = 10;
-            Serial.println(botao_up);
+    //baixo
+    if(digitalRead(botao_azul) == 0){ //se o botao azul for apertado 
+        if(coordY_B2+(square_Height) <= 230){ 
+            coordY_B2 += 10;
+            
         }
+    
+    }
+    else if(digitalRead(botao_amarelo) == 0){ //se o botao azul for apertado 
+        coordY_B2 -= 10;
+        if(coordY_B2+(square_Height) == 50){ 
+            coordY_B2 += 10;
+        
+        }
+
+            
         
     
+    }
 
-     }//else{
-    //     botao_down = 85;
-    //     botao_up = 85;
+
+    // //cima
+    // if(digitalRead(botao_amarelo)){ 
+    //     coordY_B2 -=10;
+    //     coordY_B2 -= 10;
     // }
+    
 
-    // //BAIXO
-    // if(coordXU_button == 0){ //se o botao azul for apertado 
-    //     if(botao_up < d.height()){
-    //         botao_up = 10;
-    //         botao_down = 10;
-    //     }
-
-    // }else{
-    //     botao_down += 30;
-    //     botao_up += 30;
-    // }
     
 
     //barra do botoes
-    barra2.fillRect(80, botao_up, square_Width, square_Height, TFT_WHITE);
+    barra2.fillRect(80, coordY_B2, square_Width, square_Height, TFT_WHITE);
     barra2.pushToSprite(&ball, 220, 0);
-    barra2.fillRect(80, botao_down, square_Width, square_Height, TFT_RED);
+    barra2.fillRect(80, coordY_B2, square_Width, square_Height, TFT_RED);
 
 
     //Serial.print("X: "+String(coordX_B1));
     //Serial.println(" Y: "+ String(botao_down));
     
 }
+
+
+
+
+
+
+
+
+
+
 
 /* CODIGO EXEMPLO DAS SPRITES
 
@@ -170,3 +176,17 @@ void loop() {
     img.drawString(String(x), 20, 74, 7); //posicao do circulo
 
 */
+/*---------- CHATGPT TOQUE --------------
+coordX_B2 = map(analogRead(EIXO_X), 0, 4095, 0, 300); 
+coordY_B2 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
+Serial.print(analogRead(EIXO_X));
+Serial.println(analogRead(EIXO_Y));
+if (x + circleRadius >= coordX_B1 && x - circleRadius <= coordX_B1 + square_Width &&
+    y + circleRadius >= coordY_B1 && y - circleRadius <= coordY_B1 + square_Height) {
+    // Inverte a velocidade da bola
+    x -= vx;
+    y -= vy;
+
+    Serial.print("Toquei");
+}*/
+
