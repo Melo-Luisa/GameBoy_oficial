@@ -1,4 +1,14 @@
 {
     "cmake.configureOnOpen": true,
-    "cmake.sourceDirectory": "C:/Users/luhco/GameBoy_oficial/.pio/libdeps/Pong/TFT_eSPI"
+    "cmake.sourceDirectory": "C:/Users/luhco/GameBoy_oficial/.pio/libdeps/Pong/TFT_eSPI",
+    "files.associations": {
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp"
+    }
 }

@@ -7,9 +7,10 @@
 #include "inputs.h"
 #include "initGB_black.h"
 
-#define TFT_GREY 0x5AEB // New colour
 
-TFT_eSPI tft = TFT_eSPI();  // Invoke library
+TFT_eSPI d = TFT_eSPI();  // Define Display
+
+TFT_eSprite initWord = TFT_eSprite(&d); //Sprite "GAMEBOY" init function
 
 
 
@@ -20,13 +21,19 @@ void drawMenu();
 void menu();
 
 void setup() {
-  tft.init();
-  tft.setRotation(1);
+  d.init();
+  d.setRotation(1);
+  d.setSwapBytes(true);
+
+  //TEXTO ANIMADO INICIALIZAÇÃO
+  initWord.setColorDepth(8);
+  initWord.createSprite(320, 240);
+
   pinMode(botaoA, INPUT_PULLUP);
 
   init();
   delay(1000);
-  //tft.fillScreen(TFT_BLACK);
+  //d.fillScreen(TFT_BLACK);
 }
 
 void loop() {
@@ -36,59 +43,59 @@ void loop() {
 }
 
 void init() {
-  tft.pushImage(0,0,320,240,initGB_black);
-  delay(3000);
-  tft.fillScreen(TFT_BLACK);
-  tft.setCursor(60, 130, 2);
-  tft.setTextColor(TFT_WHITE);
-  tft.setTextSize(2);
+  d.pushImage(0,0,320,240,initGB_black);
+  d.setCursor(105, 105, 2);
+  d.setTextColor(TFT_WHITE);
+  d.setTextSize(2);
+  
 
   String word = "GAMEBOY";
 
   for (int i = 0; i < word.length(); i++) {
-    tft.print(word[i]);
+    d.print(word[i]);
     delay(100);
   }
 
+  delay(1000);
 }
 //menu 
 void drawMenu() {
-  tft.fillScreen(TFT_WHITE);
+  d.fillScreen(TFT_WHITE);
 
-  tft.setTextColor(TFT_BLACK);
-  tft.setTextSize(2);
-  tft.setCursor(60, 20);
-  tft.print("MENU");
+  d.setTextColor(TFT_BLACK);
+  d.setTextSize(2);
+  d.setCursor(60, 20);
+  d.print("MENU");
 
-  tft.setCursor(60, 80);
+  d.setCursor(60, 80);
   if (menuIndex == 0) {
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.println(" GAMES ");
-    tft.setTextColor(TFT_BLACK);
+    d.setTextColor(TFT_WHITE, TFT_BLACK);
+    d.println(" GAMES ");
+    d.setTextColor(TFT_BLACK);
   } else {
-    tft.println(" GAMES ");
+    d.println(" GAMES ");
   }
 
-  tft.setCursor(60, 120);
+  d.setCursor(60, 120);
   if (menuIndex == 1) {
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.println(" SETTINGS ");
-    tft.setTextColor(TFT_BLACK);
+    d.setTextColor(TFT_WHITE, TFT_BLACK);
+    d.println(" SETTINGS ");
+    d.setTextColor(TFT_BLACK);
   } else {
-    tft.println(" SETTINGS ");
+    d.println(" SETTINGS ");
   }
 
-  tft.setCursor(60, 150);
+  d.setCursor(60, 150);
   if (menuIndex == 2) {
-    tft.setTextColor(TFT_WHITE, TFT_BLACK);
-    tft.println(" CREDITS ");
-    tft.setTextColor(TFT_BLACK);
+    d.setTextColor(TFT_WHITE, TFT_BLACK);
+    d.println(" CREDITS ");
+    d.setTextColor(TFT_BLACK);
   } else {
-    tft.println(" CREDITS ");
+    d.println(" CREDITS ");
   }
-  tft.fillCircle(200, 225, 10, TFT_RED);
-  tft.setCursor(60, 255);
-  tft.print("select");
+  d.fillCircle(200, 225, 10, TFT_RED);
+  d.setCursor(60, 255);
+  d.print("select");
   delay(1000);
 
   
@@ -120,17 +127,17 @@ void menu(){
     Serial.print("Funciona");
     switch (menuIndex) {
       case 0:
-        tft.print("Acesso 1");
+        d.print("Acesso 1");
         delay(7000);
         //Serial.print("Funciona1");
         break;
       case 1:
-        tft.print("Acesso 2");
+        d.print("Acesso 2");
         //Serial.print("Funciona2");
         delay(5000);
         break;
       case 2:
-        tft.print("Acesso 3");
+        d.print("Acesso 3");
         delay(5000);
         //rial.println("Funciona3");
         break;
@@ -145,20 +152,20 @@ void menu(){
 void joy(){
    if(digitalRead(botaoA) == 0){
 
-    tft.println("Botao Joy acionado");
+    d.println("Botao Joy acionado");
   }
   //EIXO Y
   if(analogRead(eixoY) == 4095){
-    tft.println("Cima acionado");
+    d.println("Cima acionado");
   }
   if (analogRead(eixoY) == 0){
-    tft.println("Baixo acionado");
+    d.println("Baixo acionado");
   }
   //EIXO X
    if(analogRead(eixoX) == 4095){
-    tft.println("Direita acionado");
+    d.println("Direita acionado");
   }
   if (analogRead(eixoX) == 0){
-    tft.println("Esquerda acionado");
+    d.println("Esquerda acionado");
   }
 }
