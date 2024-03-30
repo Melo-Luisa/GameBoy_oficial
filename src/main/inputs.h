@@ -5,3 +5,11 @@ P/ o Joy, tanto função pra retornar valor com ele voltando sozinho, quanto pra
 
 e ETC
 */
+//é basicamente a junção do teste botoes com o teste joystick
+int eixoY = 33;
+int eixoX = 32;
+
+int botaoA = 36;
+int botaoB = 39;
+int botaoC = 34;
+int botaoD = 35;

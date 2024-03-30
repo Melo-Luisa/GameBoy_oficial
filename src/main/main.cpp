@@ -1,47 +1,32 @@
-/*  
- Test the tft.print() viz embedded tft.write() function
 
- This sketch used font 2, 4, 7
-
- Make sure all the display driver and pin connections are correct by
- editing the User_Setup.h file in the TFT_eSPI library folder.
-
- #########################################################################
- ###### DON'T FORGET TO UPDATE THE User_Setup.h FILE IN THE LIBRARY ######
- #########################################################################
- */
 
 
 #include <TFT_eSPI.h> // Graphics and font library for ILI9341 driver chip
 #include <SPI.h>
 
+#include "inputs.h"
+#include "initGB_black.h"
+
 #define TFT_GREY 0x5AEB // New colour
 
 TFT_eSPI tft = TFT_eSPI();  // Invoke library
 
-int eixoY = 33;
-int eixoX = 32;
 
-int botaoA = 36;
-int botaoB = 39;
-int botaoC = 34;
-int botaoD = 35;
 
 int menuIndex = 0;
 
-void init1();
+void init();
 void drawMenu();
 void menu();
 
-void setup(void) {
+void setup() {
   tft.init();
-  tft.setRotation(2);
+  tft.setRotation(1);
   pinMode(botaoA, INPUT_PULLUP);
 
-  init1();
+  init();
   delay(1000);
-  tft.fillScreen(TFT_BLACK);
-  drawMenu();
+  //tft.fillScreen(TFT_BLACK);
 }
 
 void loop() {
@@ -50,7 +35,9 @@ void loop() {
   
 }
 
-void init1() {
+void init() {
+  tft.pushImage(0,0,320,240,initGB_black);
+  delay(3000);
   tft.fillScreen(TFT_BLACK);
   tft.setCursor(60, 130, 2);
   tft.setTextColor(TFT_WHITE);
