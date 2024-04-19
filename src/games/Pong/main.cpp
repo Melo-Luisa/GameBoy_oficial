@@ -31,6 +31,9 @@ int coordY_B2 = 100; //eh y
 int botao_azul = 34; //azul
 int botao_amarelo = 35; // amarelo
 
+int botao_vermelho = 33; //azul
+int botao_branco = 32; // amarelo
+
 
 void ball_a(){
     //--------------BOLINHA---------------
@@ -93,25 +96,48 @@ void joystick_m(){
     //coordenadas do joystick
     // coordY_B1 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
 
-    coordY_B1_antiga = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
+    // coordY_B1_antiga = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
 
-    //barra do joystick
-    barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_WHITE);
-    barra1.pushToSprite(&ball, 0, 0);
-    barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_BLACK);
-    //Serial.println(analogRead(EIXO_Y));
+    // //barra do joystick
+    // barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_WHITE);
+    // barra1.pushToSprite(&ball, 0, 0);
+    // barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_BLACK);
+    // //Serial.println(analogRead(EIXO_Y));
 
-    coordY_B1_atual = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
-    //cima
-    if(coordY_B1_atual > coordY_B1_antiga){
-        coordY_B1 += 10;
-    }//baixo
-    if(coordY_B1_atual < coordY_B1_antiga){
-        coordY_B1 -= 10;
+    // coordY_B1_atual = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
+    // //cima
+    // if(coordY_B1_atual > coordY_B1_antiga){
+    //     coordY_B1 += 10;
+    // }//baixo
+    // if(coordY_B1_atual < coordY_B1_antiga){
+    //     coordY_B1 -= 10;
 
+    // }
+    // Serial.print(coordY_B1_antiga);
+    // Serial.println(coordY_B1_atual);
+    if(digitalRead(botao_vermelho) == 0){ //se o botao azul for apertado 
+        if(coordY_B2+(square_Height) <= 230){ 
+            coordY_B2 += 10;
+        }
+    
     }
-    Serial.print(coordY_B1_antiga);
-    Serial.println(coordY_B1_atual);
+    else if(digitalRead(botao_branco) == 0){ //se o botao azul for apertado 
+        coordY_B2 -= 10;
+        if(coordY_B2+(square_Height) == 50){ 
+            coordY_B2 += 10;
+        }
+    
+    }
+    
+
+    //barra do botoes
+    barra1.fillRect(80, coordY_B2, square_Width, square_Height, TFT_WHITE);
+    barra1.pushToSprite(&ball, 220, 0);
+    barra1.fillRect(80, coordY_B2, square_Width, square_Height, TFT_BLACK);
+
+
+
+
 }
 
 void button_m(){
@@ -163,6 +189,8 @@ void setup() {
     //buttons
     pinMode(botao_azul, INPUT_PULLUP);
     pinMode(botao_amarelo, INPUT_PULLUP);
+    pinMode(botao_vermelho, INPUT_PULLUP);
+    pinMode(botao_branco, INPUT_PULLUP);
 
    
 }
