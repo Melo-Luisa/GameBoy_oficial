@@ -86,15 +86,12 @@ void ball_a(){
     ball.fillCircle(x, y, circleRadius, TFT_BLACK); //apaga a bola antiga
     /*ANIMAÇÃO DA BOLA*/
 
-
-
     //Colisão da Bolinha com X - Passou da Barra e NÃO BATEU na Barra - PONTUAÇÃO
     if((x<= 0) || (x>= d.width() - circleRadius)){
         //Serial.println("GOL PORRA");
         //vx = -vx
 
     }
-    
 
    //Colisão da Bolinha com Y - BATE E VOLTA
     if((y<= 0)|| (y >= d.height() - circleRadius)){
