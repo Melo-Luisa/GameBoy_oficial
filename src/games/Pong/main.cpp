@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
 #include <SPI.h>
@@ -164,6 +165,9 @@ void button_m(){
     barra2.fillRect(80, coordY_B2, square_Width, square_Height, TFT_BLACK);
 }
 
+=======
+#include "funcoesPong.h"
+>>>>>>> 050c0e55542a5bc3b81ef56a9b16e7abafad6964
 
 void setup() {
     Serial.begin(115200);
@@ -207,6 +211,14 @@ void loop() {
     button_m();
 
     hit();
+    /*
+    Serial.print("X: ");
+    Serial.print(x);
+    Serial.print("Y: ");
+    Serial.println(y);
+    */
+    delay(10);
+
 }
 
 
@@ -246,4 +258,3 @@ if (x + circleRadius >= coordX_B1 && x - circleRadius <= coordX_B1 + square_Widt
 
     Serial.print("Toquei");
 }*/
-
