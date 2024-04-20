@@ -44,23 +44,28 @@ void update_Score(){
 }
 
 
-boolean hit() {
+boolean hit_direita() {
 
-    boolean result = false;
+    boolean result_dir = false;
 
     //COLISÃO BARRA DIREITA
-    if (x + circleRadius >= 230 && y >= coordY_B2 + square_Height) {
-        result = true;
+    if ( (x + circleRadius) >= 300 && (y >= ((coordY_B2)) && y <= (coordY_B2+square_Height))) {
+        result_dir = true;
         Serial.println("Bateu direita");
-    }
+    }   
+    
+    return result_dir;
+    
+}
 
-    // COLISÃO BARRA ESQUERDA
-    if (x + circleRadius <= 0 && y >= coordY_B1 + square_Height) {
-        result = true;
+boolean hit_esquerda(){
+    boolean result_esq = false;
+    //COLISÃO BARRA ESQUERDA
+    if (x + circleRadius <= 0 && (y >= ((coordY_B1)) && y <= (coordY_B1+square_Height)) ) {
+        result_esq = true;
         Serial.println("Bateu Esquerda");
     }
-    return result;
-    
+    return result_esq;
 }
 
 
@@ -73,9 +78,7 @@ void ball_a(){
     if (y <= 0 || y >= d.height() - circleRadius) {
         vy = -vy;
     }
-    if(hit()){
-        vy = -vy;
-    }
+   
    
     x += vx;
     y += vy;
@@ -83,9 +86,21 @@ void ball_a(){
    
     if (x <= 0) {
         x = d.width() - circleRadius;
-    } else if (x >= d.width()) {
+    } else if (x >= d.width() +20 ) {
         x = circleRadius;
     }
+
+    
+    if(hit_direita()){
+        vx = -vx;
+        vy = -vy;
+
+    }
+    if(hit_esquerda()){
+        vx = -vx;
+        vy = -vy;
+    }
+
     ball.fillCircle(x, y, circleRadius, TFT_RED);
     ball.pushSprite(0, 0);
 
@@ -186,7 +201,6 @@ void loop() {
 
     button_m();
 
-    hit();
     delay(10);
     //update_Score();
 
