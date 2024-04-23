@@ -10,6 +10,7 @@ TFT_eSPI d = TFT_eSPI();  //init display
 TFT_eSprite ball = TFT_eSprite(&d);
 TFT_eSprite barra1 = TFT_eSprite(&d);
 TFT_eSprite barra2 = TFT_eSprite(&d);
+TFT_eSprite placar = TFT_eSprite(&d);
 
 //Ball Settings
 int circleRadius =10; 
@@ -38,9 +39,20 @@ int countBlack = 0;
 int countWhite = 0;
 
 void update_Score(){
-    Serial.print(countWhite + " | ");
+    placar.fillSprite(TFT_BLACK);
+
+    // Desenhe texto no sprite
+    placar.setTextColor(TFT_WHITE);
+    placar.drawString("Olá, Mundo!", TFT_WIDTH / 2, TFT_HEIGHT / 2);
+
+    // Exiba o sprite na tela
+    placar.pushSprite(100, 0);
+
+    Serial.print(countWhite);
+    Serial.print("X");
     Serial.print(countBlack);
     Serial.println();
+
 }
 
 
@@ -51,7 +63,7 @@ boolean hit_direita() {
     //COLISÃO BARRA DIREITA
     if ( (x + circleRadius) >= 300 && (y >= ((coordY_B2)) && y <= (coordY_B2+square_Height))) {
         result_dir = true;
-        Serial.println("Bateu direita");
+        //Serial.println("Bateu direita");
     }   
     
     return result_dir;
@@ -61,9 +73,9 @@ boolean hit_direita() {
 boolean hit_esquerda(){
     boolean result_esq = false;
     //COLISÃO BARRA ESQUERDA
-    if (x + circleRadius <= 0 && (y >= ((coordY_B1)) && y <= (coordY_B1+square_Height)) ) {
+    if ((x - circleRadius) == 0 && (y >= ((coordY_B1 ))  && y <= (coordY_B1 + (square_Height + square_Width))) ) {
         result_esq = true;
-        Serial.println("Bateu Esquerda");
+        //Serial.println("Bateu Esquerda");
     }
     return result_esq;
 }
@@ -84,10 +96,22 @@ void ball_a(){
     y += vy;
 
    
-    if (x <= 0) {
+    if (x <= 0) { // esquerda
         x = d.width() - circleRadius;
+        countWhite +=1;
+        if(countWhite == 10){
+            Serial.println("White Ganhou");
+            countBlack = 0;
+            countWhite = 0;
+        }
     } else if (x >= d.width() +20 ) {
         x = circleRadius;
+        countBlack += 1;
+        if(countBlack == 10){
+            Serial.println("Preto Ganhou");
+            countBlack = 0;
+            countWhite = 0;
+        }
     }
 
     
@@ -182,6 +206,9 @@ void setup() {
     barra2.setColorDepth(8);
     barra2.createSprite(100, 240);
 
+    placar.setColorDepth(8); // Preencha o sprite com a cor de fundo4
+    placar.createSprite(0, 10);
+
     //joystick
     //pinMode(EIXO_X, INPUT);
     pinMode(EIXO_Y, INPUT);
@@ -201,8 +228,8 @@ void loop() {
 
     button_m();
 
-    delay(10);
-    //update_Score();
+    //delay(10);
+    update_Score();
 
 }
 
