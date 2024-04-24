@@ -39,6 +39,13 @@ int countBlack = 0;
 int countWhite = 0;
 
 void update_Score(){
+    
+
+    Serial.print(countWhite);
+    Serial.print("X");
+    Serial.print(countBlack);
+    Serial.println();
+
     placar.fillSprite(TFT_BLACK);
 
     // Desenhe texto no sprite
@@ -46,13 +53,9 @@ void update_Score(){
     placar.drawString("Olá, Mundo!", TFT_WIDTH / 2, TFT_HEIGHT / 2);
 
     // Exiba o sprite na tela
-    placar.pushSprite(100, 0);
+    placar.pushSprite(0, 0);
 
-    Serial.print(countWhite);
-    Serial.print("X");
-    Serial.print(countBlack);
-    Serial.println();
-
+    delay(1000);
 }
 
 
@@ -100,7 +103,6 @@ void ball_a(){
         x = d.width() - circleRadius;
         countWhite +=1;
         if(countWhite == 10){
-            Serial.println("White Ganhou");
             countBlack = 0;
             countWhite = 0;
         }
@@ -108,7 +110,6 @@ void ball_a(){
         x = circleRadius;
         countBlack += 1;
         if(countBlack == 10){
-            Serial.println("Preto Ganhou");
             countBlack = 0;
             countWhite = 0;
         }
@@ -191,7 +192,7 @@ void button_m(){
 void setup() {
     Serial.begin(115200);
     d.init();
-    d.fillScreen(TFT_BLACK);
+    d.fillScreen(TFT_RED);
     d.setRotation(1); //origem fita verde
 
     //Ball sprite
@@ -206,8 +207,10 @@ void setup() {
     barra2.setColorDepth(8);
     barra2.createSprite(100, 240);
 
-    placar.setColorDepth(8); // Preencha o sprite com a cor de fundo4
-    placar.createSprite(0, 10);
+    placar.setColorDepth(8);
+    placar.createSprite(340, 240);
+    placar.setTextDatum(MC_DATUM); 
+
 
     //joystick
     //pinMode(EIXO_X, INPUT);
@@ -218,18 +221,25 @@ void setup() {
  }
 void loop() {
 
-    //--------------BOLINHA---------------
-    ball_a();
+    // //--------------BOLINHA---------------
+    // ball_a();
     
-    //----------------BARRA JOYSTICK-------------
-    joystick_m();
+    // //----------------BARRA JOYSTICK-------------
+    // joystick_m();
 
-    //-----------------BARRA BOTOES-----------------
+    // //-----------------BARRA BOTOES-----------------
 
-    button_m();
-
+    // button_m();
+    
     //delay(10);
-    update_Score();
+    placar.fillSprite(TFT_BLUE);
+    // Desenhe texto no sprite
+    placar.setTextColor(TFT_WHITE);
+    placar.drawString("ola mundo", 150, 120);
+
+    // Exiba o sprite na tela
+    placar.pushSprite(0, 0);
+
 
 }
 
