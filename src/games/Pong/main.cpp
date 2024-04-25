@@ -48,7 +48,7 @@ boolean hit() {
 
     boolean result = false;
 
-    //COLISÃO BARRA DIREITA
+ +   //COLISÃO BARRA DIREITA
     if (x + circleRadius >= 230 && y >= coordY_B2 + square_Height) {
         result = true;
         Serial.println("Bateu direita");
