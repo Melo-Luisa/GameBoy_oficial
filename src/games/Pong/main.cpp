@@ -38,6 +38,8 @@ int botao_amarelo = 35; // amarelo
 int countBlack = 0;
 int countWhite = 0;
 
+
+
 void update_Score(){
     
 
@@ -46,16 +48,17 @@ void update_Score(){
     Serial.print(countBlack);
     Serial.println();
 
-    placar.fillSprite(TFT_BLUE);
+    placar.fillSprite(TFT_BLUE); //ao trocar de blue pra black ele não apaga o numero anterior e sobrepoe - resolver
     // Desenhe texto no sprite
+    //Os ultimos argumentos de drawString (7 e 4) são os tipos de fontes
+    //Consultar User_Setup.h, linha 310 p/ mais inf
     placar.setTextColor(TFT_WHITE);
-    placar.drawString(String(countBlack), 45, 20);
-    placar.drawString("X", 55, 20);
-    placar.drawString(String(countWhite), 65, 20);
-    placar.fontHeight(25);
+    placar.drawString(String(countBlack), 20, 25, 7);
+    placar.drawString("x", 70, 25, 4);
+    placar.drawString(String(countWhite), 120, 25, 7);
 
     // Exiba o sprite na tela
-    placar.pushSprite(0, 0);
+    placar.pushToSprite(&ball,85, 5, TFT_BLACK);
 
 
 }
@@ -214,7 +217,7 @@ void setup() {
     
     //Placar
     placar.setColorDepth(8);
-    placar.createSprite(120, 50);
+    placar.createSprite(150, 50);
     placar.setTextDatum(MC_DATUM); 
 
     //joystick
