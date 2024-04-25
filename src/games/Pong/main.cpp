@@ -10,6 +10,7 @@ TFT_eSPI d = TFT_eSPI();  //init display
 TFT_eSprite ball = TFT_eSprite(&d);
 TFT_eSprite barra1 = TFT_eSprite(&d);
 TFT_eSprite barra2 = TFT_eSprite(&d);
+TFT_eSprite placar = TFT_eSprite(&d);
 
 //Ball Settings
 int circleRadius =10; 
@@ -38,29 +39,50 @@ int countBlack = 0;
 int countWhite = 0;
 
 void update_Score(){
-    Serial.print(countWhite + " | ");
+    
+
+    Serial.print(countWhite);
+    Serial.print("X");
     Serial.print(countBlack);
     Serial.println();
+
+    placar.fillSprite(TFT_BLUE);
+    // Desenhe texto no sprite
+    placar.setTextColor(TFT_WHITE);
+    placar.drawString(String(countBlack), 45, 20);
+    placar.drawString("X", 55, 20);
+    placar.drawString(String(countWhite), 65, 20);
+    placar.fontHeight(25);
+
+    // Exiba o sprite na tela
+    placar.pushSprite(0, 0);
+
+
 }
 
 
-boolean hit() {
+boolean hit_direita() {
 
-    boolean result = false;
+    boolean result_dir = false;
 
- +   //COLISÃO BARRA DIREITA
-    if (x + circleRadius >= 230 && y >= coordY_B2 + square_Height) {
-        result = true;
-        Serial.println("Bateu direita");
-    }
-
-    // COLISÃO BARRA ESQUERDA
-    if (x + circleRadius <= 0 && y >= coordY_B1 + square_Height) {
-        result = true;
-        Serial.println("Bateu Esquerda");
-    }
-    return result;
+    //COLISÃO BARRA DIREITA
+    if ( (x + circleRadius) >= 300 && (y >= ((coordY_B2)) && y <= (coordY_B2+square_Height))) {
+        result_dir = true;
+        //Serial.println("Bateu direita");
+    }   
     
+    return result_dir;
+    
+}
+
+boolean hit_esquerda(){
+    boolean result_esq = false;
+    //COLISÃO BARRA ESQUERDA
+    if ((x - circleRadius) == 0 && (y >= ((coordY_B1 ))  && y <= (coordY_B1 + (square_Height + square_Width))) ) {
+        result_esq = true;
+        //Serial.println("Bateu Esquerda");
+    }
+    return result_esq;
 }
 
 
@@ -73,19 +95,42 @@ void ball_a(){
     if (y <= 0 || y >= d.height() - circleRadius) {
         vy = -vy;
     }
-    if(hit()){
-        vy = -vy;
-    }
+   
    
     x += vx;
     y += vy;
 
    
-    if (x <= 0) {
+    if (x <= 0) { // esquerda
         x = d.width() - circleRadius;
-    } else if (x >= d.width()) {
+        countWhite +=1;
+       
+        if(countWhite == 10){
+            countBlack = 0;
+            countWhite = 0;
+        }
+    } else if (x >= d.width() +20 ) {
         x = circleRadius;
+        countBlack += 1;
+        
+        if(countBlack == 10){
+
+            countBlack = 0;
+            countWhite = 0;
+        }
     }
+
+    
+    if(hit_direita()){
+        vx = -vx;
+        vy = -vy;
+
+    }
+    if(hit_esquerda()){
+        vx = -vx;
+        vy = -vy;
+    }
+
     ball.fillCircle(x, y, circleRadius, TFT_RED);
     ball.pushSprite(0, 0);
 
@@ -166,6 +211,11 @@ void setup() {
     //Barra 2 Sprite
     barra2.setColorDepth(8);
     barra2.createSprite(100, 240);
+    
+    //Placar
+    placar.setColorDepth(8);
+    placar.createSprite(120, 50);
+    placar.setTextDatum(MC_DATUM); 
 
     //joystick
     //pinMode(EIXO_X, INPUT);
@@ -175,20 +225,15 @@ void setup() {
     pinMode(botao_amarelo, INPUT_PULLUP);
  }
 void loop() {
-
     //--------------BOLINHA---------------
-    ball_a();
-    
+    ball_a(); 
     //----------------BARRA JOYSTICK-------------
     joystick_m();
-
     //-----------------BARRA BOTOES-----------------
-
     button_m();
-
-    hit();
-    delay(10);
-    //update_Score();
+    update_Score();
+    //delay(10);
+    
 
 }
 
