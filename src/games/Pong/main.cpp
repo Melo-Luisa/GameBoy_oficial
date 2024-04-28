@@ -81,7 +81,7 @@ boolean hit_direita() {
 boolean hit_esquerda(){
     boolean result_esq = false;
     //COLISÃO BARRA ESQUERDA
-    if ((x - circleRadius) == 0 && (y >= ((coordY_B1 ))  && y <= (coordY_B1 + (square_Height + square_Width))) ) {
+    if ((x) <= 30 && (y >= ((coordY_B1 ))  && y <= (coordY_B1+square_Height))) {
         result_esq = true;
         //Serial.println("Bateu Esquerda");
     }
