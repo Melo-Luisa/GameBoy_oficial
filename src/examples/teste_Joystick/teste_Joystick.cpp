@@ -1,115 +1,84 @@
 #include <Arduino.h>
-#include <TFT_eSPI.h> 
-#include <SPI.h>
-#define EIXO_X  33
-#define EIXO_Y  32
+#include "joystick.h"
 
-TFT_eSPI d = TFT_eSPI();  
+const int xAxisPin = 33; // Pin connected to X axis of joystick
+const int yAxisPin = 32; // Pin connected to Y axis of joystick
 
-TFT_eSprite ball = TFT_eSprite(&d);
+const int threshold = 1000; // Adjust this threshold as needed
 
-int coordX, coordY;
+enum Direction { NONE, UP, DOWN, LEFT, RIGHT };
+
+Direction prevDirectionX = NONE;
+Direction prevDirectionY = NONE;
+
+// Function declarations
+Direction getDirectionX(int value, int threshold);
+Direction getDirectionY(int value, int threshold);
+void printDirection(Direction dir);
 
 void setup() {
-    Serial.begin(115200);
-    d.init();
-    d.fillScreen(TFT_BLACK);
-    d.setRotation(1); //Origem no canto superior esquerdo (Fita Verde)
-    ball.setColorDepth(8);
-    ball.createSprite(320, 240); //sprite funcionando full width and height
-    //joystick
-    pinMode(EIXO_X, INPUT);
-    pinMode(EIXO_Y, INPUT);
+  Serial.begin(115200);
 }
-
 
 void loop() {
-    
-    //Visualização sistema de coordenadas com orientação = 1
-    //Flickering pq não está como sprite
-    d.setCursor(0, 0);
-    d.setTextSize(3);
-    d.setTextColor(TFT_BLUE);
-    d.print("A");
+  // Read analog values from joystick axes
+  int xAxisValue = analogRead(xAxisPin);
+  int yAxisValue = analogRead(yAxisPin);
 
-    d.setCursor(300, 0);
-    d.setTextSize(3);
-    d.setTextColor(TFT_RED);
-    d.print("B");
+  // Check X axis
+  Direction currentDirectionX = getDirectionX(xAxisValue, threshold);
 
-    d.setCursor(0, 220); //Ao colocar 240, ele vai para 240, mas o ponto inicial é o superior, dai não aparece
-    d.setTextSize(3);
-    d.setTextColor(TFT_GREEN);
-    d.print("C");
-
-    d.setCursor(300, 220); //Ao colocar 240, ele vai para 240, mas o ponto inicial é o superior, dai não aparece
-    d.setTextSize(3);
-    d.setTextColor(TFT_YELLOW);
-    d.print("D");
-
-    //JOYSTICK
-    int coordX = 0;
-    int coordY = 0;
-
-
-
-
-    /*JOYSTICK*/
-    coordX = map(analogRead(EIXO_X), 0, 4095, 0, 300);
-    coordY = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
-
-    Serial.print("X: "+String(analogRead(EIXO_X)));
-    Serial.println("Y: "+String(analogRead(EIXO_Y)));
-
-
-    ball.fillCircle(coordX, coordY, 10, TFT_WHITE);
-
-
-
-
-    ball.pushSprite(0,0);
-    ball.fillCircle(coordX, coordY, 10, TFT_BLACK); //Pra apagar a antiga. Só foi se colocado abaixo do push
-
-    //TODO: IMPLEMENTAR A FUNCAO ABAIXO:
-
-}
-
-
-//essa função desse jogo aqui https://github.com/dorsheed455k/programs/blob/master/Hardware/Arduino%20Pong%20Ball/Pongball.ino
-//ele pega a leitura do joy, e usa alguns IFs pra determinar se ta indo pra um lado ou pro outro
-//a depender disso, ele mexe o quadrado
-
-/*
-void joyStickControl() {
-
-
-  if(millis() - lastToggle > 50) {
-
-    currentPos = xPosition;
-  
-    if(currentPos > 512 && (currentPos != 512 || prevPos != 512)) {
-        xPaddle += 10;
-      }
-    
-      if(currentPos < 512 && (currentPos != 512 || currentPos != 512)) {
-        xPaddle -= 10;
-      }
-    
-      if(xPaddle < 0) {
-        xPaddle = 0;
-      }
-    
-      if(xPaddle + 40 > WIDTH) {
-        xPaddle = WIDTH - 40;
-      }
-  
-    prevPos = currentPos;
+  if (currentDirectionX != prevDirectionX) {
+    printDirection(currentDirectionX);
+    prevDirectionX = currentDirectionX;
   }
 
-  //lastToggle = millis();
+  // Check Y axis
+  Direction currentDirectionY = getDirectionY(yAxisValue, threshold);
 
+  if (currentDirectionY != prevDirectionY) {
+    printDirection(currentDirectionY);
+    prevDirectionY = currentDirectionY;
+  }
 
-  tft.fillRect(xPaddle, yPaddle, 40, 10, color);
-  
+ 
 }
-*/
+
+Direction getDirectionX(int value, int threshold) {
+  if (value < 2048 - threshold) {
+    return LEFT;
+  } else if (value > 2048 + threshold) {
+    return RIGHT;
+  } else {
+    return NONE;
+  }
+}
+
+Direction getDirectionY(int value, int threshold) {
+  if (value < 2048 - threshold) {
+    return UP;
+  } else if (value > 2048 + threshold) {
+    return DOWN;
+  } else {
+    return NONE;
+  }
+}
+
+void printDirection(Direction dir) {
+  switch (dir) {
+    case UP:
+      Serial.println("Up");
+      break;
+    case DOWN:
+      Serial.println("Down");
+      break;
+    case LEFT:
+      Serial.println("Left");
+      break;
+    case RIGHT:
+      Serial.println("Right");
+      break;
+    default:
+      break;
+  }
+}
