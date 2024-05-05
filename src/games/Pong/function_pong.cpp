@@ -1,5 +1,37 @@
 #include "pong.h"
 
+TFT_eSPI d = TFT_eSPI();  //init display
+
+TFT_eSprite ball = TFT_eSprite(&d);
+TFT_eSprite barra1 = TFT_eSprite(&d);
+TFT_eSprite barra2 = TFT_eSprite(&d);
+TFT_eSprite placar = TFT_eSprite(&d);
+
+//Ball Settings
+int circleRadius =10; 
+int vx = 10, vy = 10; //velocidade da bolinha
+int x = 100, y = 50;
+
+int square_Width = 10;
+int square_Height = 60;
+
+//Barra joystick
+int coordX_B1 = 15;
+int coordY_B1 = 100;
+
+int coordY_B1_atual = 100;
+int coordY_B1_antiga = 100;
+
+
+//Barra botoes
+int coordY_B2 = 100; //eh y
+
+int botao_azul = 34; //azul
+int botao_amarelo = 35; // amarelo
+
+//SCORE PLAYERS
+int countBlack = 0;
+int countWhite = 0;
 
 void update_Score(TFT_eSprite placar, int countBlack, int countWhite){
     
@@ -11,14 +43,12 @@ void update_Score(TFT_eSprite placar, int countBlack, int countWhite){
     placar.fillSprite(TFT_BLUE);
     // Desenhe texto no sprite
     placar.setTextColor(TFT_WHITE);
-    placar.drawString(String(countBlack), 45, 20);
-    placar.drawString("X", 55, 20);
-    placar.drawString(String(countWhite), 65, 20);
-    placar.fontHeight(25);
+    placar.drawString(String(countBlack), 20, 25, 7);
+    placar.drawString("x", 70, 25, 4);
+    placar.drawString(String(countWhite), 120, 25, 7);
 
     // Exiba o sprite na tela
-    placar.pushSprite(0, 0);
-
+    placar.pushToSprite(&ball,85, 5, TFT_BLACK);
 }
 
 

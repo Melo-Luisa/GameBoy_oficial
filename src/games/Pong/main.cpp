@@ -34,7 +34,7 @@ void loop() {
     ball_a( x,  y,  vy,  vx,  countBlack,  countWhite,  circleRadius,  barra2); 
     joystick_m( coordY_B1,  coordY_B1_antiga,  barra1,  square_Width,  square_Height);
     button_m( botao_azul,  botao_amarelo,  coordY_B2,  barra2);
-    update_Score( placar,  countBlack,  countWhite);
+    update_Score( placar,countBlack, countWhite);
     
 
 }
