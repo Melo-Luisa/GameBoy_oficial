@@ -1,39 +1,42 @@
 #include "pong.h"
 
-TFT_eSPI d = TFT_eSPI();  //init display
-
-TFT_eSprite ball = TFT_eSprite(&d);
-TFT_eSprite barra1 = TFT_eSprite(&d);
-TFT_eSprite barra2 = TFT_eSprite(&d);
-TFT_eSprite placar = TFT_eSprite(&d);
-
-//Ball Settings
-int circleRadius =10; 
-int vx = 10, vy = 10; //velocidade da bolinha
-int x = 100, y = 50;
-
-int square_Width = 10;
-int square_Height = 60;
-
-//Barra joystick
-int coordX_B1 = 15;
-int coordY_B1 = 100;
-
-int coordY_B1_atual = 100;
-int coordY_B1_antiga = 100;
 
 
-//Barra botoes
-int coordY_B2 = 100; //eh y
+void Pong::init(){
 
-int botao_azul = 34; //azul
-int botao_amarelo = 35; // amarelo
+    TFT_eSPI d = TFT_eSPI();  //init display
+    TFT_eSprite ball = TFT_eSprite(&d);
+    TFT_eSprite barra1 = TFT_eSprite(&d);
+    TFT_eSprite barra2 = TFT_eSprite(&d);
+    TFT_eSprite placar = TFT_eSprite(&d);
 
-//SCORE PLAYERS
-int countBlack = 0;
-int countWhite = 0;
 
-void update_Score(TFT_eSprite placar, int countBlack, int countWhite){
+    d.init();
+    d.fillScreen(TFT_BLACK);
+    d.setRotation(1); //origem fita verde
+
+    //Ball sprite
+    ball.setColorDepth(8);
+    ball.createSprite(320, 240);
+
+    //Barra 1 Sprite
+    barra1.setColorDepth(8);
+    barra1.createSprite(50, 240);
+
+    //Barra 2 Sprite
+    barra2.setColorDepth(8);
+    barra2.createSprite(100, 240);
+    
+    //Placar
+    placar.setColorDepth(8);
+    placar.createSprite(120, 50);
+    placar.setTextDatum(MC_DATUM); 
+
+
+
+}
+
+void  Pong::update_Score(TFT_eSprite placar, int countBlack, int countWhite){
     
     Serial.print(countWhite);
     Serial.print("X");
@@ -52,7 +55,7 @@ void update_Score(TFT_eSprite placar, int countBlack, int countWhite){
 }
 
 
-boolean hit_direita(int x, int circleRadius, int coordY_B2, int square_Height) {
+boolean Pong::hit_direita(int x, int circleRadius, int coordY_B2, int square_Height) {
 
     boolean result_dir = false;
 
@@ -66,7 +69,7 @@ boolean hit_direita(int x, int circleRadius, int coordY_B2, int square_Height) {
     
 }
 
-boolean hit_esquerda(int x, int circleRadius, int coordY_B2, int square_Height, int square_Width){
+boolean Pong::hit_esquerda(int x, int circleRadius, int coordY_B2, int square_Height, int square_Width){
     boolean result_esq = false;
     //COLISÃO BARRA ESQUERDA
     if ((x - circleRadius) == 0 && (y >= ((coordY_B1 ))  && y <= (coordY_B1 + (square_Height + square_Width))) ) {
@@ -76,7 +79,7 @@ boolean hit_esquerda(int x, int circleRadius, int coordY_B2, int square_Height, 
     return result_esq;
 }
 
-void ball_a(int x, int y, int vy, int vx, int countBlack, int countWhite, int circleRadius, TFT_eSprite ball){
+void Pong::ball_a(int x, int y, int vy, int vx, int countBlack, int countWhite, int circleRadius, TFT_eSprite ball){
     //--------------BOLINHA---------------
     ball.fillCircle(x, y, circleRadius, TFT_BLACK);
     
@@ -120,7 +123,7 @@ void ball_a(int x, int y, int vy, int vx, int countBlack, int countWhite, int ci
    
 }
 
-void joystick_m(int coordY_B1, int coordY_B1_antiga, TFT_eSprite barra1, int square_Width, int square_Height){
+void Pong::joystick_m(int coordY_B1, int coordY_B1_antiga, TFT_eSprite barra1, int square_Width, int square_Height){
     
     //----------------BARRA JOYSTICK-------------
 
@@ -149,7 +152,7 @@ void joystick_m(int coordY_B1, int coordY_B1_antiga, TFT_eSprite barra1, int squ
 
 }
 
-void button_m(int botao_azul, int botao_amarelo, int coordY_B2,TFT_eSprite barra2 ){
+void Pong::button_m(int botao_azul, int botao_amarelo, int coordY_B2,TFT_eSprite barra2 ){
     //----------------BARRA BOTOES-------------
     //baixo
     if(digitalRead(botao_azul) == 0){ //se o botao azul for apertado 

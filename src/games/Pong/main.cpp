@@ -1,41 +1,28 @@
-#include "function_pong.cpp"
+#include "pong.h"
+
+Pong pon;
+
 
 void setup() {
     Serial.begin(115200);
-    d.init();
-    d.fillScreen(TFT_BLACK);
-    d.setRotation(1); //origem fita verde
 
-    //Ball sprite
-    ball.setColorDepth(8);
-    ball.createSprite(320, 240);
-
-    //Barra 1 Sprite
-    barra1.setColorDepth(8);
-    barra1.createSprite(50, 240);
-
-    //Barra 2 Sprite
-    barra2.setColorDepth(8);
-    barra2.createSprite(100, 240);
-    
-    //Placar
-    placar.setColorDepth(8);
-    placar.createSprite(120, 50);
-    placar.setTextDatum(MC_DATUM); 
+    pong.init();
 
     //joystick
     //pinMode(EIXO_X, INPUT);
     pinMode(EIXO_Y, INPUT);
     //buttons
-    pinMode(botao_azul, INPUT_PULLUP);
-    pinMode(botao_amarelo, INPUT_PULLUP);
+    pinMode(pong.botao_azul, INPUT_PULLUP);
+    pinMode(pong.botao_amarelo, INPUT_PULLUP);
  }
 void loop() {
-    ball_a( x,  y,  vy,  vx,  countBlack,  countWhite,  circleRadius,  barra2); 
-    joystick_m( coordY_B1,  coordY_B1_antiga,  barra1,  square_Width,  square_Height);
-    button_m( botao_azul,  botao_amarelo,  coordY_B2,  barra2);
-    update_Score( placar,countBlack, countWhite);
+    pong.ball_a(pong.x,  pong.y,  pong.vy,  pong.vx,  pong.countBlack,  pong.countWhite,  pong.circleRadius,  pong.barra2); 
+    pong.joystick_m(pong.coordY_B1,  pong.coordY_B1_antiga,  pong.barra1,  pong.square_Width,  pong.square_Height);
+    pong.button_m(pong.botao_azul,  pong.botao_amarelo,  pong.coordY_B2,  pong.barra2);
+    pong.update_Score(pong.placar,pong.countBlack, pong.countWhite);
     
+    //TAVA DANDO ERRO NAS VARIÁVEIS PQ ELAS ESTÃO DECLARADAS DENTRO DA CLASSE. TIVE QUE COLOCAR .PONG 
+    //MUDAR AS VARIÁVEIS PARA O .H MAS PRA FORA DA CLASSE. -> MAS CONTINUAR PRA VER OQ DA.
 
 }
 
