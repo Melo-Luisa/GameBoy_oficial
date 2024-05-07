@@ -1,12 +1,9 @@
-#include "pong.h"
-
-Pong pon;
+#include "pong.cpp"
 
 
 void setup() {
     Serial.begin(115200);
 
-    pong.init();
 
     //joystick
     //pinMode(EIXO_X, INPUT);
@@ -16,10 +13,10 @@ void setup() {
     pinMode(pong.botao_amarelo, INPUT_PULLUP);
  }
 void loop() {
-    pong.ball_a(pong.x,  pong.y,  pong.vy,  pong.vx,  pong.countBlack,  pong.countWhite,  pong.circleRadius,  pong.barra2); 
-    pong.joystick_m(pong.coordY_B1,  pong.coordY_B1_antiga,  pong.barra1,  pong.square_Width,  pong.square_Height);
-    pong.button_m(pong.botao_azul,  pong.botao_amarelo,  pong.coordY_B2,  pong.barra2);
-    pong.update_Score(pong.placar,pong.countBlack, pong.countWhite);
+    // pong.ball_a(pong.x,  pong.y,  pong.vy,  pong.vx,  pong.countBlack,  pong.countWhite,  pong.circleRadius,  pong.barra2); 
+    // pong.joystick_m(pong.coordY_B1,  pong.coordY_B1_antiga,  pong.barra1,  pong.square_Width,  pong.square_Height);
+    // pong.button_m(pong.botao_azul,  pong.botao_amarelo,  pong.coordY_B2,  pong.barra2);
+    // pong.update_Score(pong.placar,pong.countBlack, pong.countWhite);
     
     //TAVA DANDO ERRO NAS VARIÁVEIS PQ ELAS ESTÃO DECLARADAS DENTRO DA CLASSE. TIVE QUE COLOCAR .PONG 
     //MUDAR AS VARIÁVEIS PARA O .H MAS PRA FORA DA CLASSE. -> MAS CONTINUAR PRA VER OQ DA.
