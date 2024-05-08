@@ -13,5 +13,11 @@ private:
 	int square_width = 340; int square_height = 240;
 };
 
+void main::principal(TFT_eSprite &d){
+    d.init();
+    d.fillScreen(TFT_BLACK);
+    d.setRotation(1);
+}
+
 #endif	
 

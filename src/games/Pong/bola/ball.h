@@ -1,3 +1,23 @@
+#include "main.cpp"
+#include "pong_config.h"
+#include "barra.h"
+
+class BALL: public BARRA{
+    private:
+        int x, y, vx, vy, circleRadius;
+        int countWhite, countBlack;
+        
+    public:
+        BALL(int x, int y, int vx, int vy, int circleRadius, int countWhite, int countBlack);
+
+        //funções
+        void move();
+        void placar(TFT_eSprite &placar);
+        void draw(TFT_eSprite &ball);
+        boolean hit_direita();
+        boolean hit_esquerda();
+};
+
 
 void BALL::move(){
     if (y <= 0 || y >= 240 - circleRadius) {
@@ -68,8 +88,8 @@ void BALL::draw(TFT_eSprite &ball){
 boolean BALL::hit_direita(){
     boolean result_dir = false;
 
-    //COLISÃO BARRA DIREITA
-    if ( (x + circleRadius) >= 300 && (y >= ((coordY_2)) && y <= (coordY_2 + square_height))) {
+    //COLISÃO BARRA DIREITA - BUTTOn
+    if ( (x + circleRadius) >= 300 && (y >= ((coordY_2)) && y <= (coordY_2 + barra::square_Height))) {
         result_dir = true;
         //Serial.println("Bateu direita");
     }   
@@ -79,8 +99,8 @@ boolean BALL::hit_direita(){
 
 boolean BALL::hit_esquerda(){
     boolean result_esq = false;
-    //COLISÃO BARRA ESQUERDA
-    if ((x - circleRadius) == 0 && (y >= ((coordY_1 ))  && y <= (coordY_1 + (square_height + square_width))) ) {
+    //COLISÃO BARRA ESQUERDA - JOY
+    if ((x - circleRadius) == 0 && (y >= ((coordY_1))  && y <= (coordY_1 + (barra::square_Height + barra::square_Width))) ) {
         result_esq = true;
         //Serial.println("Bateu Esquerda");
     }

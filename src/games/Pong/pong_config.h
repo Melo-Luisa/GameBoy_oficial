@@ -9,9 +9,7 @@ namespace button{
     int amarelo = 35;
 }
 
-
 namespace barra{
     int square_Width = 10;
     int square_Height = 60;
-
 }
