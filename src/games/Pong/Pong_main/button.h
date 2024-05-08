@@ -6,7 +6,7 @@
 #include <TFT_eSPI.h>
 
 #include "button.h"
-#include "main.h"
+#include "utils.h"
 
 class BUTTON : public main, public BUTTON{
 private:

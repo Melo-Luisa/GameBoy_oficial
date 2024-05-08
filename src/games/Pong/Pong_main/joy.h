@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 
-#include "main.h"
+#include "utils.h"
 #include "button.h"
 #define EIXO_Y 32
 #define EIXO_X 36
