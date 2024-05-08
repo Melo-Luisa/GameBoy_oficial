@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
 #include <SPI.h>
-#include "pong_config.h"
-#include "bola/ball.h"
-#include "barra/barra.h"
+#include "pongConfig.h"
+// #include "bola/ball.h"
+
 
 
 void setup(){

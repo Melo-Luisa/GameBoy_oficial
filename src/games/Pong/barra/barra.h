@@ -1,6 +1,7 @@
-#include "main.cpp"
 
-class BARRA: public BALL{
+#include "pong/pongConfig.h"
+
+class BARRA{
     private:
         int coordY_old, coordY_new; //JOYSTICK
         int coordY; //BUTTON
@@ -9,10 +10,10 @@ class BARRA: public BALL{
 
         //funções
         void move_joy(int coordY_old, int coordY_new);
-        void draw_joy(TFT_eSprite &barra_joy);
+        // void draw_joy(TFT_eSprite &barra_joy);
 
         void move_button(int coordY);
-        void draw_button(TFT_eSprite &barra_button);
+        // void draw_button(TFT_eSprite &barra_button);
         
 };
 
@@ -37,14 +38,14 @@ void BARRA::move_joy(int coordY_old, int coordY_new){
     }
 }
 
-void BARRA::draw_joy(TFT_eSprite &barra_joy){
-    barra_joy.setColorDepth(8);
-    barra_joy.createSprite(100, 240);
+// void BARRA::draw_joy(TFT_eSprite &barra_joy){
+//     barra_joy.setColorDepth(8);
+//     barra_joy.createSprite(100, 240);
 
-    barra_joy.fillRect(15, coordY, barra::square_Width, barra::square_Height, TFT_WHITE);
-    barra_joy.pushToSprite(&ball, 0, 0);
-    barra_joy.fillRect(15, coordY, barra::square_Width, barra::square_Height, TFT_BLACK);
-}
+//     barra_joy.fillRect(15, coordY, barra::square_Width, barra::square_Height, TFT_WHITE);
+//     barra_joy.pushToSprite(&ball, 0, 0);
+//     barra_joy.fillRect(15, coordY, barra::square_Width, barra::square_Height, TFT_BLACK);
+// }
 
 void BARRA::move_button(int coordY){
     if(digitalRead(button::azul) == 0){ //se o botao azul for apertado 
@@ -62,9 +63,9 @@ void BARRA::move_button(int coordY){
     }
 }
 
-void BARRA::draw_button(TFT_eSprite &barra_button){
-    barra_button.fillRect(80, coordY, barra::square_Width, barra::square_Height, TFT_WHITE);
-    // não esta puxando a classe ball
-    barra_button.pushToSprite(&ball, 220, 0);
-    barra_button.fillRect(80, coordY, barra::square_Width, barra::square_Height, TFT_BLACK);
-}
+// void BARRA::draw_button(TFT_eSprite &barra_button){
+//     barra_button.fillRect(80, coordY, barra::square_Width, barra::square_Height, TFT_WHITE);
+//     // não esta puxando a classe ball
+//     barra_button.pushToSprite(&ball, 220, 0);
+//     barra_button.fillRect(80, coordY, barra::square_Width, barra::square_Height, TFT_BLACK);
+// }
