@@ -1,12 +1,3 @@
-#include "ball.h"
-
-BALL::BALL(int x, int y, int vx, int vy, int circleRadius, int countBlack, int countWhite){
-    this->x = x;
-    this->y = y;
-    this->vx = vx;
-    this->vy = vy;
-    this->circleRadius = circleRadius;
-}
 
 void BALL::move(){
     if (y <= 0 || y >= 240 - circleRadius) {

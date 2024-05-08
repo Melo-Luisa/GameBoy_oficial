@@ -7,12 +7,12 @@
 #define EIXO_X 36
 
 
-class JOY: public main, public BUTTON{
+class JOY: public main, public BALL{
     private:
         int coordY_old, coordY_new; 
         int EIXO_Y = 32; int EIXO_X = 36;   
     public:
-        JOY(int coordY_old, int coordY_new);
+        JOY(int coordY_old, int coordY_new):;
 
         //funções
         void move();
