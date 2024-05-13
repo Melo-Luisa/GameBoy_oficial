@@ -6,7 +6,7 @@
 #include "barra/barra.h"
 
 class Juiz: public BALL, public BARRA{
-    
+
     private:
         int x, y, vx, vy, circleRadius; 
         int countBlack = 0; int countWhite = 0;
@@ -18,7 +18,7 @@ class Juiz: public BALL, public BARRA{
         boolean hit_esquerda(); // retorna valor se atingiu esq
         boolean hit_direita(); // retorna valor se atingiu na dire
         void atingir(); // verifica se atingiu
-        void count(); //conta os pontos
+        void count(int circleRadius, int countWhite, int countBlack); //conta os pontos
 };
 
 void Juiz::draw(TFT_eSprite &ball){
@@ -52,7 +52,7 @@ void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSpri
     placar.pushToSprite(&ball,85, 5, TFT_BLACK);
 }
 
-boolean Juiz::hit_direita(BALL::circleRadius, ){
+boolean Juiz::hit_direita(){
     boolean result_dir = false;
 
     //COLISÃO BARRA DIREITA - BUTTOn
@@ -85,7 +85,7 @@ void Juiz::atingir(){
     }
 }
 
-int Juiz::count(){
+int Juiz::count(int circleRadius, int countWhite, int countBlack){
     if (x <= 0) { // esquerda
         x = 240 - circleRadius;
         countWhite +=1;
