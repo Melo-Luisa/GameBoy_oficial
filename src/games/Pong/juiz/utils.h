@@ -6,6 +6,7 @@
 #include "barra/barra.h"
 
 class Juiz: public BALL, public BARRA{
+    
     private:
         int x, y, vx, vy, circleRadius; 
         int countBlack = 0; int countWhite = 0;
