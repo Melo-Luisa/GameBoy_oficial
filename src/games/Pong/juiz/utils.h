@@ -117,17 +117,17 @@ void Juiz::draw_joy(TFT_eSprite &barra_joy){
     barra_joy.setColorDepth(8);
     barra_joy.createSprite(100, 240);
 
-    barra_joy.fillRect(15, coordY, BARRA::square_Width, BARRA::square_Height, TFT_WHITE);
+    barra_joy.fillRect(15, coordY, barra::square_Width, barra::square_Height, TFT_WHITE);
     barra_joy.pushToSprite(&ball, 0, 0);
-    barra_joy.fillRect(15, coordY, BARRA::square_Width, BARRA::square_Height, TFT_BLACK);
+    barra_joy.fillRect(15, coordY, barra::square_Width, barra::square_Height, TFT_BLACK);
 
 }
 
 void Juiz::draw_button(TFT_eSprite &barra_button){
-    barra_button.fillRect(80, coordY, BARRA::square_Width, BARRA::square_Height, TFT_WHITE);
+    barra_button.fillRect(80, coordY, barra::square_Width, barra::square_Height, TFT_WHITE);
     // não esta puxando a classe ball
     barra_button.pushToSprite(&ball, 220, 0);
-    barra_button.fillRect(80, coordY, BARRA::square_Width, BARRA::square_Height, TFT_BLACK);
+    barra_button.fillRect(80, coordY, barra::square_Width, barra::square_Height, TFT_BLACK);
 }
 
 #endif
