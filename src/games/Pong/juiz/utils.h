@@ -1,6 +1,6 @@
 // itens totais da main 
-#ifdef JUIZ
-#define JUIZ
+#ifdef Juiz
+#define Juiz
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
 #include <SPI.h>
