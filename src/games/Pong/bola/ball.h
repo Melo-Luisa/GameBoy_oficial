@@ -1,4 +1,8 @@
-
+#ifdef BALL
+#define BALL
+#include <Arduino.h>
+#include <TFT_eSPI.h> 
+#include <SPI.h>
 class BALL{
     private:
         int x, y, vx, vy, circleRadius;
@@ -102,3 +106,4 @@ void BALL::move(){
 //     }
 //     return result_esq;
 // }
+#endif

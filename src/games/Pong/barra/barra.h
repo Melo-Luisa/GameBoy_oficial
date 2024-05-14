@@ -1,4 +1,8 @@
-
+#ifdef BARRA
+#define BARRA
+#include <Arduino.h>
+#include <TFT_eSPI.h> 
+#include <SPI.h>
 #include "pong/pongConfig.h"
 
 class BARRA{
@@ -69,3 +73,5 @@ void BARRA::move_button(int coordY){
 //     barra_button.pushToSprite(&ball, 220, 0);
 //     barra_button.fillRect(80, coordY, barra::square_Width, barra::square_Height, TFT_BLACK);
 // }
+
+#endif

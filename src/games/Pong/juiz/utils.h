@@ -1,6 +1,10 @@
 // itens totais da main 
+#ifdef JUIZ
+#define JUIZ
+#include <Arduino.h>
+#include <TFT_eSPI.h> 
+#include <SPI.h>
 
-#include "main.cpp"
 #include "pongConfig.h"
 #include "bola/ball.h"
 #include "barra/barra.h"
@@ -11,17 +15,19 @@ class Juiz: public BALL, public BARRA{
         int x, y, vx, vy, circleRadius; 
         int countBlack = 0; int countWhite = 0;
     public:
-        Juiz(int x, int y, int vx, int vy, int circleRadius): BALL(x), BALL(circleRadius), BALL(y), BARRA(coordY_joy), BARRA(coordY){}
+        Juiz(int x, int y, int vx, int vy, int circleRadius, int countBlack, int countWhite): BALL(x), BALL(circleRadius), BALL(y), BARRA(coordY_joy), BARRA(coordY){}
 
-        void draw(TFT_eSprite &ball); // desenha bola
+        void draw_ball(TFT_eSprite &ball); // desenha bola
         void placar( TFT_eSprite &placar, int countBlack, int countWhite); // desenha placar
         boolean hit_esquerda(); // retorna valor se atingiu esq
         boolean hit_direita(); // retorna valor se atingiu na dire
         void atingir(); // verifica se atingiu
         void count(int circleRadius, int countWhite, int countBlack); //conta os pontos
+        void draw_joy(TFT_eSprite &barra_joy);
+        void draw_button(TFT_eSprite &barra_button);
 };
 
-void Juiz::draw(TFT_eSprite &ball){
+void Juiz::draw_ball(TFT_eSprite &ball){
     
     ball.setColorDepth(8);
     ball.createSprite(320, 240);
@@ -105,3 +111,23 @@ int Juiz::count(int circleRadius, int countWhite, int countBlack){
         }
     }
 }
+
+void Juiz::draw_joy(TFT_eSprite &barra_joy){
+    
+    barra_joy.setColorDepth(8);
+    barra_joy.createSprite(100, 240);
+
+    barra_joy.fillRect(15, coordY, BARRA::square_Width, BARRA::square_Height, TFT_WHITE);
+    barra_joy.pushToSprite(&ball, 0, 0);
+    barra_joy.fillRect(15, coordY, BARRA::square_Width, BARRA::square_Height, TFT_BLACK);
+
+}
+
+void Juiz::draw_button(TFT_eSprite &barra_button){
+    barra_button.fillRect(80, coordY, BARRA::square_Width, BARRA::square_Height, TFT_WHITE);
+    // não esta puxando a classe ball
+    barra_button.pushToSprite(&ball, 220, 0);
+    barra_button.fillRect(80, coordY, BARRA::square_Width, BARRA::square_Height, TFT_BLACK);
+}
+
+#endif
