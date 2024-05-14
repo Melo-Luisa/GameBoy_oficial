@@ -1,14 +1,16 @@
-#ifdef BALL
+#pragma once 
+
+#ifndef BALL
 #define BALL
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
 #include <SPI.h>
-class BALL{
+class Ball{
     private:
-        int x, y, vx, vy, circleRadius;
+        int _x, _y, _vx, _vy, _circleRadius;
         
     public:
-        BALL(int x, int y, int vx, int vy, int circleRadius);
+        Ball(int x, int y, int vx, int vy, int circleRadius){}
 
         //funções
         void move();

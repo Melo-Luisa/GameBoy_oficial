@@ -1,16 +1,16 @@
-#ifdef BARRA
+#ifndef BARRA
 #define BARRA
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
 #include <SPI.h>
-#include "pong/pongConfig.h"
+#include "pongConfig.h"
 
-class BARRA{
+class Barra{
     private:
-        int coordY_old, coordY_new; //JOYSTICK
-        int coordY; //BUTTON
+        int _coordY_old, _coordY_new; //JOYSTICK
+        int _coordY; //BUTTON
     public:
-        BARRA(int coordY_old, int coordY_new, int coordY);
+        Barra(int coordY_old, int coordY_new, int coordY){};
 
         //funções
         void move_joy(int coordY_old, int coordY_new);
