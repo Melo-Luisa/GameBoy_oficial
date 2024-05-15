@@ -1,5 +1,3 @@
-#pragma once 
-
 #ifndef BALL
 #define BALL
 #include <Arduino.h>
@@ -7,17 +5,17 @@
 #include <SPI.h>
 class Ball{
     private:
-        int _x, _y, _vx, _vy, _circleRadius;
+        int x, y, vx, vy, circleRadius;
         
     public:
-        Ball(int x, int y, int vx, int vy, int circleRadius){}
+        Ball(int x, int y, int vx, int vy, int circleRadius);
 
         //funções
-        void move();
+        int move(int y, int x, int vx, int vy, int circleRadius);
 };
 
 
-void BALL::move(){
+int Ball::move(int y, int x, int vx, int vy, int circleRadius){
     if (y <= 0 || y >= 240 - circleRadius) {
         vy = -vy;
     }

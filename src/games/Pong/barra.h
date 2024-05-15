@@ -3,7 +3,8 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
 #include <SPI.h>
-#include "pongConfig.h"
+
+#include "config.h"
 
 class Barra{
     private:
@@ -13,15 +14,15 @@ class Barra{
         Barra(int coordY_old, int coordY_new, int coordY){};
 
         //funções
-        void move_joy(int coordY_old, int coordY_new);
+        int move_joy(int coordY_old, int coordY_new);
 
-        void move_button(int coordY);
+        int move_button(int coordY);
         
         
 };
 
 
-void BARRA::move_joy(int coordY_old, int coordY_new){
+int Barra::move_joy(int coordY_old, int coordY_new){
     int coordY = map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
 
     coordY_old = 100;//map(analogRead(EIXO_Y), 0, 4095, 0, 220);
@@ -41,7 +42,7 @@ void BARRA::move_joy(int coordY_old, int coordY_new){
     }
 }
 
-void BARRA::move_button(int coordY){
+int Barra::move_button(int coordY){
     if(digitalRead(button::azul) == 0){ //se o botao azul for apertado 
         if(coordY+ (barra::square_Height) <= 230){ 
             coordY += 10;

@@ -3,23 +3,10 @@
 #include <TFT_eSPI.h> 
 #include <SPI.h>
 
-#include "juiz/utils.h"
-// #include "pongConfig.h"
+#include "juiz.h"
+#include "config.h"
 
-namespace joystick{
-    int eixo_x = 33;
-    int eixo_y = 32;
-}
 
-namespace button{
-    int azul = 34;
-    int amarelo = 35;
-}
-
-namespace barra{
-    int square_Width = 10;
-    int square_Height = 60;
-}
 
 
 TFT_eSPI d = TFT_eSPI();
@@ -42,16 +29,17 @@ int countWhite = 0; // contador de pontos branco
 
 
 
+
 void setup(){
     //precisa de nada
     pinMode(button::azul, PULLUP);
     pinMode(button::amarelo, PULLUP);
-    Juiz juiz(int x, int y, int vx, int vy, int circleRadius, int countWhite,int countBlack);
+    
 
 }
 
 void loop(){
-
+    Juiz juiz(x, y, vx ,vy, countBlack, countWhite, circleRadius);
    
     // //trazer main
     // juiz.draw_ball(ball); // desenha bola
