@@ -1,5 +1,4 @@
-#ifndef JUIZ
-#define JUIZ
+#pragma onde
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
 #include <SPI.h>
@@ -7,7 +6,6 @@
 #include "config.h"
 #include "ball.h"
 #include "barra.h"
-
 
 class Juiz{
 
@@ -138,4 +136,3 @@ void Juiz::draw_button(TFT_eSprite &barra_button, TFT_eSprite &ball){
     barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
 }
 
-#endif

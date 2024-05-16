@@ -1,10 +1,10 @@
-#ifndef BARRA
-#define BARRA
+#pragma once
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
 #include <SPI.h>
 
 #include "config.h"
+
 
 class Barra{
     private:
@@ -45,14 +45,14 @@ int Barra::move_joy(int coordY_old, int coordY_new){
 
 int Barra::move_button(int coordY){
     if(digitalRead(button::azul) == 0){ //se o botao azul for apertado 
-        if(coordY+ (barra::square_Height) <= 230){ 
+        if(coordY+ (bar::square_Height) <= 230){ 
             coordY += 10;
         }
     
     }
     else if(digitalRead(button::amarelo) == 0){ //se o botao azul for apertado 
         coordY -= 10;
-        if(coordY+(barra::square_Height) == 50){ 
+        if(coordY+(bar::square_Height) == 50){ 
             coordY += 10;
         }
         
@@ -60,6 +60,3 @@ int Barra::move_button(int coordY){
     }
     return coordY;
 }
-
-
-#endif

@@ -1,4 +1,4 @@
-
+#pragma once
 namespace joystick{
     int eixo_x = 33;
     int eixo_y = 32;
