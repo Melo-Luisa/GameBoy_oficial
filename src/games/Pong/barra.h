@@ -8,8 +8,8 @@
 
 class Barra{
     private:
-        int _coordY_old, _coordY_new; //JOYSTICK
-        int _coordY; //BUTTON
+        int coordY_old, coordY_new; //JOYSTICK
+        int coordY; //BUTTON
     public:
         Barra(int coordY_old, int coordY_new, int coordY){};
 
@@ -40,6 +40,7 @@ int Barra::move_joy(int coordY_old, int coordY_new){
         coordY -= 10;
 
     }
+    return coordY;
 }
 
 int Barra::move_button(int coordY){
@@ -54,8 +55,10 @@ int Barra::move_button(int coordY){
         if(coordY+(barra::square_Height) == 50){ 
             coordY += 10;
         }
+        
     
     }
+    return coordY;
 }
 
 

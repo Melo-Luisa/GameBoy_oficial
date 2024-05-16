@@ -4,7 +4,7 @@
 #include <TFT_eSPI.h> 
 #include <SPI.h>
 
-#include "Config.h"
+#include "config.h"
 #include "ball.h"
 #include "barra.h"
 
@@ -68,7 +68,7 @@ boolean Juiz::hit_direita(){
     boolean result_dir = false;
 
     //COLISÃO BARRA DIREITA - BUTTOn
-    if ( (bolinha.move(y, x, vx, vy, circleRadius) + bolinha.move(y, x, vx, vy, circleRadius)) >= 300 && (y >= ((barra.move_button(coordY))) && y <= (barra.move_button(coordY) + barra::square_Height))) {
+    if ( (bolinha.move(y, x, vx, vy, circleRadius) + bolinha.move(y, x, vx, vy, circleRadius)) >= 300 && (y >= ((barra.move_button(coordY))) && y <= (barra.move_button(coordY) + bar::square_Height))) {
         result_dir = true;
         //Serial.println("Bateu direita");
     }   
@@ -79,7 +79,7 @@ boolean Juiz::hit_direita(){
 boolean Juiz::hit_esquerda() {
     boolean result_esq = false;
     //COLISÃO BARRA ESQUERDA - JOY
-    if ((bolinha.move(y, x, vx, vy, circleRadius) - bolinha.move(y, x, vx, vy, circleRadius)) == 0 && (bolinha.move(y, x, vx, vy, circleRadius) >= (barra.move_joy(coordY_old, coordY_new)) && bolinha.move(y, x, vx, vy, circleRadius) <= (barra.move_joy(coordY_old, coordY_new) + (barra::square_Height + barra::square_Width)))) {
+    if ((bolinha.move(y, x, vx, vy, circleRadius) - bolinha.move(y, x, vx, vy, circleRadius)) == 0 && (bolinha.move(y, x, vx, vy, circleRadius) >= (barra.move_joy(coordY_old, coordY_new)) && bolinha.move(y, x, vx, vy, circleRadius) <= (barra.move_joy(coordY_old, coordY_new) + (bar::square_Height + bar::square_Width)))) {
         result_esq = true;
         //Serial.println("Bateu Esquerda");
     }
@@ -116,6 +116,8 @@ int Juiz::count(int countWhite, int countBlack){
             countWhite = 0;
         }
     }
+
+    return countWhite;
 }
 
 void Juiz::draw_joy(TFT_eSprite &barra_joy, TFT_eSprite &ball){
@@ -123,17 +125,17 @@ void Juiz::draw_joy(TFT_eSprite &barra_joy, TFT_eSprite &ball){
     barra_joy.setColorDepth(8);
     barra_joy.createSprite(100, 240);
 
-    barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), barra::square_Width, barra::square_Height, TFT_WHITE);
+    barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_joy.pushToSprite(&ball, 0, 0);
-    barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), barra::square_Width, barra::square_Height, TFT_BLACK);
+    barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), bar::square_Width, bar::square_Height, TFT_BLACK);
 
 }
 
 void Juiz::draw_button(TFT_eSprite &barra_button, TFT_eSprite &ball){
-    barra_button.fillRect(80, barra.move_button(coordY), barra::square_Width, barra::square_Height, TFT_WHITE);
+    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_WHITE);
     // não esta puxando a classe ball
     barra_button.pushToSprite(&ball, 220, 0);
-    barra_button.fillRect(80, barra.move_button(coordY), barra::square_Width, barra::square_Height, TFT_BLACK);
+    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
 }
 
 #endif

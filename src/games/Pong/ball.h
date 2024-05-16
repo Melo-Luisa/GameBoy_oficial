@@ -1,4 +1,3 @@
-#ifndef BALL
 #define BALL
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
@@ -22,5 +21,5 @@ int Ball::move(int y, int x, int vx, int vy, int circleRadius){
     x += vx;
     y += vy;  
 
+    return x;
 }
-#endif
