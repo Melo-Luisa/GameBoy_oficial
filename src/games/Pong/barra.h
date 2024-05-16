@@ -11,7 +11,7 @@ class Barra{
         int coordY_old, coordY_new; //JOYSTICK
         int coordY; //BUTTON
     public:
-        Barra(int coordY_old, int coordY_new, int coordY){};
+        Barra(int coordY_old, int coordY_new, int coordY): coordY_old(coordY_old), coordY_new(coordY_new), coordY(coordY){}
 
         //funções
         int move_joy(int coordY_old, int coordY_new);

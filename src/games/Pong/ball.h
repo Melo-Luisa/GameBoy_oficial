@@ -8,7 +8,8 @@ class Ball{
         int x, y, vx, vy, circleRadius;
         
     public:
-        Ball(int x, int y, int vx, int vy, int circleRadius);
+        Ball(int x, int y, int vx, int vy, int circleRadius) 
+            : x(x), y(y), vx(vx), vy(vy), circleRadius(circleRadius) {}
 
         //funções
         int move(int y, int x, int vx, int vy, int circleRadius);

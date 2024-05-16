@@ -1,4 +1,4 @@
-#pragma onde
+#pragma once
 #include <Arduino.h>
 #include <TFT_eSPI.h> 
 #include <SPI.h>
@@ -13,7 +13,7 @@ class Juiz{
         int x, vx, y, vy, circleRadius; 
         int countBlack = 0; int countWhite = 0;
         int coordY_old, coordY_new, coordY;
-        Ball bolinha ; 
+        Ball bolinha; 
         Barra barra ;
         
     public:
