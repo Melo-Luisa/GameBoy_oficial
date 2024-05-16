@@ -10,7 +10,7 @@ TFT_eSprite barra_joy = TFT_eSprite(&d);
 TFT_eSprite barra_button = TFT_eSprite(&d);
 TFT_eSprite placar = TFT_eSprite(&d);
 
-
+//compila
 
 int x = 60; // valor inicial de x
 int y = 50; // valor inicial de y
