@@ -31,9 +31,6 @@ class Juiz{
 
 void Juiz::draw_Ball(TFT_eSprite &ball, int x, int y, int circleRadius){
     
-    ball.setColorDepth(8);
-    ball.createSprite(320, 240);
-
     ball.fillCircle(x, y, circleRadius, TFT_BLACK);
     ball.fillCircle(x, y, circleRadius, TFT_RED);
     ball.pushSprite(0, 0);
@@ -42,9 +39,7 @@ void Juiz::draw_Ball(TFT_eSprite &ball, int x, int y, int circleRadius){
 //é necessário colocar o paramentro da TFT_eSprite?
 
 void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &ball){
-    placar.setColorDepth(8);
-    placar.createSprite(120, 50);
-    placar.setTextDatum(MC_DATUM); 
+
 
     Serial.print(countWhite);
     Serial.print("X");
@@ -120,8 +115,7 @@ int Juiz::count(int countWhite, int countBlack){
 
 void Juiz::draw_joy(TFT_eSprite &barra_joy, TFT_eSprite &ball){
     
-    barra_joy.setColorDepth(8);
-    barra_joy.createSprite(100, 240);
+
 
     barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_joy.pushToSprite(&ball, 0, 0);

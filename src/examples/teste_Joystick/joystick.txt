@@ -39,6 +39,25 @@ int JOYSTICK::coord_Y(){
 
 }
 
+Direction getDirectionX(int value) {
+    if (value < 2048 - threshold) {
+      return LEFT;
+    } else if (value > 2048 + threshold) {
+      return RIGHT;
+    } else {
+      return NONE;
+    }
+  }
+
+  Direction getDirectionY(int value) {
+    if (value < 2048 - threshold) {
+      return UP;
+    } else if (value > 2048 + threshold) {
+      return DOWN;
+    } else {
+      return NONE;
+    }
+  }
 
 
 
