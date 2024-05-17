@@ -31,13 +31,13 @@ class Juiz{
 
 void Juiz::draw_Ball(TFT_eSprite &ball, int x, int y, int circleRadius){
     
-    ball.fillCircle(x, y, circleRadius, TFT_BLACK);
-    ball.fillCircle(x, y, circleRadius, TFT_RED);
+    ball.fillCircle(bolinha.move(y,x,vx,vy,circleRadius), bolinha.move(y,x,vx,vy,circleRadius), circleRadius, TFT_BLACK);
+    ball.fillCircle(bolinha.move(y,x,vx,vy,circleRadius), bolinha.move(y,x,vx,vy,circleRadius), circleRadius, TFT_RED);
     ball.pushSprite(0, 0);
 }
 
 //é necessário colocar o paramentro da TFT_eSprite?
-
+//ARRUMADO
 void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &ball){
 
 
@@ -50,11 +50,11 @@ void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSpri
     // Desenhe texto no sprite
     placar.setTextColor(TFT_WHITE);
     placar.drawString(String(countBlack), 20, 25, 7);
-    placar.drawString("x", 70, 25, 4);
-    placar.drawString(String(countWhite), 120, 25, 7);
+    placar.drawString("x", 50, 25, 4);
+    placar.drawString(String(countWhite), 80, 25, 7);
 
     // Exiba o sprite na tela
-    placar.pushToSprite(&ball,85, 5, TFT_BLACK);
+    placar.pushToSprite(&ball,120, 10, TFT_BLACK);
 }
 
 boolean Juiz::hit_direita(){
@@ -113,20 +113,19 @@ int Juiz::count(int countWhite, int countBlack){
     return countWhite;
 }
 
+//lado esq
 void Juiz::draw_joy(TFT_eSprite &barra_joy, TFT_eSprite &ball){
     
-
-
     barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_joy.pushToSprite(&ball, 0, 0);
     barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), bar::square_Width, bar::square_Height, TFT_BLACK);
 
 }
 
+//lado direito
 void Juiz::draw_button(TFT_eSprite &barra_button, TFT_eSprite &ball){
-    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_WHITE);
-    // não esta puxando a classe ball
-    barra_button.pushToSprite(&ball, 220, 0);
-    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
+    barra_button.fillRect(50, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_WHITE);
+    barra_button.pushToSprite(&ball,150, 0);
+    barra_button.fillRect(50, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
 }
 

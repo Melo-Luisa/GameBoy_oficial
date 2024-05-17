@@ -23,9 +23,9 @@ class Barra{
 
 
 int Barra::move_joy(int coordY_old, int coordY_new){
-    int coordY = map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
+    int coordY = 100;//map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
 
-    coordY_old = 100;//map(analogRead(EIXO_Y), 0, 4095, 0, 220);
+    coordY_old = 100;//map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
 
     //barra do joystick
     
@@ -50,7 +50,7 @@ int Barra::move_button(int coordY){
         }
     
     }
-    else if(digitalRead(button::amarelo) == 0){ //se o botao azul for apertado 
+    if(digitalRead(button::amarelo) == 0){ //se o botao azul for apertado 
         coordY -= 10;
         if(coordY+(bar::square_Height) == 50){ 
             coordY += 10;

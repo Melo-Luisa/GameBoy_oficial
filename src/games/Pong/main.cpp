@@ -36,7 +36,7 @@ void setup() {
     barra_joy.createSprite(100, 240);
 
     barra_button.setColorDepth(8);
-    barra_button.createSprite(50, 240);
+    barra_button.createSprite(100, 80);//+
 
     pinMode(button::azul, INPUT_PULLUP);
     pinMode(button::amarelo, INPUT_PULLUP);
@@ -46,12 +46,12 @@ void loop() {
     Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius);
    
     meujuiz.draw_Ball(ball, x, y, circleRadius); // desenha bola
-    meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
-    meujuiz.hit_esquerda(); // retorna valor se atingiu esq
-    meujuiz.hit_direita(); // retorna valor se atingiu na dire
-    meujuiz.atingir(); // verifica se atingiu
-    meujuiz.count(countWhite, countBlack); // conta os pontos
-    meujuiz.draw_joy(barra_joy, ball);
+//    // meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
+//     meujuiz.hit_esquerda(); // retorna valor se atingiu esq
+//     meujuiz.hit_direita(); // retorna valor se atingiu na dire
+//     meujuiz.atingir(); // verifica se atingiu
+//     meujuiz.count(countWhite, countBlack); // conta os pontos
+    //meujuiz.draw_joy(barra_joy, ball);
     meujuiz.draw_button(barra_button, ball);
 
 }
