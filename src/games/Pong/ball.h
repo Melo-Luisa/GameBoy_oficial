@@ -26,7 +26,7 @@ class Ball{
 
 
 void Ball::move(){
-    if (y <= 0 || y >= tela::width - circleRadius) {
+    if (y <= 0 || y >= tela::height - circleRadius) {
         vy = -vy;
     }
     x += vx;

@@ -44,13 +44,7 @@ void Juiz::draw_Ball(TFT_eSprite &ball){
 
 void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &ball){
 
-
-    Serial.print(countWhite);
-    Serial.print("X");
-    Serial.print(countBlack);
-    Serial.println();
-
-    placar.fillSprite(TFT_BLUE);
+    placar.fillSprite(TFT_BLACK);
     // Desenhe texto no sprite
     placar.setTextColor(TFT_WHITE);
     placar.drawString(String(getCountBlack()), 20, 25, 7);

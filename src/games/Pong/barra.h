@@ -9,7 +9,7 @@
 class Barra{
     private:
         int coordY_old, coordY_new; //JOYSTICK
-        int coordY = 0; //BUTTON
+        int coordY = 10; //BUTTON
     public:
         Barra(int coordY_old, int coordY_new, int coordY): coordY_old(coordY_old), coordY_new(coordY_new), coordY(coordY){}
 
