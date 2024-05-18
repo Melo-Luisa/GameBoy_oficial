@@ -3,6 +3,7 @@
 #include <SPI.h>
 
 #include "juiz.h"
+#include "barra.h"
 
 TFT_eSPI d = TFT_eSPI();
 TFT_eSprite ball = TFT_eSprite(&d);
@@ -12,13 +13,16 @@ TFT_eSprite placar = TFT_eSprite(&d);
 
 //compila
 
-int x = 60; // valor inicial de x
+int x = 100; // valor inicial de x
 int y = 50; // valor inicial de y
 int vx = 10; // valor inicial de vx
 int vy = 10; // valor inicial de vy
 int circleRadius = 10; // raio do círculo
 int countBlack = 0; // contador de pontos preto
 int countWhite = 0; // contador de pontos branco
+int coordY ;
+
+Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius);
 
 void setup() {
     d.init();
@@ -36,22 +40,24 @@ void setup() {
     barra_joy.createSprite(100, 240);
 
     barra_button.setColorDepth(8);
-    barra_button.createSprite(100, 80);//+
+    barra_button.createSprite(240, 240);//+
 
     pinMode(button::azul, INPUT_PULLUP);
     pinMode(button::amarelo, INPUT_PULLUP);
 }
 
 void loop() {
-    Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius);
    
-    meujuiz.draw_Ball(ball, x, y, circleRadius); // desenha bola
-//    // meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
-//     meujuiz.hit_esquerda(); // retorna valor se atingiu esq
-//     meujuiz.hit_direita(); // retorna valor se atingiu na dire
-//     meujuiz.atingir(); // verifica se atingiu
-//     meujuiz.count(countWhite, countBlack); // conta os pontos
-    //meujuiz.draw_joy(barra_joy, ball);
+    meujuiz.draw_Ball(ball); // desenha bola
+    delay(1);
+    meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
+    meujuiz.hit_esquerda(); // retorna valor se atingiu esq
+    meujuiz.hit_direita(); // retorna valor se atingiu na dire
+    meujuiz.atingir(); // verifica se atingiu
+    meujuiz.count(); // conta os pontos
+    meujuiz.draw_joy(barra_joy, ball);
     meujuiz.draw_button(barra_button, ball);
 
+    
+    
 }

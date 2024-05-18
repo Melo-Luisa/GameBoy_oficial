@@ -13,3 +13,8 @@ namespace bar{
     int square_Width = 10;
     int square_Height = 60;
 }
+
+namespace tela{
+    int height = 240;
+    int width = 320;
+}
