@@ -12,6 +12,7 @@ class Ball{
             : x(x), y(y), vx(vx), vy(vy), circleRadius(circleRadius) {}
 
         void move();
+
         int getX() const { return x; }
         int getY() const { return y; }
         int getvx() const { return vx; }
@@ -26,7 +27,7 @@ class Ball{
 
 
 void Ball::move(){
-    if (y <= 0 || y >= tela::height - circleRadius) {
+    if (y <= 0 || y >= tela::height - circleRadius) { 
         vy = -vy;
     }
     x += vx;

@@ -13,7 +13,7 @@ class Juiz{
         int countBlack = 0; int countWhite = 0;
         int coordY_old, coordY_new, coordY;
         Ball bolinha; 
-        Barra barra ;
+        Barra barra;
         
     public:
         Juiz(int x, int y, int vx ,int vy, int countBlack, int countWhite, int circleRadius): bolinha(y, x, vx, vy, circleRadius), barra(coordY_old, coordY_new, coordY){}
@@ -36,7 +36,7 @@ class Juiz{
 
 void Juiz::draw_Ball(TFT_eSprite &ball){
     bolinha.move();
-    ball.fillCircle(bolinha.getX(), bolinha.getY(), bolinha.getCircleRadius(), TFT_RED);
+    ball.fillCircle(bolinha.getX(), bolinha.getY(), bolinha.getCircleRadius(), TFT_ORANGE);
     ball.pushSprite(0, 0);
     ball.fillCircle(bolinha.getX(), bolinha.getY(), bolinha.getCircleRadius(), TFT_BLACK);
     
@@ -44,7 +44,7 @@ void Juiz::draw_Ball(TFT_eSprite &ball){
 
 void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &ball){
 
-    placar.fillSprite(TFT_BLACK);
+    placar.fillSprite(TFT_ORANGE);
     // Desenhe texto no sprite
     placar.setTextColor(TFT_WHITE);
     placar.drawString(String(getCountBlack()), 20, 25, 7);
@@ -55,12 +55,13 @@ void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSpri
     placar.pushToSprite(&ball,120, 10, TFT_BLACK);
 }
 
+//Arrumar
 boolean Juiz::hit_esquerda() {
-    return bolinha.getX() <= 0;
+    return (bolinha.getX() - bolinha.getCircleRadius()) == 0 && bolinha.getY() >= ((barra.move_joy(coordY_old, coordY_new) ))  && bolinha.getY() <= (barra.move_joy(coordY_old, coordY_new) + (bar::square_Height + bar::square_Width)) ;
 }
 
 boolean Juiz::hit_direita() {
-    return bolinha.getX() >= tela::height - bolinha.getCircleRadius();
+    return ( (bolinha.getX() + bolinha.getCircleRadius()) >= 300 && (bolinha.getY() >= ((barra.move_button(coordY))) && bolinha.getY() <= (barra.move_button(coordY)+bar::square_Height)));
 }
 
 void Juiz::atingir() {
@@ -108,7 +109,7 @@ void Juiz::draw_joy(TFT_eSprite &barra_joy, TFT_eSprite &ball){
     
     barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_joy.pushToSprite(&ball, 0, 0);
-    barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), bar::square_Width, bar::square_Height, TFT_BLACK);
+    barra_joy.fillRect(15, barra.move_joy(coordY_old, coordY_new), bar::square_Width, bar::square_Height, TFT_BLUE);
 
 }
 
@@ -117,7 +118,7 @@ void Juiz::draw_button(TFT_eSprite &barra_button, TFT_eSprite &ball){
 
     barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_button.pushToSprite(&ball,220, 75);
-    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
+    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLUE);
 }
 
 
