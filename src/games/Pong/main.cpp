@@ -47,9 +47,9 @@ void setup() {
 }
 
 void loop() {
-   
+    d.invertDisplay(0);
+
     meujuiz.draw_Ball(ball); // desenha bola
-    delay(1);
     meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
     meujuiz.hit_esquerda(); // retorna valor se atingiu esq
     meujuiz.hit_direita(); // retorna valor se atingiu na dire
