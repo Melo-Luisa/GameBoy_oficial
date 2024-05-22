@@ -44,10 +44,11 @@ void setup() {
 
     pinMode(button::azul, INPUT_PULLUP);
     pinMode(button::amarelo, INPUT_PULLUP);
+
 }
 
 void loop() {
-    d.invertDisplay(0);
+
 
     meujuiz.draw_Ball(ball); // desenha bola
     meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
