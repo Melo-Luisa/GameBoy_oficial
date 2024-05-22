@@ -4,12 +4,14 @@
 
 #include "juiz.h"
 #include "barra.h"
+#include "config.h"
 
 TFT_eSPI d = TFT_eSPI();
 TFT_eSprite ball = TFT_eSprite(&d);
 TFT_eSprite barra_joy = TFT_eSprite(&d);
 TFT_eSprite barra_button = TFT_eSprite(&d);
 TFT_eSprite placar = TFT_eSprite(&d);
+TFT_eSprite screen = TFT_eSprite(&d);
 
 //compila
 
@@ -27,37 +29,37 @@ Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius);
 void setup() {
     d.init();
     d.fillScreen(TFT_ORANGE);
-    d.setRotation(1);
+    d.setRotation(3);
 
     ball.setColorDepth(8);
-    ball.createSprite(320, 240);
+    ball.createSprite(100, 100);
+
+    screen.setColorDepth(8);
+    screen.createSprite(tela::width,tela::height);
 
     placar.setColorDepth(8);
     placar.createSprite(120, 50);
     placar.setTextDatum(MC_DATUM); 
 
     barra_joy.setColorDepth(8);
-    barra_joy.createSprite(100, 240);
+    barra_joy.createSprite(100, tela::height);
 
     barra_button.setColorDepth(8);
-    barra_button.createSprite(240, 240);//+
+    barra_button.createSprite(tela::width, tela::height);
 
     pinMode(button::azul, INPUT_PULLUP);
     pinMode(button::amarelo, INPUT_PULLUP);
 }
 
 void loop() {
-    d.invertDisplay(0);
-
-    meujuiz.draw_Ball(ball); // desenha bola
-    meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
+    meujuiz.draw_Ball(screen, ball); // desenha bola
+    meujuiz.placar(placar, countBlack, countWhite, screen); // desenha placar
     meujuiz.hit_esquerda(); // retorna valor se atingiu esq
     meujuiz.hit_direita(); // retorna valor se atingiu na dire
     meujuiz.atingir(); // verifica se atingiu
     meujuiz.count(); // conta os pontos
-    meujuiz.draw_joy(barra_joy, ball);
-    meujuiz.draw_button(barra_button, ball);
+    meujuiz.draw_joy(barra_joy, screen);
+    meujuiz.draw_button(barra_button, screen);
 
-    
     
 }

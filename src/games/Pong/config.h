@@ -15,6 +15,6 @@ namespace bar{
 }
 
 namespace tela{
-    int height = 240;
-    int width = 340;
+    int height = 320;//240
+    int width = 480;//340
 }
