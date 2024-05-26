@@ -28,10 +28,10 @@ Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius);
 void setup() {
     d.init();
     d.fillScreen(TFT_ORANGE);
-    d.setRotation(0);
+    d.setRotation(1);
 
     ball.setColorDepth(8);
-    ball.createSprite(TFT_HEIGHT, TFT_WIDTH);
+    ball.createSprite(320, 240);
 
     // screen.setColorDepth(8);
     // screen.createSprite(300,300);
@@ -41,24 +41,24 @@ void setup() {
     placar.setTextDatum(MC_DATUM); 
 
     barra_joy.setColorDepth(8);
-    barra_joy.createSprite(100, tela::height);
+    barra_joy.createSprite(50, tela::height);
 
     barra_button.setColorDepth(8);
-    barra_button.createSprite(tela::width, tela::height);
+    barra_button.createSprite(100, tela::height);
 
     pinMode(button::azul, INPUT_PULLUP);
     pinMode(button::amarelo, INPUT_PULLUP);
 }
 
 void loop() {
-    meujuiz.draw_Ball(&ball); // desenha bola
+    meujuiz.draw_Ball(ball); // desenha bola
     meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
     meujuiz.hit_esquerda(); // retorna valor se atingiu esq
     meujuiz.hit_direita(); // retorna valor se atingiu na dire
     meujuiz.atingir(); // verifica se atingiu
     meujuiz.count(); // conta os pontos
-    meujuiz.draw_joy(&barra_joy, ball);
-    meujuiz.draw_button(&barra_button, ball);
+    meujuiz.draw_joy(barra_joy, ball);
+    meujuiz.draw_button(barra_button, ball);
 
     
 }

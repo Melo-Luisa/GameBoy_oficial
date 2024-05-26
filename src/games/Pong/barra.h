@@ -9,7 +9,7 @@
 class Barra{
     private:
         int coordY_old, coordY_new; //JOYSTICK
-        int coordY = 10; //BUTTON
+        int coordY; //BUTTON
     public:
         Barra(int coordY_old, int coordY_new, int coordY): coordY_old(coordY_old), coordY_new(coordY_new), coordY(coordY){}
 
@@ -23,13 +23,9 @@ class Barra{
 
 
 int Barra::move_joy(int coordY_old, int coordY_new){
-    int coordY = 100;//map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
+    int coordY = map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
 
-    coordY_old = 100;//map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
-
-    //barra do joystick
-    
-    //Serial.println(analogRead(EIXO_Y));
+    coordY_old = map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
 
     coordY_new = map(analogRead(joystick::eixo_x), 0, 4095, 0, 220);
     //cima
@@ -43,19 +39,16 @@ int Barra::move_joy(int coordY_old, int coordY_new){
     return coordY;
 }
 
-int Barra::move_button(int coordY){
-    if(digitalRead(button::azul) == LOW){ //se o botao azul for apertado 
-        if(coordY+ bar::square_Height <= tela::width){ 
+int Barra::move_button(int coordY) {
+    if (digitalRead(button::azul) == LOW) { // botão azul pressionado
+        if (coordY + bar::square_Height <= 230) {
             coordY += 10;
         }
-    
     }
-    else if(digitalRead(button::amarelo) == LOW){ //se o botao azul for apertado 
-        coordY -=10;
-        if(coordY + bar::square_Height == 50){ 
-            coordY += 10;
+    if (digitalRead(button::amarelo) == LOW) { // botão amarelo pressionado
+        if (coordY >= 10) { 
+            coordY -= 10;
         }
-        
     }
     return coordY;
 }
