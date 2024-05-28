@@ -4,17 +4,20 @@
 #include <SPI.h>
 
 #include "config.h"
+#include "joystick.h"
 
 
 class Barra{
     private:
-        int coordY_old, coordY_new; //JOYSTICK
+       // int coordY_old, coordY_new; //JOYSTICK
         int coordY; //BUTTON
+        int xAxisPin; int yAxisPin;
+        Joystick joy;
     public:
-        Barra(int coordY_old, int coordY_new, int coordY): coordY_old(coordY_old), coordY_new(coordY_new), coordY(coordY){}
+        Barra(int coordY, int xAxisPin, int yAxisPin): coordY(coordY),joy(xAxisPin, yAxisPin){}
 
         //funções
-        int move_joy(int coordY_old, int coordY_new);
+        int move_joy();
 
         int move_button(int coordY);
         
@@ -22,20 +25,29 @@ class Barra{
 };
 
 
-int Barra::move_joy(int coordY_old, int coordY_new){
-    int coordY = map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
-
-    coordY_old = map(analogRead(joystick::eixo_y), 0, 4095, 0, 220);
-
-    coordY_new = map(analogRead(joystick::eixo_x), 0, 4095, 0, 220);
-    //cima
-    if(coordY_new > coordY_old){
-        coordY += 10;
-    }//baixo
-    if(coordY_new < coordY_old){
-        coordY -= 10;
-
+int Barra::move_joy(){
+    int valueY = analogRead(joystick::eixo_y);
+    Direction directionY = joy.getDirectionY(valueY);
+    
+    switch (directionY) {
+        case UP:
+            coordY -= 10;
+            break;
+        case DOWN:
+            coordY += 10;
+            break;
+        case NONE:
+            // Do nothing
+            break;
     }
+
+    // Ensure coordY is within valid bounds
+    if (coordY < 0) {
+        coordY = 0;
+    } else if (coordY > 220) { // Assumindo que 220 é o limite superior
+        coordY = 220;
+    }
+    
     return coordY;
 }
 

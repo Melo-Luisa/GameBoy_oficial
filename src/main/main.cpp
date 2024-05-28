@@ -7,7 +7,6 @@
 
 TFT_eSPI d = TFT_eSPI();  // Define Display
 
-TFT_eSprite initWord = TFT_eSprite(&d); //Sprite "GAMEBOY" init function
 
 
 
@@ -21,16 +20,15 @@ void setup() {
   d.init();
   d.setRotation(1);
   d.setSwapBytes(true);
+  d.fillScreen(TFT_BLACK);
 
-  //TEXTO ANIMADO INICIALIZAÇÃO
-  initWord.setColorDepth(8);
-  initWord.createSprite(320, 240);
+
+
 
   pinMode(botaoA, INPUT_PULLUP);
 
   init();
   delay(1000);
-  //d.fillScreen(TFT_BLACK);
 }
 
 void loop() {
@@ -40,10 +38,9 @@ void loop() {
 }
 
 void init() {
-  d.pushImage(0,0,320,240,initGB_black);
-  d.setCursor(105, 105, 2);
+  d.setCursor(100, 120, 2);
   d.setTextColor(TFT_WHITE);
-  d.setTextSize(2);
+  d.setTextSize(5);
   
 
   String word = "GAMEBOY";
@@ -55,6 +52,8 @@ void init() {
 
   delay(1000);
 }
+
+
 //menu 
 void drawMenu() {
   d.fillScreen(TFT_WHITE);

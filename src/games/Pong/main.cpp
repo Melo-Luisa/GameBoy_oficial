@@ -5,6 +5,7 @@
 #include "juiz.h"
 #include "barra.h"
 #include "config.h"
+#include "joystick.h"
 
 TFT_eSPI d = TFT_eSPI();
 TFT_eSprite ball = TFT_eSprite(&d);
@@ -23,9 +24,13 @@ int countBlack = 0; // contador de pontos preto
 int countWhite = 0; // contador de pontos branco
 int coordY ;
 
-Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius);
+Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius, coordY);
+
+Joystick joy(32, 33);
+
 
 void setup() {
+    Serial.begin(115200);
     d.init();
     d.fillScreen(TFT_ORANGE);
     d.setRotation(1);
@@ -51,6 +56,12 @@ void setup() {
 }
 
 void loop() {
+    int xAxisValue = analogRead(32);
+    int yAxisValue = analogRead(33);
+
+    joy.checkAndPrintDirections(xAxisValue, yAxisValue);
+
+
     meujuiz.draw_Ball(ball); // desenha bola
     meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
     meujuiz.hit_esquerda(); // retorna valor se atingiu esq
