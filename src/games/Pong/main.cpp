@@ -26,7 +26,7 @@ Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius);
 
 void setup() {
     d.init();
-    d.fillScreen(TFT_ORANGE);
+    //d.fillScreen(TFT_ORANGE);
     d.setRotation(1);
 
     ball.setColorDepth(8);
