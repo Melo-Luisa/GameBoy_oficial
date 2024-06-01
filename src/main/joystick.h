@@ -1,4 +1,4 @@
-//#include "joystick.h"
+#pragma once
 #include <Arduino.h>
 
 
@@ -110,18 +110,5 @@ class Joystick {
 
 };
 
-Joystick joystick(32, 33);
 
-void setup() {
-  Serial.begin(115200);
-}
 
-void loop() {
-  // Read analog values from joystick axes
-  int xAxisValue = analogRead(32);
-  int yAxisValue = analogRead(33);
-
-  // Check and print directions
-  joystick.checkAndPrintDirections(xAxisValue, yAxisValue);
-  //joystick.debug();
-}

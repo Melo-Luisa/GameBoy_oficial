@@ -1,59 +1,75 @@
-#include "pong.h"
+#include <Arduino.h>
+#include <TFT_eSPI.h> 
+#include <SPI.h>
 
-Pong pon;
+#include "juiz.h"
+#include "barra.h"
+#include "config.h"
+#include "joystick.h"
+
+TFT_eSPI d = TFT_eSPI();
+TFT_eSprite ball = TFT_eSprite(&d);
+TFT_eSprite barra_joy = TFT_eSprite(&d);
+TFT_eSprite barra_button = TFT_eSprite(&d);
+TFT_eSprite placar = TFT_eSprite(&d);
+
+//compila
+
+int x = 100; // valor inicial de x
+int y = 50; // valor inicial de y
+int vx = 10; // valor inicial de vx
+int vy = 10; // valor inicial de vy
+int circleRadius = 10; // raio do círculo
+int countBlack = 0; // contador de pontos preto
+int countWhite = 0; // contador de pontos branco
+int coordY ;
+
+Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius, coordY);
+
+Joystick joy(32, 33);
 
 
 void setup() {
     Serial.begin(115200);
+    d.init();
+    d.fillScreen(TFT_ORANGE);
+    d.setRotation(1);
 
-    pong.init();
+    ball.setColorDepth(8);
+    ball.createSprite(320, 240);
 
-    //joystick
-    //pinMode(EIXO_X, INPUT);
-    pinMode(EIXO_Y, INPUT);
-    //buttons
-    pinMode(pong.botao_azul, INPUT_PULLUP);
-    pinMode(pong.botao_amarelo, INPUT_PULLUP);
- }
-void loop() {
-    pong.ball_a(pong.x,  pong.y,  pong.vy,  pong.vx,  pong.countBlack,  pong.countWhite,  pong.circleRadius,  pong.barra2); 
-    pong.joystick_m(pong.coordY_B1,  pong.coordY_B1_antiga,  pong.barra1,  pong.square_Width,  pong.square_Height);
-    pong.button_m(pong.botao_azul,  pong.botao_amarelo,  pong.coordY_B2,  pong.barra2);
-    pong.update_Score(pong.placar,pong.countBlack, pong.countWhite);
-    
-    //TAVA DANDO ERRO NAS VARIÁVEIS PQ ELAS ESTÃO DECLARADAS DENTRO DA CLASSE. TIVE QUE COLOCAR .PONG 
-    //MUDAR AS VARIÁVEIS PARA O .H MAS PRA FORA DA CLASSE. -> MAS CONTINUAR PRA VER OQ DA.
+    // screen.setColorDepth(8);
+    // screen.createSprite(300,300);
 
+    placar.setColorDepth(8);
+    placar.createSprite(120, 50);
+    placar.setTextDatum(MC_DATUM); 
+
+    barra_joy.setColorDepth(8);
+    barra_joy.createSprite(50, tela::height);
+
+    barra_button.setColorDepth(8);
+    barra_button.createSprite(100, tela::height);
+
+    pinMode(button::azul, INPUT_PULLUP);
+    pinMode(button::amarelo, INPUT_PULLUP);
 }
 
+void loop() {
+    int xAxisValue = analogRead(32);
+    int yAxisValue = analogRead(33);
+
+    joy.checkAndPrintDirections(xAxisValue, yAxisValue);
 
 
+    meujuiz.draw_Ball(ball); // desenha bola
+    meujuiz.placar(placar, countBlack, countWhite, ball); // desenha placar
+    meujuiz.hit_esquerda(); // retorna valor se atingiu esq
+    meujuiz.hit_direita(); // retorna valor se atingiu na dire
+    meujuiz.atingir(); // verifica se atingiu
+    meujuiz.count(); // conta os pontos
+    meujuiz.draw_joy(barra_joy, ball);
+    meujuiz.draw_button(barra_button, ball);
 
-
-// /* CODIGO EXEMPLO DAS SPRITES
-
-//     img.fillCircle(x, 50, 10, TFT_BLACK); //desenha um circulo preto pra apagar o antigo
-//     //atualiza as coordenadas pra ele se mover
-//     x=x+1;
-//     if(x>320){
-//       x=0;
-//     }
-
-//     img.fillCircle(x, 50, 10, TFT_WHITE); //circulo branco, que está aparecendo
-//     img.fillRect(18, 70, 100, 100, TFT_BLACK); //retangulo preto pra apagar os numeros antigos
-//     img.drawString(String(x), 20, 74, 7); //posicao do circulo
-
-// */
-// /*---------- CHATGPT TOQUE --------------
-// coordX_B2 = map(analogRead(EIXO_X), 0, 4095, 0, 300); 
-// coordY_B2 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
-// Serial.print(analogRead(EIXO_X));
-// Serial.println(analogRead(EIXO_Y));
-// if (x + circleRadius >= coordX_B1 && x - circleRadius <= coordX_B1 + square_Width &&
-//     y + circleRadius >= coordY_B1 && y - circleRadius <= coordY_B1 + square_Height) {
-//     // Inverte a velocidade da bola
-//     x -= vx;
-//     y -= vy;
-
-//     Serial.print("Toquei");
-// }*/
+    
+}
