@@ -38,3 +38,26 @@ void loop(){
 
   
 }
+
+
+/*
+void setup() {
+  Serial.begin(115200);
+  pinMode(34, INPUT);
+  pinMode(35, INPUT);
+  pinMode(36, INPUT);
+  pinMode(39, INPUT);
+
+  
+
+}
+
+void loop() {
+  Serial.print(digitalRead(34));
+  Serial.print(digitalRead(35));
+  Serial.print(digitalRead(36));
+  Serial.println(digitalRead(39));
+
+  
+}
+*/
