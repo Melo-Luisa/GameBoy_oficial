@@ -14,21 +14,21 @@ class Menu{
         bool credits ; //menu credits
         
         //começa em 1 pra já ter algo pré selecionado
-        int geral_index;
+        int geral_index ;
         int games_index;
         int settings_index;
         Joystick joy;
 
         unsigned long lastDebounceTime = 0;
-        const unsigned long debounceDelay = 100;
+        const unsigned long debounceDelay = 150;
 
     public:
         Menu(bool geral, bool games, bool settings, bool credits, int geral_index, int games_index, int setting_index)
-        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joy(32,33){}
+        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joy(32,33,25){}
 
         void init(TFT_eSPI &d);/*função já existente pra desenhar a inicialização*/
 
-        void drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text);/*desenha o menu inicial, com as opções de games, créditos e settings*/
+        void drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index);/*desenha o menu inicial, com as opções de games, créditos e settings*/
             
 
         void drawMenuGames();//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
@@ -72,97 +72,79 @@ void Menu::init(TFT_eSPI &d) {
 
 }
 
-void Menu::drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text){
+void Menu::drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index) {
     text.fillSprite(TFT_WHITE);
-    text.setTextColor(TFT_BLACK);
+    
+    if (geral_index == 0) {
+        text.setTextColor(TFT_WHITE, TFT_BLACK);
+        text.println(" GAMES ");
+        text.setTextColor(TFT_BLACK);
+    } else {
+        text.println(" GAMES ");
+    }
     text.setCursor(50, 40, 2);
-    text.print("Jogos");
+
+    if (geral_index == 1) {
+        text.setTextColor(TFT_WHITE, TFT_BLACK);
+        text.println(" SETTINGS ");
+        text.setTextColor(TFT_BLACK);
+    } else {
+        text.println(" SETTINGS ");
+    }
     text.setCursor(180, 40, 2);
-    text.print("Config");
+
+    if (geral_index == 2) {
+       text.setTextColor(TFT_WHITE, TFT_BLACK);
+        text.println(" CREDITS ");
+        text.setTextColor(TFT_BLACK);
+    } else {
+        text.println(" CREDITS ");
+    } 
     text.setCursor(300, 40, 2);
-    text.print("Creditos");
-    text.setTextSize(2);
+    //text.print("Creditos");
 
-
-    text.pushSprite(0,110);
+    text.pushSprite(0, 110);
 }
 
 
 
-void Menu::trackPosition(bool &geral, int &geral_index){
-    int valueJoyX = analogRead(joystick::eixo_x);
+void Menu::trackPosition(bool &geral, int &geral_index) {
+    int valueJoyX = analogRead(joystick::eixo_y);
     Direction directionX = joy.getDirectionX(valueJoyX);
-    //Serial.println(directionX); //3 = LEFT e 4 = RIGHT
     
     unsigned long currentTime = millis();
 
-    if(currentTime - lastDebounceTime > debounceDelay){
+    if (currentTime - lastDebounceTime > debounceDelay) {
         lastDebounceTime = currentTime;
-    //------------- INDEX MENUS -------------------
-        //LOGICA MENU PRINCIPAL
-        if(geral == true){
-        Serial.print("Current geral_index: ");
-        Serial.println(geral_index);
-            if(directionX == RIGHT){
+        
+        if (geral) {
+            //Serial.print("Current geral_index: ");
+            //Serial.println(geral_index);
+
+            if (directionX == RIGHT) {
                 geral_index++;
-                if(geral_index > 2){
+                if (geral_index > 2) {
                     geral_index = 0;
                 }
-            Serial.print("Updated geral_index (RIGHT): ");
-            Serial.println(geral_index);
+                Serial.print("Updated geral_index (RIGHT): ");
+                Serial.println(geral_index);
             }
-        
 
-            if(directionX == LEFT){
+            if (directionX == LEFT) {
                 geral_index--;
-                if(geral_index < 0){
+                if (geral_index < 0) {
                     geral_index = 2;
                 }
-            Serial.print("Updated geral_index (LEFT): ");
-            Serial.println(geral_index);
+                Serial.print("Updated geral_index (LEFT): ");
+                Serial.println(geral_index);
             }
-        
         }
 
-        }
-        
+        // Similar logic for games and settings menus
+    }
 }
-    
-
-/*
- //LOGICA MENU GAMES
-    if(games == true){
-        if(joy.direction == RIGHT){
-            games_index++;
-            if(games_index > 2){
-                games_index = 0;
-            }
-        }
-        if(joy.direction == LEFT){
-            games_index--;
-            if(games_index > 2){
-                games_index = 0;
-            }
-        }
-    }
-
-    //LOGICA MENU SETTINGS
-    if(settings == true){
-        if(joy.direction == RIGHT){
-            settings_index++;
-            if(settings_index > 2){
-                settings_index = 0;
-            }
-        }
-        if(joy.direction == LEFT){
-            settings_index--;
-            if(settings_index > 2){
-                settings_index = 0;
-            }
-        }
-    }
-            
-            //----------------- IDENTIFICAÇÃO MENUS  -----------------------------
+ /*           
+    //----------------- IDENTIFICAÇÃO MENUS  -----------------------------
 
     if(botaoJOY == pressionado){
         if(geral){

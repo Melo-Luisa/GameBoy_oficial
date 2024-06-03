@@ -5,30 +5,35 @@
 
 const int threshold = 1000; // Adjust this threshold as needed
 
-enum Direction { NONE, UP, DOWN, LEFT, RIGHT };
+enum Direction { NONE, UP, DOWN, LEFT, RIGHT , CENTRAL};
 
 Direction prevDirectionX = NONE;
 Direction prevDirectionY = NONE;
+bool prevCentralState = HIGH;
 
 
 class Joystick {
   private:
   int xAxisPin; // Pin connected to X axis of joystick
   int yAxisPin; // Pin connected to Y axis of joystick
+  int centralPin;
 
 
   public:
-    Joystick(int xAxisPin, int yAxisPin) {
+    Joystick(int xAxisPin, int yAxisPin, int centralPin) {
       this->xAxisPin = xAxisPin;
       this->yAxisPin = yAxisPin;
+      this->centralPin = centralPin;
 
       pinMode(xAxisPin, INPUT);
       pinMode(yAxisPin, INPUT);
+      pinMode(centralPin, INPUT_PULLUP);
     }
 
     void debug(){
       Serial.print("X: " + String(analogRead(xAxisPin)));
       Serial.println(" - Y: " + String(analogRead(yAxisPin)));
+      Serial.println(" - Central: " + String(digitalRead(centralPin)));
     }
     
     int read_raw_X(){
@@ -39,6 +44,11 @@ class Joystick {
     int read_raw_Y(){
       int readRawY = analogRead(yAxisPin);
       return readRawY;
+    }
+
+     int read_button_central(){
+      int readCentral = digitalRead(centralPin);
+      return readCentral;
     }
 
     int coordX(){
@@ -56,16 +66,19 @@ class Joystick {
     void printDirection(Direction dir) {
       switch (dir) {
         case UP:
-          Serial.println("Up");
+          //Serial.println("Up");
           break;
         case DOWN:
-          Serial.println("Down");
+          //Serial.println("Down");
           break;
         case LEFT:
-          Serial.println("Left");
+          //Serial.println("Left");
           break;
         case RIGHT:
-          Serial.println("Right");
+          //Serial.println("Right");
+          break;
+        case CENTRAL:
+          //Serial.println("Central");
           break;
         default:
           break;
@@ -86,6 +99,12 @@ class Joystick {
         printDirection(currentDirectionY);
         prevDirectionY = currentDirectionY;
       }
+
+      bool currentCentralState = read_button_central();
+      if (currentCentralState == LOW && prevCentralState == HIGH) {
+        printDirection(CENTRAL);
+      }
+      prevCentralState = currentCentralState;
     }
 
     Direction getDirectionX(int value) {
