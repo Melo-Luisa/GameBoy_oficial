@@ -26,7 +26,7 @@ class Barra{
 
 
 int Barra::move_joy(){
-    int valueY = analogRead(joystick::eixo_y);
+    int valueY = analogRead(joystick::eixo_y); //joystick se refere ao namespace
     Direction directionY = joy.getDirectionY(valueY);
     
     switch (directionY) {
