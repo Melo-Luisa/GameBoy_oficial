@@ -32,7 +32,7 @@ class Juiz{
         int getCountWhite() const;
         int getCountBlack() const;
 
-        void atualizarBolinha();
+        //void atualizarBolinha();
 };
 
 
@@ -71,10 +71,10 @@ void Juiz::atingir() {
     }
 }
 
-void atualizarBolinha() {
-    bolinha.setX(bolinha.getX() + bolinha.getvx());
-    bolinha.setY(bolinha.getY() + bolinha.getvy());
-}
+// void atualizarBolinha() {
+//     bolinha.setX(bolinha.getX() + bolinha.getvx());
+//     bolinha.setY(bolinha.getY() + bolinha.getvy());
+// }
 
 void Juiz::count() {
     if (bolinha.getX() <= 0) { 
