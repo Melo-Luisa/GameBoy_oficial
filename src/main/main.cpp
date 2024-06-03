@@ -30,14 +30,14 @@ void setup() {
   d.init();
   d.setRotation(1);
   d.setSwapBytes(true);
-  d.fillScreen(TFT_BLACK);
+  d.fillScreen(TFT_WHITE);
 
   text.setColorDepth(8);
   text.createSprite(480, 100); //faixa na tela
 
 
 
-  menu.init(d);
+  //menu.init(d);
 
 }
 
@@ -51,6 +51,8 @@ void loop(){
   //joy.checkAndPrintDirections(xValue, yValue);
   menu.trackPosition(geral, geral_index);
   menu.drawMenuInicial(d, text, geral_index);
+  menu.select(geral_index, text);
+  menu.drawMenuGames(text);
   delay(100);
   //Serial.print(String(analogRead(32)) + " ");
   //Serial.println(String(analogRead(33)) + " ");

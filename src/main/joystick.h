@@ -66,19 +66,19 @@ class Joystick {
     void printDirection(Direction dir) {
       switch (dir) {
         case UP:
-          //Serial.println("Up");
+          Serial.println("Up");
           break;
         case DOWN:
-          //Serial.println("Down");
+          Serial.println("Down");
           break;
         case LEFT:
-          //Serial.println("Left");
+          Serial.println("Left");
           break;
         case RIGHT:
-          //Serial.println("Right");
+          Serial.println("Right");
           break;
         case CENTRAL:
-          //Serial.println("Central");
+          Serial.println("Central");
           break;
         default:
           break;
