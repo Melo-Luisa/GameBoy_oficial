@@ -22,7 +22,7 @@ class Juiz{
         int prevButtonY ;
         
     public:
-        Juiz(int x, int y, int vx ,int vy, int countBlack, int countWhite, int circleRadius, int coordY): bolinha(y, x, vx, vy, circleRadius), barra(coordY,xAxisPin,yAxisPin ), prevBallX(-1), prevBallY(-1), prevJoyY(-1), prevButtonY(-1){
+        Juiz(int x, int y, int vx ,int vy, int countBlack, int countWhite, int circleRadius, int coordY): bolinha(y, x, vx, vy, circleRadius), barra(coordY ), prevBallX(-1), prevBallY(-1), prevJoyY(-1), prevButtonY(-1){
             this->countBlack = countBlack;
             this->countWhite = countWhite;
         }
@@ -53,7 +53,7 @@ boolean Juiz::hit_esquerda() {
     //return bolinha.getX() + bolinha.getCircleRadius() == 0;
     boolean result_esq = false;
     //COLISÃO BARRA ESQUERDA
-    if ((bolinha.getX() - bolinha.getCircleRadius()) <= 0 && (bolinha.getY() >= ((barra.move_joy() ))  && bolinha.getY() <= (barra.move_joy() + (bar::square_Height + bar::square_Width))) ) {
+    if ((bolinha.getX() - bolinha.getCircleRadius()) <= 0 && (bolinha.getX() >= ((barra.move_joy() ))  && bolinha.getY() <= (barra.move_joy() + (bar::square_Height))) ) {
        result_esq =  true;
        
     }
@@ -62,6 +62,8 @@ boolean Juiz::hit_esquerda() {
 
 //Funciona
 boolean Juiz::hit_direita() {
+    bolinha.move();
+    barra.move_joy();
     // return bolinha.getX() >= 300 - bolinha.getCircleRadius();
     boolean result_dir = false;
 

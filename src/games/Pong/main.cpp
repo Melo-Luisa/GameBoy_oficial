@@ -23,11 +23,12 @@ int vy = 10; // valor inicial de vy
 int circleRadius = 10; // raio do círculo
 int countBlack = 0; // contador de pontos preto
 int countWhite = 0; // contador de pontos branco
-int coordY ;
+int coordY = 200;
 
 Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius, coordY);
 
 Joystick joy(32, 33);
+
 
 
 void setup() {

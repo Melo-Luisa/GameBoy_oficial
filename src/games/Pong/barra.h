@@ -14,7 +14,7 @@ class Barra{
         int xAxisPin; int yAxisPin;
         Joystick joy;
     public:
-        Barra(int coordY, int xAxisPin, int yAxisPin): coordY(coordY),joy(xAxisPin, yAxisPin){}
+        Barra(int coordY): coordY(coordY),joy(xAxisPin, yAxisPin){}
 
         //funções
         int move_joy();
