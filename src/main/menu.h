@@ -33,7 +33,7 @@ class Menu{
         void drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index);/*desenha o menu inicial, com as opções de games, créditos e settings*/
             
 
-        void drawMenuGames(TFT_eSprite &text);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
+        void drawMenuGames(TFT_eSprite &text, int geal_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
             
 
         void drawSettings();
@@ -71,7 +71,7 @@ void Menu::init(TFT_eSPI &d) {
   }
 
   delay(1000);
-  d.fillScreen(TFT_ORANGE);
+  d.fillScreen(TFT_WHITE);
 
 }
 
@@ -128,6 +128,8 @@ void Menu::trackPosition(bool &geral, int &geral_index) {
                 if (geral_index > 2) {
                     geral_index = 0;
                 }
+                
+                
             }
 
             if (directionX == LEFT) {
@@ -142,6 +144,7 @@ void Menu::trackPosition(bool &geral, int &geral_index) {
 
         // Similar logic for games and settings menus
     }
+    Serial.println(geral_index);
 }
 
 
@@ -150,27 +153,27 @@ void Menu::select(int geral_index, TFT_eSprite &text){
     if(joy.read_button_central() == LOW){
         if(geral){
             switch(geral_index){
-                case 1:
-                    Serial.println("Game");
-                    drawMenuGames(text);
+                case 0:
+                    Serial.println("Games");
+                    drawMenuGames(text, geral_index);
                     break;
                     // games = true;
                     // settings = false;
                     // geral = false;
                     // credits = false;
-                case 2:
+                case 1:
                     // settings = true;
                     // games = false;
                     // geral = false;
                     // credits = false;
-                    Serial.println("settings");
+                    Serial.println("Settings");
                     break;
-                case 3:
+                case 2:
                     // credits = true;
                     // games = false;
                     // geral = false;
                     // settings = false;
-                    Serial.println("Creditos");
+                    Serial.println("Credits");
                     break;
             }
         }
@@ -205,7 +208,7 @@ void Menu::select(int geral_index, TFT_eSprite &text){
 
 }
 
-void Menu::drawMenuGames(TFT_eSprite &text) {
+void Menu::drawMenuGames(TFT_eSprite &text, int geral_index) {
     text.fillSprite(TFT_WHITE);
     text.setTextSize(2);
 
@@ -225,7 +228,7 @@ void Menu::drawMenuGames(TFT_eSprite &text) {
         text.println(" PONG ");
     }
 
-    text.setCursor(40, 80); // Define a posição do cursor para o segundo item
+    text.setCursor(180, 40); // Define a posição do cursor para o segundo item
 
     if (geral_index == 1) {
         text.setTextColor(TFT_WHITE, TFT_BLACK);
@@ -235,7 +238,7 @@ void Menu::drawMenuGames(TFT_eSprite &text) {
         text.println(" DINO ");
     }
 
-    text.setCursor(40, 120); // Define a posição do cursor para o terceiro item
+    text.setCursor(300, 40); // Define a posição do cursor para o terceiro item
 
     if (geral_index == 2) {
        text.setTextColor(TFT_WHITE, TFT_BLACK);

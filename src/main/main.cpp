@@ -37,7 +37,7 @@ void setup() {
 
 
 
-  //menu.init(d);
+  menu.init(d);
 
 }
 
@@ -52,7 +52,7 @@ void loop(){
   menu.trackPosition(geral, geral_index);
   menu.drawMenuInicial(d, text, geral_index);
   menu.select(geral_index, text);
-  menu.drawMenuGames(text);
+  //menu.drawMenuGames(text, geral_index);
   delay(100);
   //Serial.print(String(analogRead(32)) + " ");
   //Serial.println(String(analogRead(33)) + " ");

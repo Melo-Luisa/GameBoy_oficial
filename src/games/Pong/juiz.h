@@ -15,19 +15,29 @@ class Juiz{
         int  coordY;
         Ball bolinha; 
         Barra barra;
+
+        int prevBallX; // Posição anterior da bola (inicializada fora da tela)
+        int prevBallY; 
+        int prevJoyY;
+        int prevButtonY ;
         
     public:
-        Juiz(int x, int y, int vx ,int vy, int countBlack, int countWhite, int circleRadius, int coordY): bolinha(y, x, vx, vy, circleRadius), barra(coordY,xAxisPin,yAxisPin ){}
+        Juiz(int x, int y, int vx ,int vy, int countBlack, int countWhite, int circleRadius, int coordY): bolinha(y, x, vx, vy, circleRadius), barra(coordY,xAxisPin,yAxisPin ), prevBallX(-1), prevBallY(-1), prevJoyY(-1), prevButtonY(-1){
+            this->countBlack = countBlack;
+            this->countWhite = countWhite;
+        }
 
-        void draw_Ball(TFT_eSprite &ball); // desenha bola
-        void placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &ball); // desenha placar
+        void draw_Ball(TFT_eSprite &screen); // desenha bola
+        void placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &screen); // desenha placar
         boolean hit_esquerda(); // retorna valor se atingiu esq
         boolean hit_direita(); // retorna valor se atingiu na dire
+        boolean hit_superior();
+        boolean hit_inferior();
         void atingir(); // verifica se atingiu
         void count(); //conta os pontos
         
-        void draw_joy(TFT_eSprite &barra_joy, TFT_eSprite &ball);
-        void draw_button(TFT_eSprite &barra_button, TFT_eSprite &ball);
+        void draw_joy( TFT_eSprite &screen);
+        void draw_button( TFT_eSprite &screen);
 
         int getCountWhite() const;
         int getCountBlack() const;
@@ -64,17 +74,17 @@ boolean Juiz::hit_direita() {
 }
 
 
+
 void Juiz::atingir() {
     if (hit_direita() || hit_esquerda()) {
         bolinha.setVX(-bolinha.getvx()); // Inverter a direção horizontal
         bolinha.setVY(-bolinha.getvy());
     }
+   
 }
 
-// void atualizarBolinha() {
-//     bolinha.setX(bolinha.getX() + bolinha.getvx());
-//     bolinha.setY(bolinha.getY() + bolinha.getvy());
-// }
+
+
 
 void Juiz::count() {
     if (bolinha.getX() <= 0) { 
@@ -87,7 +97,7 @@ void Juiz::count() {
             countBlack = 0;
             countWhite = 0; 
         }
-    } else if (bolinha.getX() >= tela::width - bolinha.getCircleRadius()) { // Se a bola atinge a borda direita
+    } else if (bolinha.getX() >= tela::width) { // Se a bola atinge a borda direita
         bolinha.setX(bolinha.getCircleRadius()); // Reiniciar a posição da bola para o centro
         bolinha.setY(tela::height / 2);
         bolinha.setVX(-bolinha.getvx()); // Inverter a direção
@@ -111,32 +121,72 @@ int Juiz::getCountBlack() const {
 }
 
 //lado esq
-void Juiz::draw_joy(TFT_eSprite &barra_joy, TFT_eSprite &ball){
-    
-    barra_joy.fillRect(15, barra.move_joy(), bar::square_Width, bar::square_Height, TFT_WHITE);
-    barra_joy.pushToSprite(&ball, 0, 0);
-    barra_joy.fillRect(15, barra.move_joy(), bar::square_Width+20, bar::square_Height+20, TFT_BLACK);
+void Juiz::draw_joy( TFT_eSprite &screen){
+    if (prevJoyY != -1) {
+        screen.fillRect(30, prevJoyY, bar::square_Width, bar::square_Height, TFT_BLACK);
+    }
+
+    // Move o joystick para a nova posição
+    int joyY = barra.move_joy();
+
+    // Desenha o joystick na nova posição
+    screen.fillRect(30, joyY, bar::square_Width, bar::square_Height, TFT_WHITE);
+
+    // Atualiza a posição anterior do joystick
+    prevJoyY = joyY;
+
+    // screen.pushSprite(0,0);
+    // screen.fillRect(30, barra.move_joy(), bar::square_Width, bar::square_Height, TFT_BLACK);
+    // barra_joy.fillRect(15, barra.move_joy(), bar::square_Width, bar::square_Height, TFT_WHITE);
+    // barra_joy.pushToSprite(&screen, 0, 0);
+    // barra_joy.fillRect(15, barra.move_joy(), bar::square_Width+20, bar::square_Height+20, TFT_BLACK);
 
 }
 
 //lado direito
-void Juiz::draw_button(TFT_eSprite &barra_button,TFT_eSprite &ball ){
+void Juiz::draw_button(TFT_eSprite &screen ){
+     if (prevButtonY != -1) {
+        screen.fillRect(300, prevButtonY, bar::square_Width, bar::square_Height, TFT_BLACK);
+    }
 
-    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_WHITE);
-    barra_button.pushToSprite(&ball,220, 0);
-    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
+    // Move o botão para a nova posição
+    int buttonY = barra.move_button(coordY);
+
+    // Desenha o botão na nova posição
+    screen.fillRect(300, buttonY, bar::square_Width, bar::square_Height, TFT_WHITE);
+
+    // Atualiza a posição anterior do botão
+    prevButtonY = buttonY;
+    // screen.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
+    //barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_WHITE);
+    // barra_button.pushToSprite(&screen,220, 0);
+    // barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
 }
 
 
-void Juiz::draw_Ball(TFT_eSprite &ball){
+void Juiz::draw_Ball(TFT_eSprite &screen){
+    if (prevBallX != -1 || prevBallY != -1) {
+        screen.fillCircle(prevBallX, prevBallY, bolinha.getCircleRadius(), TFT_BLACK);
+    }
+
+    // Move a bola para a nova posição
     bolinha.move();
-    ball.fillCircle(bolinha.getX(), bolinha.getY(), bolinha.getCircleRadius(), TFT_ORANGE);
-    ball.pushSprite(0, 0);
-    ball.fillCircle(bolinha.getX(), bolinha.getY(), bolinha.getCircleRadius(), TFT_BLACK);
+    int ballX = bolinha.getX();
+    int ballY = bolinha.getY();
+
+    // Desenha a bola na nova posição
+    screen.fillCircle(ballX, ballY, bolinha.getCircleRadius(), TFT_ORANGE);
+
+    // Atualiza as posições anteriores da bola
+    prevBallX = ballX;
+    prevBallY = ballY;
+    
+    //ball.pushToSprite(&ball, 0, 0);
+   // ball.fillCircle(bolinha.getX(), bolinha.getY(), bolinha.getCircleRadius(), TFT_BLACK);
     
 }
 
-void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &ball){
+void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &screen){
 
     placar.fillSprite(TFT_ORANGE);
     // Desenhe texto no sprite
@@ -146,7 +196,7 @@ void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSpri
     placar.drawString(String(getCountWhite()), 80, 25, 7);
 
     // Exiba o sprite na tela
-    placar.pushToSprite(&ball,120, 10, TFT_BLACK);
+    placar.pushToSprite(&screen,120, 10);
 }
 
 

@@ -27,13 +27,13 @@ class Barra{
 
 int Barra::move_joy(){
     int valueY = analogRead(joystick::eixo_y); //joystick se refere ao namespace
-    Direction directionY = joy.getDirectionY(valueY);
+    Direction directionY = joy.getDirectionX(valueY);
     
     switch (directionY) {
-        case UP:
+        case LEFT:
             coordY -= 10;
             break;
-        case DOWN:
+        case RIGHT:
             coordY += 10;
             break;
         case NONE:
@@ -44,7 +44,7 @@ int Barra::move_joy(){
     // Ensure coordY is within valid bounds
     if (coordY < 0) {
         coordY = 0;
-    } else if (coordY > 220) { // Assumindo que 220 é o limite superior
+    } else if (coordY > 220) { // Assumindo que 220 é o limite superior da barra?
         coordY = 220;
     }
     
@@ -53,7 +53,7 @@ int Barra::move_joy(){
 
 int Barra::move_button(int coordY) {
     if (digitalRead(button::azul) == LOW) { // botão azul pressionado
-        if (coordY + bar::square_Height <= 230) {
+        if (coordY + 300 <= 230) {
             coordY += 10;
         }
     }
