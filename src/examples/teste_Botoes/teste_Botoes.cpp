@@ -14,7 +14,7 @@ BOTAO botaoA(pin_botaoA);
 
 bool estadoA = 0;
 
-
+/*
 void setup(){
     d.init();
     d.setRotation(2);
@@ -38,15 +38,18 @@ void loop(){
 
   
 }
+*/
 
 
-/*
+
+
+
 void setup() {
   Serial.begin(115200);
-  pinMode(34, INPUT);
-  pinMode(35, INPUT);
-  pinMode(36, INPUT);
-  pinMode(39, INPUT);
+  pinMode(34, INPUT); //azul
+  pinMode(35, INPUT); //amarelo
+  pinMode(36, INPUT); //branco- n funciona
+  pinMode(39, INPUT); //vermelho
 
   
 
@@ -60,4 +63,3 @@ void loop() {
 
   
 }
-*/
