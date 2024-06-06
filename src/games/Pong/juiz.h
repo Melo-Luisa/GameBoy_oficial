@@ -15,35 +15,59 @@ class Juiz{
         int  coordY;
         Ball bolinha; 
         Barra barra;
+
+        int prevBallX; // Posição anterior da bola (inicializada fora da tela)
+        int prevBallY; 
+        int prevJoyY;
+        int prevButtonY ;
         
     public:
-        Juiz(int x, int y, int vx ,int vy, int countBlack, int countWhite, int circleRadius, int coordY): bolinha(y, x, vx, vy, circleRadius), barra(coordY,xAxisPin,yAxisPin ){}
+        Juiz(int x, int y, int vx ,int vy, int countBlack, int countWhite, int circleRadius, int coordY): bolinha(y, x, vx, vy, circleRadius), barra(coordY ), prevBallX(-1), prevBallY(-1), prevJoyY(-1), prevButtonY(-1){
+            this->countBlack = countBlack;
+            this->countWhite = countWhite;
+        }
 
+        void init(TFT_eSprite &abertura);
         void draw_Ball(TFT_eSprite &ball); // desenha bola
-        void placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &ball); // desenha placar
-        boolean hit_esquerda(); // retorna valor se atingiu esq
+        void placar(TFT_eSprite &placar, int countBlack, int countWhite); // desenha placar
+        boolean hit_esquerda(int coordY); // retorna valor se atingiu esq
         boolean hit_direita(); // retorna valor se atingiu na dire
+        boolean hit_superior();
+        boolean hit_inferior();
         void atingir(); // verifica se atingiu
         void count(); //conta os pontos
         
-        void draw_joy(TFT_eSprite &barra_joy, TFT_eSprite &ball);
-        void draw_button(TFT_eSprite &barra_button, TFT_eSprite &ball);
+        void draw_joy( TFT_eSprite &barra_joy);
+        void draw_button( TFT_eSprite &barra_button);
 
         int getCountWhite() const;
         int getCountBlack() const;
 
-        void atualizarBolinha();
+        //void atualizarBolinha();
 };
 
+void Juiz::init(TFT_eSprite &abertura){
+    abertura.fillScreen(TFT_BLACK);
 
+    abertura.setTextColor(TFT_WHITE);
+    abertura.setTextSize(3);
+    // Define a cor e o tamanho do texto
+    abertura.setTextDatum(TC_DATUM);
+    
+    abertura.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
 
+    
+    abertura.pushSprite(60,10);
+    //delay(100);
+}
+  
 //Não funciona
-boolean Juiz::hit_esquerda() {
+boolean Juiz::hit_esquerda(int coordY) {
 
     //return bolinha.getX() + bolinha.getCircleRadius() == 0;
     boolean result_esq = false;
     //COLISÃO BARRA ESQUERDA
-    if ((bolinha.getX() - bolinha.getCircleRadius()) <= 0 && (bolinha.getY() >= ((barra.move_joy() ))  && bolinha.getY() <= (barra.move_joy() + (bar::square_Height + bar::square_Width))) ) {
+    if (bolinha.getX() <= 30 && (bolinha.getY() >= barra.move_joy() )  && bolinha.getY() <= (barra.move_joy() + (bar::square_Height)) ) {
        result_esq =  true;
        
     }
@@ -56,7 +80,7 @@ boolean Juiz::hit_direita() {
     boolean result_dir = false;
 
     //COLISÃO BARRA DIREITA
-    if ((bolinha.getX() + bolinha.getCircleRadius()) >= 300 && (bolinha.getY() >= barra.move_button(coordY) && bolinha.getY() <= (barra.move_button(coordY)+bar::square_Height))) {
+    if (bolinha.getX() + bolinha.getCircleRadius() >= 430  && (bolinha.getY() >= barra.move_button(coordY) && bolinha.getY() <= (barra.move_button(coordY)+bar::square_Height))) {
         result_dir = true;
     }   
     
@@ -64,34 +88,29 @@ boolean Juiz::hit_direita() {
 }
 
 
+
 void Juiz::atingir() {
-    if (hit_direita() || hit_esquerda()) {
+    if (hit_direita() || hit_esquerda(coordY)) {
         bolinha.setVX(-bolinha.getvx()); // Inverter a direção horizontal
         bolinha.setVY(-bolinha.getvy());
     }
+   
 }
 
-void atualizarBolinha() {
-    bolinha.setX(bolinha.getX() + bolinha.getvx());
-    bolinha.setY(bolinha.getY() + bolinha.getvy());
-}
+
+
 
 void Juiz::count() {
-    if (bolinha.getX() <= 0) { 
+    if (bolinha.getX() + tela::height <= 0) { 
         bolinha.setX(tela::width - bolinha.getCircleRadius()); 
-        bolinha.setY(tela::height / 2); // Centralizar verticalmente
-        bolinha.setVX(-bolinha.getvx()); // Inverter a direção horizontal
         countWhite += 1;
         
         if (countWhite == 10 || countBlack == 10) {
             countBlack = 0;
             countWhite = 0; 
         }
-    } else if (bolinha.getX() >= tela::width - bolinha.getCircleRadius()) { // Se a bola atinge a borda direita
-        bolinha.setX(bolinha.getCircleRadius()); // Reiniciar a posição da bola para o centro
-        bolinha.setY(tela::height / 2);
-        bolinha.setVX(-bolinha.getvx()); // Inverter a direção
-        bolinha.setVY(-bolinha.getvy());
+    } else if (bolinha.getX() >= tela::width + bar::square_Width) { // Se a bola atinge a borda direita
+        bolinha.setX(bolinha.getCircleRadius() + 40); // 
         countBlack += 1;
         
         // Reiniciar os contadores se um dos jogadores alcançar 10 pontos
@@ -111,32 +130,44 @@ int Juiz::getCountBlack() const {
 }
 
 //lado esq
-void Juiz::draw_joy(TFT_eSprite &barra_joy, TFT_eSprite &ball){
+void Juiz::draw_joy( TFT_eSprite &barra_joy){
+    barra.move_joy();
+    barra_joy.fillSprite(TFT_BLACK);
+    barra_joy.fillRect(20, 20, bar::square_Width, bar::square_Height, TFT_WHITE);
+    barra_joy.pushSprite(10, barra.move_joy());
     
-    barra_joy.fillRect(15, barra.move_joy(), bar::square_Width, bar::square_Height, TFT_WHITE);
-    barra_joy.pushToSprite(&ball, 0, 0);
-    barra_joy.fillRect(15, barra.move_joy(), bar::square_Width+20, bar::square_Height+20, TFT_BLACK);
+
+    // screen.pushSprite(0,0);
+    // screen.fillRect(30, barra.move_joy(), bar::square_Width, bar::square_Height, TFT_BLACK);
+    // barra_joy.fillRect(15, barra.move_joy(), bar::square_Width, bar::square_Height, TFT_WHITE);
+    // barra_joy.pushToSprite(&screen, 0, 0);
+    // barra_joy.fillRect(15, barra.move_joy(), bar::square_Width+20, bar::square_Height+20, TFT_BLACK);
 
 }
 
 //lado direito
-void Juiz::draw_button(TFT_eSprite &barra_button,TFT_eSprite &ball ){
-
-    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_WHITE);
-    barra_button.pushToSprite(&ball,220, 0);
-    barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
+void Juiz::draw_button(TFT_eSprite &barra_button ){
+    barra.move_joy();
+    barra_button.fillSprite(TFT_BLACK);
+    barra_button.fillRect(20, 20, bar::square_Width, bar::square_Height, TFT_WHITE);
+    barra_button.pushSprite(440, barra.move_button(coordY));
+    // screen.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
+    //barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_WHITE);
+    // barra_button.pushToSprite(&screen,220, 0);
+    // barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
 }
 
 
 void Juiz::draw_Ball(TFT_eSprite &ball){
+     
     bolinha.move();
-    ball.fillCircle(bolinha.getX(), bolinha.getY(), bolinha.getCircleRadius(), TFT_ORANGE);
-    ball.pushSprite(0, 0);
-    ball.fillCircle(bolinha.getX(), bolinha.getY(), bolinha.getCircleRadius(), TFT_BLACK);
+    ball.fillSprite(TFT_BLACK);
+    ball.fillCircle(20, 20, bolinha.getCircleRadius(), TFT_RED);
+    ball.pushSprite(bolinha.getX(), bolinha.getY());
     
 }
 
-void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSprite &ball){
+void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite){
 
     placar.fillSprite(TFT_ORANGE);
     // Desenhe texto no sprite
@@ -146,7 +177,7 @@ void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite, TFT_eSpri
     placar.drawString(String(getCountWhite()), 80, 25, 7);
 
     // Exiba o sprite na tela
-    placar.pushToSprite(&ball,120, 10, TFT_BLACK);
+    placar.pushSprite(200, 10);
 }
 
 

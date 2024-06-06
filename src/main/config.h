@@ -1,7 +1,10 @@
 #pragma once
+
+
 namespace joystick{
-    int eixo_x = 32;
-    int eixo_y = 33;
+    int eixo_x = 33;
+    int eixo_y = 32;
+    int botao_joy = 25;
 }
 
 namespace button{

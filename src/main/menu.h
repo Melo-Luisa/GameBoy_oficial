@@ -14,24 +14,26 @@ class Menu{
         bool credits ; //menu credits
         
         //começa em 1 pra já ter algo pré selecionado
-        int geral_index;
+        int geral_index ;
         int games_index;
         int settings_index;
         Joystick joy;
 
         unsigned long lastDebounceTime = 0;
-        const unsigned long debounceDelay = 100;
+        const unsigned long debounceDelay = 150;
 
     public:
         Menu(bool geral, bool games, bool settings, bool credits, int geral_index, int games_index, int setting_index)
-        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joy(32,33){}
+        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joy(32,33,25){}
 
+        //FUNCIONA
         void init(TFT_eSPI &d);/*função já existente pra desenhar a inicialização*/
 
-        void drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text);/*desenha o menu inicial, com as opções de games, créditos e settings*/
+        //FUNCIONA
+        void drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index);/*desenha o menu inicial, com as opções de games, créditos e settings*/
             
 
-        void drawMenuGames();//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
+        void drawMenuGames(TFT_eSprite &game, int geral_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
             
 
         void drawSettings();
@@ -43,8 +45,9 @@ class Menu{
         
         void drawCredits();//Mostra informações dos criadores, além da foto dos dois
             
-
+        //FUNCIONA
         void trackPosition(bool &geral, int &geral_index);
+        void select(int geral_index, TFT_eSprite &text);
 
         void showPosition();
             //A depender do valor retornado pela TRACK POSITION, usará a estrutura abaixo pra mostrar
@@ -57,7 +60,7 @@ class Menu{
 void Menu::init(TFT_eSPI &d) {
   d.setCursor(100, 120, 2);
   d.setTextColor(TFT_WHITE);
-  d.setTextSize(5);
+  d.setTextSize(3);
   
 
   String word = "GAMEBOY";
@@ -67,150 +70,199 @@ void Menu::init(TFT_eSPI &d) {
     delay(100);
   }
 
-  delay(1000);
-  d.fillScreen(TFT_ORANGE);
+  delay(100);
+  d.fillScreen(TFT_WHITE);
 
 }
 
-void Menu::drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text){
+void Menu::drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index) {
     text.fillSprite(TFT_WHITE);
-    text.setTextColor(TFT_BLACK);
-    text.setCursor(50, 40, 2);
-    text.print("Jogos");
+    
+
+    if (geral_index == 0) {
+        text.setTextColor(TFT_WHITE, TFT_BLACK);
+        text.println(" GAMES ");
+        text.setTextColor(TFT_BLACK);
+    } else {
+        text.println(" GAMES ");
+    }
+    text.setCursor(40, 40, 2);
+
+    if (geral_index == 1) {
+        text.setTextColor(TFT_WHITE, TFT_BLACK);
+        text.println(" SETTINGS ");
+        text.setTextColor(TFT_BLACK);
+    } else {
+        text.println(" SETTINGS ");
+    }
     text.setCursor(180, 40, 2);
-    text.print("Config");
+
+    if (geral_index == 2) {
+       text.setTextColor(TFT_WHITE, TFT_BLACK);
+        text.println(" CREDITS ");
+        text.setTextColor(TFT_BLACK);
+    } else {
+        text.println(" CREDITS ");
+    } 
     text.setCursor(300, 40, 2);
-    text.print("Creditos");
+    //text.print("Creditos");
     text.setTextSize(2);
 
-
-    text.pushSprite(0,110);
+    text.pushSprite(0, 110);
 }
 
 
 
-void Menu::trackPosition(bool &geral, int &geral_index){
-    int valueJoyX = analogRead(joystick::eixo_x);
+void Menu::trackPosition(bool &geral, int &geral_index) {
+    int valueJoyX = joy.read_raw_X();
     Direction directionX = joy.getDirectionX(valueJoyX);
-    //Serial.println(directionX); //3 = LEFT e 4 = RIGHT
     
     unsigned long currentTime = millis();
 
-    if(currentTime - lastDebounceTime > debounceDelay){
+    if (currentTime - lastDebounceTime > debounceDelay) {
         lastDebounceTime = currentTime;
-    //------------- INDEX MENUS -------------------
-        //LOGICA MENU PRINCIPAL
-        if(geral == true){
-        Serial.print("Current geral_index: ");
-        Serial.println(geral_index);
-            if(directionX == RIGHT){
+        
+        if (geral) {
+            if (directionX == RIGHT) {
                 geral_index++;
-                if(geral_index > 2){
+                if (geral_index > 2) {
                     geral_index = 0;
                 }
-            Serial.print("Updated geral_index (RIGHT): ");
-            Serial.println(geral_index);
+                
+                
             }
-        
 
-            if(directionX == LEFT){
+            if (directionX == LEFT) {
                 geral_index--;
-                if(geral_index < 0){
+                if (geral_index < 0) {
                     geral_index = 2;
                 }
-            Serial.print("Updated geral_index (LEFT): ");
-            Serial.println(geral_index);
             }
-        
-        }
 
-        }
-        
-}
-    
-
-/*
- //LOGICA MENU GAMES
-    if(games == true){
-        if(joy.direction == RIGHT){
-            games_index++;
-            if(games_index > 2){
-                games_index = 0;
-            }
-        }
-        if(joy.direction == LEFT){
-            games_index--;
-            if(games_index > 2){
-                games_index = 0;
-            }
-        }
-    }
-
-    //LOGICA MENU SETTINGS
-    if(settings == true){
-        if(joy.direction == RIGHT){
-            settings_index++;
-            if(settings_index > 2){
-                settings_index = 0;
-            }
-        }
-        if(joy.direction == LEFT){
-            settings_index--;
-            if(settings_index > 2){
-                settings_index = 0;
-            }
-        }
-    }
             
-            //----------------- IDENTIFICAÇÃO MENUS  -----------------------------
+        }
 
-    if(botaoJOY == pressionado){
+        // Similar logic for games and settings menus
+    }
+    //Serial.println(geral_index);
+}
+
+
+
+void Menu::select(int geral_index, TFT_eSprite &text){
+    if(joy.read_button_central() == LOW){
         if(geral){
             switch(geral_index){
+                case 0:
+                    Serial.println("Games");
+                    drawMenuGames(text, geral_index);
+                    delay(1000);
+                    break;
+                    // games = true;
+                    // settings = false;
+                    // geral = false;
+                    // credits = false;
                 case 1:
-                    games = true;
-                    settings = false;
-                    geral = false;
-                    credits = false;
+                    // settings = true;
+                    // games = false;
+                    // geral = false;
+                    // credits = false;
+                    Serial.println("Settings");
+                    break;
                 case 2:
-                    settings = true;
-                    games = false;
-                    geral = false;
-                    credits = false;
-                case 3:
-                    credits = true;
-                    games = false;
-                    geral = false;
-                    settings = false;
+                    // credits = true;
+                    // games = false;
+                    // geral = false;
+                    // settings = false;
+                    Serial.println("Credits");
+                    break;
             }
         }
 
-    if(games){
-        switch(games_index){
-        case 1:
-            pong = true;
-            pewpew = false;
-            games = false;
-        case 2:
-            pewpew = true;
-            pong = false;
-            games = false;
-        }
+        // if(games){
+        //     switch(games_index){
+        //     case 1:
+        //         pong = true;
+        //         pewpew = false;
+        //         games = false;
+        //     case 2:
+        //         pewpew = true;
+        //         pong = false;
+        //         games = false;
+        //     }
+        // }
+
+        // if(settings){
+        //     switch(settings_index){
+        //         case 1:
+        //             bms = true;
+        //             testes = false;
+        //             settings = false;
+        //         case 2:
+        //             testes = true;
+        //             bms = false;
+        //             settings = false;
+        //         }
+        //     }
+        // }
     }
 
-    if(settings){
-        switch(settings_index){
-            case 1:
-                bms = true;
-                testes = false;
-                settings = false;
-            case 2:
-                testes = true;
-                bms = false;
-                settings = false;
-            }
-        }
+}
+
+void Menu::drawMenuGames(TFT_eSprite &game, int geral_index) {
+    game.fillSprite(TFT_WHITE);
+    game.setTextSize(2);
+
+    // Adiciona o título
+    game.setCursor(40, 10); // Define a posição do cursor para o título
+    game.setTextColor(TFT_BLACK);
+    game.println("GAMES");
+
+    // Desenha os itens do menu abaixo do título
+    game.setCursor(40, 40); // Define a posição inicial do cursor para o primeiro item
+
+    if (geral_index == 0) {
+        game.setTextColor(TFT_WHITE, TFT_BLACK);
+        game.println(" PONG ");
+        game.setTextColor(TFT_BLACK);
+    } else {
+        game.println(" PONG ");
     }
+
+    game.setCursor(180, 40); // Define a posição do cursor para o segundo item
+
+    if (geral_index == 1) {
+        game.setTextColor(TFT_WHITE, TFT_BLACK);
+        game.println(" DINO ");
+        game.setTextColor(TFT_BLACK);
+    } else {
+        game.println(" DINO ");
+    }
+
+    game.setCursor(300, 40); // Define a posição do cursor para o terceiro item
+
+    if (geral_index == 2) {
+       game.setTextColor(TFT_WHITE, TFT_BLACK);
+        game.println(" TETRIS ");
+        game.setTextColor(TFT_BLACK);
+    } else {
+        game.println(" TETRIS ");
+    } 
+
+    game.pushSprite(0, 110);
+}
+
+
+
+
+
+
+
+
+/*           
+    //----------------- IDENTIFICAÇÃO MENUS  -----------------------------
+
+    
     //irá saber em qual parte dos menus e sub menus o jogador está.
     //fazer com um ENUM
     //não sei se será void
