@@ -33,7 +33,7 @@ class Menu{
         void drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index);/*desenha o menu inicial, com as opções de games, créditos e settings*/
             
 
-        void drawMenuGames(TFT_eSprite &text, int geal_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
+        void drawMenuGames(TFT_eSprite &game, int geral_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
             
 
         void drawSettings();
@@ -70,7 +70,7 @@ void Menu::init(TFT_eSPI &d) {
     delay(100);
   }
 
-  delay(1000);
+  delay(100);
   d.fillScreen(TFT_WHITE);
 
 }
@@ -144,7 +144,7 @@ void Menu::trackPosition(bool &geral, int &geral_index) {
 
         // Similar logic for games and settings menus
     }
-    Serial.println(geral_index);
+    //Serial.println(geral_index);
 }
 
 
@@ -156,6 +156,7 @@ void Menu::select(int geral_index, TFT_eSprite &text){
                 case 0:
                     Serial.println("Games");
                     drawMenuGames(text, geral_index);
+                    delay(1000);
                     break;
                     // games = true;
                     // settings = false;
@@ -208,47 +209,47 @@ void Menu::select(int geral_index, TFT_eSprite &text){
 
 }
 
-void Menu::drawMenuGames(TFT_eSprite &text, int geral_index) {
-    text.fillSprite(TFT_WHITE);
-    text.setTextSize(2);
+void Menu::drawMenuGames(TFT_eSprite &game, int geral_index) {
+    game.fillSprite(TFT_WHITE);
+    game.setTextSize(2);
 
     // Adiciona o título
-    text.setCursor(40, 10); // Define a posição do cursor para o título
-    text.setTextColor(TFT_BLACK);
-    text.println("GAMES");
+    game.setCursor(40, 10); // Define a posição do cursor para o título
+    game.setTextColor(TFT_BLACK);
+    game.println("GAMES");
 
     // Desenha os itens do menu abaixo do título
-    text.setCursor(40, 40); // Define a posição inicial do cursor para o primeiro item
+    game.setCursor(40, 40); // Define a posição inicial do cursor para o primeiro item
 
     if (geral_index == 0) {
-        text.setTextColor(TFT_WHITE, TFT_BLACK);
-        text.println(" PONG ");
-        text.setTextColor(TFT_BLACK);
+        game.setTextColor(TFT_WHITE, TFT_BLACK);
+        game.println(" PONG ");
+        game.setTextColor(TFT_BLACK);
     } else {
-        text.println(" PONG ");
+        game.println(" PONG ");
     }
 
-    text.setCursor(180, 40); // Define a posição do cursor para o segundo item
+    game.setCursor(180, 40); // Define a posição do cursor para o segundo item
 
     if (geral_index == 1) {
-        text.setTextColor(TFT_WHITE, TFT_BLACK);
-        text.println(" DINO ");
-        text.setTextColor(TFT_BLACK);
+        game.setTextColor(TFT_WHITE, TFT_BLACK);
+        game.println(" DINO ");
+        game.setTextColor(TFT_BLACK);
     } else {
-        text.println(" DINO ");
+        game.println(" DINO ");
     }
 
-    text.setCursor(300, 40); // Define a posição do cursor para o terceiro item
+    game.setCursor(300, 40); // Define a posição do cursor para o terceiro item
 
     if (geral_index == 2) {
-       text.setTextColor(TFT_WHITE, TFT_BLACK);
-        text.println(" TETRIS ");
-        text.setTextColor(TFT_BLACK);
+       game.setTextColor(TFT_WHITE, TFT_BLACK);
+        game.println(" TETRIS ");
+        game.setTextColor(TFT_BLACK);
     } else {
-        text.println(" TETRIS ");
+        game.println(" TETRIS ");
     } 
 
-    text.pushSprite(0, 110);
+    game.pushSprite(0, 110);
 }
 
 

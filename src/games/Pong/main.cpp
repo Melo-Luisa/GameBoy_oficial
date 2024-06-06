@@ -13,6 +13,7 @@ TFT_eSprite ball = TFT_eSprite(&d);
 TFT_eSprite barra_joy = TFT_eSprite(&d);
 TFT_eSprite barra_button = TFT_eSprite(&d);
 TFT_eSprite placar = TFT_eSprite(&d);
+TFT_eSprite abertura = TFT_eSprite(&d);
 
 //compila
 
@@ -29,16 +30,16 @@ Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius, coordY);
 
 Joystick joy(32, 33);
 
-
+void startgame();
 
 void setup() {
     Serial.begin(115200);
     d.init();
-    d.fillScreen(TFT_BLACK);
+    d.fillScreen(TFT_ORANGE);
     d.setRotation(1);
 
-    screen.setColorDepth(8);
-    screen.createSprite(367, 301);
+    abertura.setColorDepth(8);
+    abertura.createSprite(367, 300); //faixa na tela
 
     ball.setColorDepth(8);
     ball.createSprite(40, 40);
@@ -55,27 +56,29 @@ void setup() {
 
     pinMode(button::azul, INPUT_PULLUP);
     pinMode(button::amarelo, INPUT_PULLUP);
+    meujuiz.init(abertura);
+    delay(1000);
+
+    d.fillScreen(TFT_BLACK);
 }
 
 void loop() {
-    int xAxisValue = analogRead(32);
-    int yAxisValue = analogRead(33);
+        
+        int xAxisValue = analogRead(32);
+        int yAxisValue = analogRead(33);
 
-    joy.checkAndPrintDirections(xAxisValue, yAxisValue);
+        joy.checkAndPrintDirections(xAxisValue, yAxisValue);
+        meujuiz.draw_Ball(ball); // desenha bola
+        meujuiz.draw_button( barra_button);
+        meujuiz.placar(placar, countBlack, countWhite); // desenha placar
+        // //meujuiz.hit_esquerda(); // retorna valor se atingiu esq
+        // //meujuiz.hit_direita(); // retorna valor se atingiu na dire
+        meujuiz.atingir(); // verifica se atingiu
+        meujuiz.count(); // conta os pontos
+        meujuiz.draw_joy( barra_joy);
 
 
-    meujuiz.draw_Ball(ball); // desenha bola
-    meujuiz.draw_button( barra_button);
-    meujuiz.placar(placar, countBlack, countWhite); // desenha placar
-    //meujuiz.hit_esquerda(); // retorna valor se atingiu esq
-    //meujuiz.hit_direita(); // retorna valor se atingiu na dire
-    meujuiz.atingir(); // verifica se atingiu
-    meujuiz.count(); // conta os pontos
-    meujuiz.draw_joy( barra_joy);
-
-    
-
-    //screen.pushSprite(60,10);
 
     
 }
+

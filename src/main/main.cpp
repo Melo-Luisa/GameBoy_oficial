@@ -7,7 +7,7 @@
 
 TFT_eSPI d = TFT_eSPI();  // Define Display
 TFT_eSprite text = TFT_eSprite(&d);
-
+TFT_eSprite game = TFT_eSprite(&d);
 
 bool geral = true; //inicia no menu inicial
 bool games = false; //menu games
@@ -34,6 +34,9 @@ void setup() {
 
   text.setColorDepth(8);
   text.createSprite(480, 100); //faixa na tela
+
+  game.setColorDepth(8);
+  game.createSprite(480, 100); //faixa na tela
 
 
 

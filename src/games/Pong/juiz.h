@@ -27,6 +27,7 @@ class Juiz{
             this->countWhite = countWhite;
         }
 
+        void init(TFT_eSprite &abertura);
         void draw_Ball(TFT_eSprite &ball); // desenha bola
         void placar(TFT_eSprite &placar, int countBlack, int countWhite); // desenha placar
         boolean hit_esquerda(int coordY); // retorna valor se atingiu esq
@@ -45,8 +46,21 @@ class Juiz{
         //void atualizarBolinha();
 };
 
+void Juiz::init(TFT_eSprite &abertura){
+    abertura.fillScreen(TFT_BLACK);
 
+    abertura.setTextColor(TFT_WHITE);
+    abertura.setTextSize(3);
+    // Define a cor e o tamanho do texto
+    abertura.setTextDatum(TC_DATUM);
+    
+    abertura.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
 
+    
+    abertura.pushSprite(60,10);
+    //delay(100);
+}
+  
 //Não funciona
 boolean Juiz::hit_esquerda(int coordY) {
 
@@ -87,9 +101,8 @@ void Juiz::atingir() {
 
 
 void Juiz::count() {
-    if (bolinha.getX() + tela::width < 0) { 
+    if (bolinha.getX() + tela::height <= 0) { 
         bolinha.setX(tela::width - bolinha.getCircleRadius()); 
-
         countWhite += 1;
         
         if (countWhite == 10 || countBlack == 10) {
@@ -97,7 +110,7 @@ void Juiz::count() {
             countWhite = 0; 
         }
     } else if (bolinha.getX() >= tela::width + bar::square_Width) { // Se a bola atinge a borda direita
-        bolinha.setX(bolinha.getCircleRadius() + bar::square_Height); // 
+        bolinha.setX(bolinha.getCircleRadius() + 40); // 
         countBlack += 1;
         
         // Reiniciar os contadores se um dos jogadores alcançar 10 pontos
