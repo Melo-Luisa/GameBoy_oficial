@@ -26,11 +26,23 @@ class Ball{
 };
 
 
-void Ball::move(){
-    if (y <= 0 || y >= tela::height - circleRadius) { 
-        vy = -vy;
-    }
-    x += vx;
-    y += vy;  
+void Ball::move() {
+    x +=vx;
+    y +=vy;
 
+    // Colisão com a parede superior
+    if (y - circleRadius <= 0) {
+        vy = -vy;
+        y = circleRadius;
+    }
+
+    // Colisão com a parede inferior
+    if (y + circleRadius >= 320) { // Supondo que a altura da tela seja 320
+        vy = -vy;
+        y = 320 - circleRadius;
+    }
+    if (vx == 0 && vy == 0) {
+        // A bola está parada, não fazer nada
+        return;
+    }
 }
