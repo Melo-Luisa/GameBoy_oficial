@@ -1,8 +1,11 @@
+#ifndef MENU_H
+#define MENU_H
+
 #pragma once
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include <SPI.h>
-#include "games/Pong/main.cpp"
+#include "games/Pong/juiz.h"
 #include "config.h"
 #include "joystick.h"
 
@@ -16,28 +19,30 @@ class Menu{
         bool credits ; //menu credits
         bool inGameMenu;
 
-        bool gamePongOn = true;
+        bool gamePongOn;
         
         //começa em 1 pra já ter algo pré selecionado
         int geral_index ;
         int games_index;
         int settings_index;
+        int x, y,vx,vy,circleRadius, coordY;
         Joystick joyzinho;
         Juiz juiz;
 
+    
         unsigned long lastDebounceTime = 0;
         const unsigned long debounceDelay = 150;
 
     public:
         Menu(bool geral, bool games, bool settings, bool credits, int geral_index, int games_index, int setting_index)
-        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz(x, y, vx, vy, circleRadius, coordY){}
+        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz( x,  y,  vx,  vy,  circleRadius, coordY){}
 
         //FUNCIONA
         void init(TFT_eSPI &d);/*função já existente pra desenhar a inicialização*/
 
         void drawMenuGames(TFT_eSprite &game, int &games_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
 
-        void select(int games_index, TFT_eSprite &abertura);
+        void select(int games_index, TFT_eSprite &abertura, bool &gamePongOn);
         void trackPosition(bool &games, int &games_index);
 
     
@@ -146,15 +151,16 @@ void Menu::drawMenuGames(TFT_eSprite &game, int &games_index) {
     
 }
 
-void Menu::select(int games_index, TFT_eSprite &abertura){
+void Menu::select(int games_index, TFT_eSprite &abertura, bool &gamePongOn){
     if(joyzinho.read_button_central() == LOW){
-
         if(games){
             switch(games_index){
                 case 0:
                     Serial.println("Pong");
+                    gamePongOn = true;
                     //open file games/Pong/main 
-                    juiz.init(abertura, gamePongOn);
+                    juiz.validation(gamePongOn, abertura);
+                    
                     break;
             
                 case 1:
@@ -223,7 +229,7 @@ void Menu::drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index) {
 
 
 
-
+#endif
 
 
 

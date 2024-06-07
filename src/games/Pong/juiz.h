@@ -1,7 +1,5 @@
+
 #pragma once
-#include <Arduino.h>
-#include <TFT_eSPI.h> 
-#include <SPI.h>
 
 #include "config.h"
 #include "ball.h"
@@ -25,7 +23,8 @@ class Juiz{
             this->countWhite = countWhite;
         }
 
-        void init(TFT_eSprite &abertura, bool &gameOn);
+        bool validation(bool &gameOn, TFT_eSprite &abertura);
+        void init(TFT_eSprite &abertura);
         void draw_Ball(TFT_eSprite &ball); // desenha bola
         void placar(TFT_eSprite &placar, int countBlack, int countWhite); // desenha placar
         boolean hit_esquerda(int coordY); // retorna valor se atingiu esq
@@ -44,21 +43,25 @@ class Juiz{
         //void atualizarBolinha();
 };
 
-void Juiz::init(TFT_eSprite &abertura, bool &gameOn){
-    gameOn = true;
+bool Juiz::validation(bool &gameOn, TFT_eSprite &abertura){
     while(gameOn){
-        abertura.fillScreen(TFT_BLACK);
-
-        abertura.setTextColor(TFT_WHITE);
-        abertura.setTextSize(3);
-        // Define a cor e o tamanho do texto
-        abertura.setTextDatum(TC_DATUM);
-        
-        abertura.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
-
-        
-        abertura.pushSprite(60,10);
+       init(abertura);
     }
+    return gameOn;
+}
+
+void Juiz::init(TFT_eSprite &abertura){
+    abertura.fillScreen(TFT_BLACK);
+
+    abertura.setTextColor(TFT_WHITE);
+    abertura.setTextSize(3);
+    // Define a cor e o tamanho do texto
+    abertura.setTextDatum(TC_DATUM);
+    
+    abertura.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
+
+    
+    abertura.pushSprite(60,10);
     //delay(100);
 }
   

@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <TFT_eSPI.h> 
+#include <TFT_eSPI.h>
 #include <SPI.h>
 
 #include "juiz.h"
@@ -7,7 +7,6 @@
 #include "joystick.h"
 
 TFT_eSPI d = TFT_eSPI();
-TFT_eSprite screen = TFT_eSprite(&d); // aparece na tela
 TFT_eSprite ball = TFT_eSprite(&d);
 TFT_eSprite barra_joy = TFT_eSprite(&d);
 TFT_eSprite barra_button = TFT_eSprite(&d);
@@ -56,10 +55,10 @@ void setup() {
 
     pinMode(button::azul, INPUT_PULLUP);
     pinMode(button::vermelho, INPUT_PULLUP);
-    meujuiz.init(abertura, gameOn);
+    meujuiz.validation(gameOn, abertura);
+    meujuiz.init(abertura);
     delay(1000);
-
-   d.fillScreen(TFT_BLACK);
+    d.fillScreen(TFT_BLACK);
 }
 
 void loop() {

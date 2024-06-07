@@ -1,7 +1,7 @@
+
 #pragma once
 #include <Arduino.h>
-#include <TFT_eSPI.h> 
-#include <SPI.h>
+
 #include "config.h"
 class Ball{
     private:
