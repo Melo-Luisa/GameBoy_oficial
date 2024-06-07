@@ -10,24 +10,22 @@
 class Juiz{
 
     private:
+
+        bool gameOn ;
         int countBlack = 0; int countWhite = 0;
-        int yAxisPin, xAxisPin;
         int  coordY;
+        int x, y,vx,vy,circleRadius;
         Ball bolinha; 
         Barra barra;
 
-        int prevBallX; // Posição anterior da bola (inicializada fora da tela)
-        int prevBallY; 
-        int prevJoyY;
-        int prevButtonY ;
         
     public:
-        Juiz(int x, int y, int vx ,int vy, int countBlack, int countWhite, int circleRadius, int coordY): bolinha(y, x, vx, vy, circleRadius), barra(coordY ), prevBallX(-1), prevBallY(-1), prevJoyY(-1), prevButtonY(-1){
+        Juiz(int x, int y, int vx, int vy, int circleRadius, int coordY): bolinha(y, x, vx, vy, circleRadius), barra(coordY){
             this->countBlack = countBlack;
             this->countWhite = countWhite;
         }
 
-        void init(TFT_eSprite &abertura);
+        void init(TFT_eSprite &abertura, bool &gameOn);
         void draw_Ball(TFT_eSprite &ball); // desenha bola
         void placar(TFT_eSprite &placar, int countBlack, int countWhite); // desenha placar
         boolean hit_esquerda(int coordY); // retorna valor se atingiu esq
@@ -46,18 +44,21 @@ class Juiz{
         //void atualizarBolinha();
 };
 
-void Juiz::init(TFT_eSprite &abertura){
-    abertura.fillScreen(TFT_BLACK);
+void Juiz::init(TFT_eSprite &abertura, bool &gameOn){
+    gameOn = true;
+    while(gameOn){
+        abertura.fillScreen(TFT_BLACK);
 
-    abertura.setTextColor(TFT_WHITE);
-    abertura.setTextSize(3);
-    // Define a cor e o tamanho do texto
-    abertura.setTextDatum(TC_DATUM);
-    
-    abertura.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
+        abertura.setTextColor(TFT_WHITE);
+        abertura.setTextSize(3);
+        // Define a cor e o tamanho do texto
+        abertura.setTextDatum(TC_DATUM);
+        
+        abertura.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
 
-    
-    abertura.pushSprite(60,10);
+        
+        abertura.pushSprite(60,10);
+    }
     //delay(100);
 }
   

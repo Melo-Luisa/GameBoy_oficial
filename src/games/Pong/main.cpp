@@ -3,7 +3,6 @@
 #include <SPI.h>
 
 #include "juiz.h"
-#include "barra.h"
 #include "config.h"
 #include "joystick.h"
 
@@ -26,11 +25,12 @@ int countBlack = 0; // contador de pontos preto
 int countWhite = 0; // contador de pontos branco
 int coordY = 100;
 
-Juiz meujuiz(x, y, vx ,vy, countBlack, countWhite, circleRadius, coordY);
+bool gameOn = true;
 
-Joystick joy(32, 33);
+Juiz meujuiz(x, y, vx, vy, circleRadius, coordY);
+        
+Joystick joy(32, 33, 25);
 
-void startgame();
 
 void setup() {
     Serial.begin(115200);
@@ -56,13 +56,14 @@ void setup() {
 
     pinMode(button::azul, INPUT_PULLUP);
     pinMode(button::vermelho, INPUT_PULLUP);
-    meujuiz.init(abertura);
+    meujuiz.init(abertura, gameOn);
     delay(1000);
 
    d.fillScreen(TFT_BLACK);
 }
 
 void loop() {
+        
         
         int xAxisValue = analogRead(32);
         int yAxisValue = analogRead(33);
@@ -75,7 +76,7 @@ void loop() {
         // //meujuiz.hit_direita(); // retorna valor se atingiu na dire
         meujuiz.atingir(); // verifica se atingiu
         meujuiz.count(); // conta os pontos
-        meujuiz.draw_joy( barra_joy);
+        meujuiz.draw_joy(barra_joy);
 
 
 

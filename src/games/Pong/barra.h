@@ -11,10 +11,10 @@ class Barra{
     private:
        // int coordY_old, coordY_new; //JOYSTICK
         int coordY; //BUTTON
-        int xAxisPin; int yAxisPin;
+        int xAxisPin; int yAxisPin, central;
         Joystick joy;
     public:
-        Barra(int coordY): coordY(coordY),joy(xAxisPin, yAxisPin){}
+        Barra(int coordY): coordY(coordY),joy(xAxisPin, yAxisPin, central){}
 
         //funções
         int move_joy();
