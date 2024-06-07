@@ -30,7 +30,7 @@ void setup() {
   d.init();
   d.setRotation(1);
   d.setSwapBytes(true);
-  d.fillScreen(TFT_WHITE);
+  d.fillScreen(TFT_ORANGE);
 
   text.setColorDepth(8);
   text.createSprite(480, 100); //faixa na tela
