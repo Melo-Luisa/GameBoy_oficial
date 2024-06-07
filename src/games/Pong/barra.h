@@ -53,14 +53,18 @@ int Barra::move_joy(){
 
 int Barra::move_button(int coordY) {
     if (digitalRead(button::azul) == LOW) { // botão azul pressionado
-        if (coordY + 300 <= 230) {
+        if (coordY + bar::square_Height <= 320) {
             coordY += 10;
         }
+        Serial.println("azul");
     }
-    if (digitalRead(button::amarelo) == LOW) { // botão amarelo pressionado
-        if (coordY >= 10) { 
-            coordY -= 10;
+    else if (digitalRead(button::vermelho) == LOW) { // botão amarelo pressionado
+        coordY -= 10;
+        if (coordY + bar::square_Height == 50) { 
+            coordY += 10;
         }
+        Serial.println("vermelho");
     }
+
     return coordY;
 }

@@ -55,11 +55,11 @@ void setup() {
     barra_button.createSprite(100, 100);
 
     pinMode(button::azul, INPUT_PULLUP);
-    pinMode(button::amarelo, INPUT_PULLUP);
+    pinMode(button::vermelho, INPUT_PULLUP);
     meujuiz.init(abertura);
     delay(1000);
 
-    d.fillScreen(TFT_BLACK);
+   d.fillScreen(TFT_BLACK);
 }
 
 void loop() {
@@ -69,7 +69,7 @@ void loop() {
 
         joy.checkAndPrintDirections(xAxisValue, yAxisValue);
         meujuiz.draw_Ball(ball); // desenha bola
-        meujuiz.draw_button( barra_button);
+        meujuiz.draw_button( barra_button, coordY);
         meujuiz.placar(placar, countBlack, countWhite); // desenha placar
         // //meujuiz.hit_esquerda(); // retorna valor se atingiu esq
         // //meujuiz.hit_direita(); // retorna valor se atingiu na dire
