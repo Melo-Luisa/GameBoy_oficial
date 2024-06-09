@@ -25,7 +25,8 @@ class Menu{
         int geral_index ;
         int games_index;
         int settings_index;
-        int x, y,vx,vy,circleRadius, coordY;
+        bool var;
+        int x, y,vx,vy,circleRadius, coordY, coordY_joy;
         Joystick joyzinho;
         Juiz juiz;
 
@@ -42,10 +43,10 @@ class Menu{
 
         void drawMenuGames(TFT_eSprite &game, int &games_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
 
-        void select(int games_index, TFT_eSprite &abertura, bool &gamePongOn);
+        void select(int games_index, TFT_eSprite &abertura, bool &gamePongOn, TFT_eSprite &game, bool var);
         void trackPosition(bool &games, int &games_index);
 
-    
+        void backgroundPong(TFT_eSPI &d);
 
         //PÓS 11/06
         void drawSettings();
@@ -55,8 +56,22 @@ class Menu{
     
 };
 
+void Menu::backgroundPong(TFT_eSPI &d){
+    d.fillScreen(TFT_BLACK);
+
+    // d.setTextColor(TFT_WHITE);
+    // d.setTextSize(3);
+    // // Define a cor e o tamanho do texto
+    // d.setTextDatum(TC_DATUM);
+    
+    // d.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
+
+    // d.fillScreen(TFT_BLACK);
+    
+}
+
 void Menu::init(TFT_eSPI &d) {
-  d.setCursor(100, 120, 2);
+  d.setCursor(150, 120, 2);
   d.setTextColor(TFT_WHITE);
   d.setTextSize(3);
   
@@ -151,15 +166,16 @@ void Menu::drawMenuGames(TFT_eSprite &game, int &games_index) {
     
 }
 
-void Menu::select(int games_index, TFT_eSprite &abertura, bool &gamePongOn){
+void Menu::select(int games_index, TFT_eSprite &abertura, bool &gamePongOn, TFT_eSprite &game, bool var){
     if(joyzinho.read_button_central() == LOW){
         if(games){
             switch(games_index){
                 case 0:
-                    Serial.println("Pong");
+                    //Serial.println("Pong");
+                    game.deleteSprite();
+                    
                     gamePongOn = true;
-                    //open file games/Pong/main 
-                    juiz.validation(gamePongOn, abertura);
+                    var = true;
                     
                     break;
             

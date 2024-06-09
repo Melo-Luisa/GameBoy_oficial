@@ -71,9 +71,11 @@ boolean Juiz::hit_esquerda(int coordY) {
     //return bolinha.getX() + bolinha.getCircleRadius() == 0;
     boolean result_esq = false;
     //COLISÃO BARRA ESQUERDA
-    if (bolinha.getX() <= 30 && (bolinha.getY() >= barra.move_joy() )  && bolinha.getY() <= (barra.move_joy() + (bar::square_Height)) ) {
+    if (bolinha.getX() <= 30 && 
+    ((bolinha.getY() >= barra.move_joy() )  && bolinha.getY() <= (barra.move_joy() + (bar::square_Height)) )) {
        result_esq =  true;
-       
+        Serial.println(bolinha.getX() + bolinha.getCircleRadius());
+
     }
     return result_esq;
 }
@@ -85,19 +87,20 @@ boolean Juiz::hit_direita(int coordY) {
     boolean result_dir = false;
 
     //COLISÃO BARRA DIREITA
-    if ((bolinha.getX() + bolinha.getCircleRadius()) >= 480 && (bolinha.getY() + bolinha.getCircleRadius()) <= (bar::square_Height + bolinha.getY()) && bolinha.getY() >= barra.move_button(coordY)) {
+    if ((bolinha.getX() + bolinha.getCircleRadius()) >= 420 && 
+    (bolinha.getY() >= barra.move_button(coordY) && 
+    (bolinha.getY() <= (barra.move_button(coordY) + bar::square_Height))) ){
         result_dir = true;
     }   
-    
     return result_dir;
 }
 
 
 
 void Juiz::atingir() {
-    if (hit_direita(coordY)|| hit_esquerda(coordY)) {
+    if (hit_esquerda(coordY) || hit_direita(coordY) ) {
         bolinha.setVX(-bolinha.getvx()); // Inverter a direção horizontal
-        bolinha.setVY(-bolinha.getvy());
+        //bolinha.setVY(-bolinha.getvy());
     }
    
 }
@@ -105,18 +108,18 @@ void Juiz::atingir() {
 
 
 void Juiz::count() {
-    if (bolinha.getX() + bolinha.getCircleRadius() < 0) { // Verifica se a bola passou da borda esquerda
-        bolinha.setX(tela::width - bar::square_Height); // Coloca a bola perto da borda direita
-        bolinha.setY(tela::height/2); // Centraliza a bola verticalmente
+    if (bolinha.getX() < 0) { // Verifica se a bola passou da borda esquerda
+        bolinha.setX(tela::width - bolinha.getCircleRadius()); // Coloca a bola perto da borda direita
+        //bolinha.setY(tela::height/2); // Centraliza a bola verticalmente
         countWhite += 1;
 
         if (countWhite == 10 || countBlack == 10) {
             countBlack = 0;
             countWhite = 0; 
         }
-    } else if (bolinha.getX() + bolinha.getCircleRadius() >= tela::width) { // Verifica se a bola passou da borda direita
-        bolinha.setX(bar::square_Width); // Coloca a bola perto da borda esquerda
-        bolinha.setY(tela::height / 2); // Centraliza a bola verticalmente
+    } else if (bolinha.getX() >= tela::width) { // Verifica se a bola passou da borda direita
+        bolinha.setX(bolinha.getCircleRadius()); // Coloca a bola perto da borda esquerda
+        //bolinha.setY(tela::height / 2); // Centraliza a bola verticalmente
         countBlack += 1;
 
         if (countBlack == 10 || countWhite == 10) {
@@ -139,7 +142,7 @@ int Juiz::getCountBlack() const {
 void Juiz::draw_joy( TFT_eSprite &barra_joy){
     barra.move_joy();
     barra_joy.fillSprite(TFT_BLACK);
-    barra_joy.fillRect(20, 20, bar::square_Width, bar::square_Height, TFT_WHITE);
+    barra_joy.fillRect(25, 25, bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_joy.pushSprite(10, barra.move_joy());
     
 
@@ -222,4 +225,3 @@ void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite){
 //     }
 //     return result_esq;
 // }
-
