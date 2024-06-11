@@ -23,8 +23,8 @@ class Juiz{
             this->countWhite = countWhite;
         }
 
-        bool validation(bool &gameOn, TFT_eSprite &abertura);
-        void init(TFT_eSprite &abertura);
+        void end(TFT_eSprite &abertura, int &countBlack, int &countWhite, bool &gameOn);
+        void init(TFT_eSprite &abertura); 
         void draw_Ball(TFT_eSprite &ball); // desenha bola
         void placar(TFT_eSprite &placar, int countBlack, int countWhite); // desenha placar
         boolean hit_esquerda(int coordY); // retorna valor se atingiu esq
@@ -43,13 +43,23 @@ class Juiz{
         //void atualizarBolinha();
 };
 
-bool Juiz::validation(bool &gameOn, TFT_eSprite &abertura){
-    while(gameOn){
-       init(abertura);
-    }
-    return gameOn;
+/*Função para o final do jogo - termino
+@param TFT  abertura
+@param int  countBlack, countWhite
+@param bool  gameOn
+*/
+void Juiz::end(TFT_eSprite &abertura, int &countBlack, int &countWhite, bool &gameOn){
+    abertura.fillScreen(TFT_BLACK);
+    abertura.drawString("Fim de Jogo" ,367/2, 120,4);
+    delay(1000);
+    gameOn = false;
+
+    
 }
 
+/*função de abertura
+@param TFT_eSprite-&abertura
+*/
 void Juiz::init(TFT_eSprite &abertura){
     abertura.fillScreen(TFT_BLACK);
 
@@ -65,7 +75,10 @@ void Juiz::init(TFT_eSprite &abertura){
     //delay(100);
 }
   
-//perfeito funcionamento
+/*Verifica se houve colisão do lado esquerdo da tela - barra do joystick
+@param coordY
+@return result_esq
+*/
 boolean Juiz::hit_esquerda(int coordY) {
 
     //return bolinha.getX() + bolinha.getCircleRadius() == 0;
@@ -74,72 +87,70 @@ boolean Juiz::hit_esquerda(int coordY) {
     if (bolinha.getX() <= 30 && 
     ((bolinha.getY() >= barra.move_joy() )  && bolinha.getY() <= (barra.move_joy() + (bar::square_Height)) )) {
        result_esq =  true;
-        Serial.println(bolinha.getX() + bolinha.getCircleRadius());
 
     }
     return result_esq;
 }
 
 
-//Funciona nada
+/*Verifica se houve colisão do lado esquerdo da tela - barra do Button
+@param coordY_button
+@return result_dir
+
+*/
 boolean Juiz::hit_direita(int coordY_button) {
    boolean result_dir = false;
-
-    //COLISÃO BARRA DIREITA
     if (bolinha.getX() + 10 >= 440 && (bolinha.getY() >= ((barra.move_button())) && bolinha.getY() <= (barra.move_button() + bar::square_Height))) {
         result_dir = true;
-        //Serial.println("Bateu direita");
-        //120 botao ou 0
-        //480 bola
-
-        /*480 + 10 = 490 >= 470 && sim
-        480 >= 170 && sim
-        480 <= 170 + 60 = 230
-        
-        */
     }   
     
     return result_dir;
 }
 
 
-
+/*Caso as funções hit_esquerda(), hit_direita() tenham obtido sucesso, a função atingir muda a direção da bola.*/
 void Juiz::atingir() {
     if (hit_esquerda(coordY)) {
-        bolinha.setVX(-bolinha.getvx()); // Inverter a direção horizontal
-        //bolinha.setVY(-bolinha.getvy());
+        bolinha.setVX(-bolinha.getvx());
+        bolinha.setVY(-bolinha.getvy());
     }
     if(hit_direita(coordY_button)){
         bolinha.setVX(-bolinha.getvx());
+        bolinha.setVY(-bolinha.getvy());
     }
    
 }
 
 
-
+/*Função dois em um: conta os pontos e quando a bola sai da tela ele reseta do lado oposto
+- Primeiro lado sendo da esquerda
+- Segundo sendo o lado direito 
+@note Alterar o nome da função*/
 void Juiz::count() {
-    if (bolinha.getX() < 0) { // Verifica se a bola passou da borda esquerda
-        bolinha.setX(tela::width - bolinha.getCircleRadius()); // Coloca a bola perto da borda direita
-        //bolinha.setY(tela::height/2); // Centraliza a bola verticalmente
+    if (bolinha.getX() < 0) { 
+        bolinha.setX(tela::width - 25); 
         countWhite += 1;
 
         if (countWhite == 10 || countBlack == 10) {
             countBlack = 0;
-            countWhite = 0; 
+            countWhite = 0;
+            end(abertura, countBlack, countWhite, gameOn); 
         }
-    } else if (bolinha.getX() >= tela::width) { // Verifica se a bola passou da borda direita
-        bolinha.setX(bolinha.getCircleRadius() + 50); // Coloca a bola perto da borda esquerda
+    } else if (bolinha.getX() >= tela::width + bolinha.getCircleRadius()) { // Verifica se a bola passou da borda direita
+        bolinha.setX(bolinha.getCircleRadius()); // Coloca a bola perto da borda esquerda
         //bolinha.setY(tela::height / 2); // Centraliza a bola verticalmente
         countBlack += 1;
 
         if (countBlack == 10 || countWhite == 10) {
             countBlack = 0;
             countWhite = 0;
+            end(abertura, countBlack, countWhite, gameOn); 
         }
     }
 }
 
 
+/**/
 int Juiz::getCountWhite() const {
     return countWhite;
 }
