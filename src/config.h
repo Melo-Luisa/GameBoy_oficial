@@ -10,6 +10,7 @@ namespace joystick{
 namespace button{
     int azul = 34;
     int vermelho = 39;
+    int branco = 35;
 }
 
 namespace bar{

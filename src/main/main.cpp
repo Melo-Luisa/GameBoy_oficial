@@ -36,16 +36,17 @@ int settings_index = 1;
 /*PONG*/
 int x = 0; // valor inicial de x
 int y = 0; // valor inicial de y
-int vx = 5; // valor inicial de vx
-int vy = 5; // valor inicial de vy
+int vx = 10; // valor inicial de vx
+int vy = 10; // valor inicial de vy
 int circleRadius = 10; // raio do círculo
 int countBlack = 0; // contador de pontos preto
 int countWhite = 0; // contador de pontos branco
 int coordY = 100;
+int coordY_button = 100;
 
 
 
-Juiz juiz(x, y, vx, vy, circleRadius, coordY);
+Juiz juiz(x, y, vx, vy, circleRadius, coordY, coordY_button);
 Menu menu(geral, games, settings, credits, geral_index, games_index, settings_index);
 
 bool gamePongOn = false;
@@ -68,7 +69,7 @@ void setup() {
   abertura.createSprite(367, 300); //faixa na tela
 
   ball.setColorDepth(8);
-  ball.createSprite(45, 45);
+  ball.createSprite(65, 65);
 
   placar.setColorDepth(8);
   placar.createSprite(120, 50);
@@ -82,6 +83,7 @@ void setup() {
 
   pinMode(button::azul, INPUT_PULLUP);
   pinMode(button::vermelho, INPUT_PULLUP);
+  pinMode(button::branco, INPUT_PULLUP);
 
   menu.init(d);
   
@@ -107,11 +109,13 @@ void loop(){
     }
      
     juiz.draw_Ball(ball); // desenha bola
-    juiz.draw_button( barra_button, coordY);
+    juiz.draw_button( barra_button, coordY_button);
     juiz.placar(placar, countBlack, countWhite); // desenha placar
-    //juiz.atingir(); // verifica se atingiu
+    juiz.atingir(); // verifica se atingiu
     juiz.count(); // conta os pontos
     juiz.draw_joy(barra_joy);
+  }else if(digitalRead(button::branco) == LOW){
+    gamePongOn = false;
   }
 
 

@@ -8,16 +8,16 @@
 class Barra{
     private:
        // int coordY_old, coordY_new; //JOYSTICK
-        int coordY; //BUTTON
+        int coordY, coordY_button; //BUTTON
         int xAxisPin; int yAxisPin, central;
         Joystick joy;
     public:
-        Barra(int coordY): coordY(coordY),joy(xAxisPin, yAxisPin, central){}
+        Barra(int coordY, int coordY_button): coordY(coordY), coordY_button(coordY_button),joy(xAxisPin, yAxisPin, central){}
 
         //funções
         int move_joy();
 
-        int move_button(int coordY);
+        int move_button();
         
         
 };
@@ -40,29 +40,29 @@ int Barra::move_joy(){
     }
 
     // Ensure coordY is within valid bounds
-    if (coordY < 0) {
-        coordY = 0;
-    } else if (coordY > 220) { // Assumindo que 220 é o limite superior da barra?
-        coordY = 220;
+    if (coordY < -10) {
+        coordY = -10;
+    } else if (coordY > 240) { // Assumindo que 220 é o limite superior da barra?
+        coordY = 240;
     }
     
     return coordY;
 }
 
-int Barra::move_button(int coordY) {
+int Barra::move_button() {
     if (digitalRead(button::azul) == LOW) { // botão azul pressionado
-        if (coordY + bar::square_Height <= 320) {
-            coordY += 10;
+        if (coordY_button + bar::square_Height <= 290) {
+            coordY_button += 10;
         }
-        Serial.println("azul");
+        //Serial.println(coordY_button);
     }
     else if (digitalRead(button::vermelho) == LOW) { // botão amarelo pressionado
-        coordY -= 10;
-        if (coordY + bar::square_Height == 50) { 
-            coordY += 10;
+        coordY_button -= 15;
+        if (coordY_button + bar::square_Height == 50) { 
+            coordY_button += 15;
         }
-        Serial.println("vermelho");
+        Serial.println(coordY_button);
     }
 
-    return coordY;
+    return coordY_button;
 }

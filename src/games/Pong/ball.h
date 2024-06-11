@@ -47,6 +47,8 @@ void Ball::move() {
         vy = -vy;
         y = 320 - circleRadius;
     }
+
+   // Serial.print("eixo X:"); Serial.println(x);
     // if (vx == 0 && vy == 0) {
     //     // A bola está parada, não fazer nada
     //     return;

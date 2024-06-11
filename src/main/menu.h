@@ -26,7 +26,7 @@ class Menu{
         int games_index;
         int settings_index;
         bool var;
-        int x, y,vx,vy,circleRadius, coordY, coordY_joy;
+        int x, y,vx,vy,circleRadius, coordY, coordY_button;
         Joystick joyzinho;
         Juiz juiz;
 
@@ -36,7 +36,7 @@ class Menu{
 
     public:
         Menu(bool geral, bool games, bool settings, bool credits, int geral_index, int games_index, int setting_index)
-        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz( x,  y,  vx,  vy,  circleRadius, coordY){}
+        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz( x,  y,  vx,  vy,  circleRadius, coordY, coordY_button){}
 
         //FUNCIONA
         void init(TFT_eSPI &d);/*função já existente pra desenhar a inicialização*/
