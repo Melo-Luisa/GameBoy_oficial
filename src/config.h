@@ -18,6 +18,11 @@ namespace bar{
     int square_Height = 60;
 }
 
+namespace obs{
+    int obs_width = 10;
+    int obs_height = 10;
+}
+
 namespace tela{
     int height = 320;//240 320
     int width = 480;//340 480

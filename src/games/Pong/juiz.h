@@ -5,6 +5,9 @@
 #include "ball.h"
 #include "barra.h"
 
+/*classe Juiz tem como objetivo fazer a logica do jogo Pong
+- Private - variaveis básicas
+- Public - funções utilizadas  */
 class Juiz{
 
     private:
@@ -40,7 +43,6 @@ class Juiz{
         int getCountWhite() const;
         int getCountBlack() const;
 
-        //void atualizarBolinha();
 };
 
 /*Função para o final do jogo - termino
@@ -65,25 +67,21 @@ void Juiz::init(TFT_eSprite &abertura){
 
     abertura.setTextColor(TFT_WHITE);
     abertura.setTextSize(3);
-    // Define a cor e o tamanho do texto
     abertura.setTextDatum(TC_DATUM);
     
-    abertura.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
+    abertura.drawString("PONG", 367/2, 120,4); 
 
     
     abertura.pushSprite(60,10);
-    //delay(100);
 }
   
-/*Verifica se houve colisão do lado esquerdo da tela - barra do joystick
+/*Verifica se houve colisão do lado *esquerdo* da tela - barra do joystick
 @param coordY
 @return result_esq
 */
 boolean Juiz::hit_esquerda(int coordY) {
 
-    //return bolinha.getX() + bolinha.getCircleRadius() == 0;
     boolean result_esq = false;
-    //COLISÃO BARRA ESQUERDA
     if (bolinha.getX() <= 30 && 
     ((bolinha.getY() >= barra.move_joy() )  && bolinha.getY() <= (barra.move_joy() + (bar::square_Height)) )) {
        result_esq =  true;
@@ -93,7 +91,7 @@ boolean Juiz::hit_esquerda(int coordY) {
 }
 
 
-/*Verifica se houve colisão do lado esquerdo da tela - barra do Button
+/*Verifica se houve colisão do lado *direito* da tela - barra do Button
 @param coordY_button
 @return result_dir
 
@@ -134,7 +132,8 @@ void Juiz::count() {
         if (countWhite == 10 || countBlack == 10) {
             countBlack = 0;
             countWhite = 0;
-            end(abertura, countBlack, countWhite, gameOn); 
+            //end(abertura, countBlack, countWhite, gameOn); 
+
         }
     } else if (bolinha.getX() >= tela::width + bolinha.getCircleRadius()) { // Verifica se a bola passou da borda direita
         bolinha.setX(bolinha.getCircleRadius()); // Coloca a bola perto da borda esquerda
@@ -144,50 +143,45 @@ void Juiz::count() {
         if (countBlack == 10 || countWhite == 10) {
             countBlack = 0;
             countWhite = 0;
-            end(abertura, countBlack, countWhite, gameOn); 
+            //end(abertura, countBlack, countWhite, gameOn); 
         }
     }
 }
 
 
-/**/
+/*Guarda o valor do placar e retorna na função do placar*/
 int Juiz::getCountWhite() const {
     return countWhite;
 }
 
+
+/*Guarda o valor do placar e retorna na função do placar*/
 int Juiz::getCountBlack() const {
     return countBlack;
 }
 
-//lado esq
+/*Função tem como objetivo desenhar na tela a barra do lado esquerdo, dentro da sua sprite mesmo - Joystick
+@param TFT barra_joy*/
 void Juiz::draw_joy( TFT_eSprite &barra_joy){
     barra.move_joy();
     barra_joy.fillSprite(TFT_BLACK);
     barra_joy.fillRect(25, 25, bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_joy.pushSprite(10, barra.move_joy());
     
-
-    // screen.pushSprite(0,0);
-    // screen.fillRect(30, barra.move_joy(), bar::square_Width, bar::square_Height, TFT_BLACK);
-    // barra_joy.fillRect(15, barra.move_joy(), bar::square_Width, bar::square_Height, TFT_WHITE);
-    // barra_joy.pushToSprite(&screen, 0, 0);
-    // barra_joy.fillRect(15, barra.move_joy(), bar::square_Width+20, bar::square_Height+20, TFT_BLACK);
-
 }
 
-//lado direito
+/*Função tem como objetivo desenhar na tela a barra do lado direito, dentro da sua sprite mesmo - Botão
+@param TFT barra_button
+@note Tirar "coordY_button"*/
 void Juiz::draw_button(TFT_eSprite &barra_button, int coordY_button ){
     barra.move_joy();
     barra_button.fillSprite(TFT_BLACK);
     barra_button.fillRect(20, 20, bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_button.pushSprite(440, barra.move_button());
-    // screen.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
-    //barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_WHITE);
-    // barra_button.pushToSprite(&screen,220, 0);
-    // barra_button.fillRect(80, barra.move_button(coordY), bar::square_Width, bar::square_Height, TFT_BLACK);
 }
 
-
+/*Função tem como objetivo desenhar na tela a bola
+@param TFT ball*/
 void Juiz::draw_Ball(TFT_eSprite &ball){
      
     bolinha.move();
@@ -197,6 +191,9 @@ void Juiz::draw_Ball(TFT_eSprite &ball){
     
 }
 
+/*Função tem como objetivo desenhar placar na tela
+@param TFT placar
+@param int countBlack, countWhite*/
 void Juiz::placar(TFT_eSprite &placar, int countBlack, int countWhite){
 
     placar.fillSprite(TFT_ORANGE);

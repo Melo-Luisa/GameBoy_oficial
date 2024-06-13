@@ -57,16 +57,16 @@ class Menu{
 };
 
 void Menu::backgroundPong(TFT_eSPI &d){
-    d.fillScreen(TFT_BLACK);
+    //d.fillScreen(TFT_BLACK);
 
-    // d.setTextColor(TFT_WHITE);
-    // d.setTextSize(3);
-    // // Define a cor e o tamanho do texto
-    // d.setTextDatum(TC_DATUM);
+    d.setTextColor(TFT_WHITE);
+    d.setTextSize(3);
+    // Define a cor e o tamanho do texto
+    d.setTextDatum(TC_DATUM);
     
-    // d.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
+    d.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
 
-    // d.fillScreen(TFT_BLACK);
+    d.fillScreen(TFT_BLACK);
     
 }
 

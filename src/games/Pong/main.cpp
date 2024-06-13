@@ -55,7 +55,7 @@ void setup() {
 
     pinMode(button::azul, INPUT_PULLUP);
     pinMode(button::vermelho, INPUT_PULLUP);
-    meujuiz.validation(gameOn, abertura);
+    //meujuiz.validation(gameOn, abertura);
     meujuiz.init(abertura);
     delay(1000);
     d.fillScreen(TFT_BLACK);
