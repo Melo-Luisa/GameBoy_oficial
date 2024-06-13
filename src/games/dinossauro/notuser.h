@@ -9,6 +9,7 @@ class User{
     public:
         User( int leap):leap(leap){}
         int jump();
+        int getLeap() const {return leap;}
 };
 
 

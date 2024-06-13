@@ -39,16 +39,16 @@ void logic::drawUser(TFT_eSprite &user){
 @note quadrados de inicio, alguma forma a mais? Arvores, desenho empilhada?*/
 void logic::drawObstacles(TFT_eSprite &obstaculos) {
     // Mover os obstáculos
-    int newPos = obst.move();
+     obst.move();
     
     // Limpar a área de desenho
     obstaculos.fillSprite(TFT_BLACK);
     
     // Desenhar o obstáculo na nova posição
-    obstaculos.fillRect(newPos, 25, obs::obs_width, obs::obs_width, TFT_WHITE);
+    obstaculos.fillRect(25, 25, obs::obs_width, obs::obs_width, TFT_WHITE);
     
     // Atualizar a tela com o sprite desenhado
-    obstaculos.pushSprite(newPos, 100);
+    obstaculos.pushSprite(obst.getX(), 100);
 }
 
 // /*Verifica se houve colisão com obstaculos*/

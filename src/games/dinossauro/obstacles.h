@@ -8,7 +8,7 @@ class obstacles{
         int x, vx;
     public:
         obstacles(int x, int vx): x(x), vx(vx){}
-        void move();
+        int move();
 
         int getX() const {return x;}
         int getVX() const {return vx;}
@@ -16,9 +16,10 @@ class obstacles{
 
 };
 
-void obstacles::move(){
-    x += vx;
+int obstacles::move(){
+    x -= vx;
     if(x > tela::width){
         x = 0;
     }
+    return x;
 }
