@@ -6,7 +6,7 @@
 #include "config.h"
 
 TFT_eSPI d = TFT_eSPI();
-TFT_eSprite user = TFT_eSprite(&d);
+TFT_eSprite capiSprite = TFT_eSprite(&d);
 TFT_eSprite obstaculos = TFT_eSprite(&d);
 
 int x = 0, vx = 5;
@@ -20,14 +20,14 @@ void setup() {
     d.fillScreen(TFT_ORANGE);
     d.setRotation(1);
 
-    user.setColorDepth(8);
-    user.createSprite(100,100);
+    capiSprite.setColorDepth(8);
+    capiSprite.createSprite(100,100);
 
     obstaculos.setColorDepth(8);
     obstaculos.createSprite(50,50);
 }
 
 void loop() {
-    mylogic.drawUser(user);
+    mylogic.drawCapi(capiSprite);
     mylogic.drawObstacles(obstaculos);
 }

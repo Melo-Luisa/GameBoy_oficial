@@ -3,17 +3,17 @@
 
 #include "config.h"
 
-class User{
+class Capivara{
     private:
         int leap;
     public:
-        User( int leap):leap(leap){}
+        Capivara( int leap):leap(leap){}
         int jump();
         int getLeap() const {return leap;}
 };
 
 
-int User::jump(){
+int Capivara::jump(){
     if(digitalRead(button::azul) == LOW){
         leap += 10;
     }else{
