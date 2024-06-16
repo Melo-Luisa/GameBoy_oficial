@@ -19,9 +19,13 @@ void setup() {
     d.init();
     d.fillScreen(TFT_ORANGE);
     d.setRotation(1);
+    d.setSwapBytes(true);
+
+    pinMode(button::azul, INPUT);
 
     capiSprite.setColorDepth(8);
-    capiSprite.createSprite(100,100);
+    capiSprite.createSprite(96,96);
+    capiSprite.setSwapBytes(true);
 
     obstaculos.setColorDepth(8);
     obstaculos.createSprite(50,50);
@@ -29,5 +33,5 @@ void setup() {
 
 void loop() {
     mylogic.drawCapi(capiSprite);
-    mylogic.drawObstacles(obstaculos);
+    //mylogic.drawObstacles(obstaculos);
 }

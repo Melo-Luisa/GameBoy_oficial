@@ -3,6 +3,7 @@
 #include  "config.h"
 #include "obstacles.h"
 #include "capivara.h"
+#include "img_capi.h"
 
 class logic{
     private:
@@ -25,13 +26,15 @@ class logic{
 
 };
 
+
 /*Desenhar na tela o boneco do usuário
 @note Capivara, capissauro ou ?*/
 void logic::drawCapi(TFT_eSprite &capiSprite){
-    capi.jump();
     capiSprite.fillSprite(TFT_BLACK);
-    capiSprite.fillCircle(10,10, 10, TFT_RED);
-    capiSprite.pushSprite(capi.jump(), 100);
+
+    int Ycap = capi.jump();
+    capiSprite.pushImage(0, 0, 96, 96, img_capi);
+    capiSprite.pushSprite(0, Ycap, TFT_BLACK);
 
 }
 

@@ -5,7 +5,7 @@
 
 class Capivara{
     private:
-        int leap;
+        int leap = 220;
     public:
         Capivara( int leap):leap(leap){}
         int jump();
@@ -15,10 +15,11 @@ class Capivara{
 
 int Capivara::jump(){
     if(digitalRead(button::azul) == LOW){
-        leap += 10;
-    }else{
-        leap -= 10;
+        Serial.println(digitalRead(button::azul));
+        leap -= 20;
     }
-
+    if(leap == 0){
+        leap = 220;
+    }
     return leap;
 }
