@@ -19,7 +19,7 @@ class logic{
         void drawBackground();
 
         bool colision();
-
+        
         int score();
 
 
