@@ -2,7 +2,8 @@
 
 #include  "config.h"
 #include "obstacles.h"
-#include "user.h"
+#include "capivara.h"
+#include "img_capi.h"
 
 class logic{
     private:
@@ -10,11 +11,11 @@ class logic{
         int x,vx;
         int leap;
         obstacles obst;
-        User capi; 
+        Capivara capi; 
 
     public:
         logic():obst(x, vx), capi(leap){}
-        void drawUser(TFT_eSprite &user);
+        void drawCapi(TFT_eSprite &capiSprite);
         void drawObstacles(TFT_eSprite &obstaculos);
         void drawBackground();
 
@@ -25,13 +26,14 @@ class logic{
 
 };
 
+
 /*Desenhar na tela o boneco do usuário
 @note Capivara, capissauro ou ?*/
-void logic::drawUser(TFT_eSprite &user){
-    capi.jump();
-    user.fillSprite(TFT_BLACK);
-    user.fillCircle(10,10, 10, TFT_RED);
-    user.pushSprite(capi.jump(), 100);
+void logic::drawCapi(TFT_eSprite &capiSprite){
+    int Ycap = capi.jump();
+    capiSprite.fillSprite(TFT_BLACK);
+    capiSprite.pushImage(0, 0, 96, 96, img_capi);
+    capiSprite.pushSprite(0, Ycap, TFT_BLACK);
 
 }
 
