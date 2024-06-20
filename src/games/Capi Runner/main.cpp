@@ -7,11 +7,11 @@
 
 TFT_eSPI d = TFT_eSPI();
 TFT_eSprite capiSprite = TFT_eSprite(&d);
-TFT_eSprite obstaculos = TFT_eSprite(&d);
+TFT_eSprite obstaculosSprite = TFT_eSprite(&d);
 
-int x = 0, vx = 5;
-int leap;
-logic mylogic;
+int x = 490, vx = 5;
+int numObstaculos;
+logic mylogic(x, vx, numObstaculos);
 
 
 void setup() {
@@ -24,14 +24,16 @@ void setup() {
     pinMode(button::azul, INPUT);
 
     capiSprite.setColorDepth(8);
-    capiSprite.createSprite(96,96);
+    capiSprite.createSprite(120,120);
     capiSprite.setSwapBytes(true);
 
-    obstaculos.setColorDepth(8);
-    obstaculos.createSprite(50,50);
+    obstaculosSprite.setColorDepth(8);
+    obstaculosSprite.createSprite(50,70);
 }
 
 void loop() {
+    numObstaculos = mylogic.randomObstaculos(0);
     mylogic.drawCapi(capiSprite);
-    //mylogic.drawObstacles(obstaculos);
+    mylogic.drawObstacles(obstaculosSprite, numObstaculos);
+    mylogic.randomObstaculos(numObstaculos);
 }

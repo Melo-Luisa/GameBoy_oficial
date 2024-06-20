@@ -8,18 +8,25 @@ class obstacles{
         int x, vx;
     public:
         obstacles(int x, int vx): x(x), vx(vx){}
-        int move();
+        void move();
 
         int getX() const {return x;}
         int getVX() const {return vx;}
 
+        void setX(int newX) { x = newX; }
+
 
 };
 
-int obstacles::move(){
+/*Move para frente, inicia em 480 (direita) e termina em < 0*/
+void obstacles::move(){
     x -= vx;
-    if(x > tela::width){
-        x = 0;
+    if(x < -vx){
+        x = 490;
     }
-    return x;
+    // Serial.print("X:");
+    // Serial.println(x);
+
+    // Serial.print("Velocidade:");
+    // Serial.println(vx);    
 }

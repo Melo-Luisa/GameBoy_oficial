@@ -20,7 +20,10 @@ namespace bar{
 
 namespace obs{
     int obs_width = 10;
-    int obs_height = 10;
+    int obs_height = 25;
+
+    int obs_width_1 = 15;
+    int obs_height_1 = 35;
 }
 
 namespace tela{
