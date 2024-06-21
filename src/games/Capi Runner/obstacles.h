@@ -21,12 +21,7 @@ class obstacles{
 /*Move para frente, inicia em 480 (direita) e termina em < 0*/
 void obstacles::move(){
     x -= vx;
-    if(x < -vx){
+    if(x == -85){
         x = 490;
-    }
-    // Serial.print("X:");
-    // Serial.println(x);
-
-    // Serial.print("Velocidade:");
-    // Serial.println(vx);    
+    }   
 }

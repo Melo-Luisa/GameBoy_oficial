@@ -3,34 +3,10 @@
 
 #include "config.h"
 
-// class Capivara{
-//     private:
-//         int leap = 10;
-//         bool isJumping;
-//         int velocity;
-//     public:
-//         Capivara( int leap):leap(leap){}
-//         int jump();
-//         int getY() const {return leap;}
-// };
-
-
-// int Capivara::jump(){
-//     if(digitalRead(button::azul) == LOW){
-//         Serial.println(digitalRead(button::azul));
-//         leap -= 5;
-//     }
-//     // if(leap == 0){
-//     //     leap = 100;
-//     // }
-//     return leap;
-// }
-
-
 
 class Capivara {
     private:
-        int leap;
+        int leap ;
         bool isJumping;
         const int jumpHeight;
         const int groundLevel;
@@ -39,15 +15,15 @@ class Capivara {
         Capivara(int initialLeap, int jumpHeight, int groundLevel) 
             : leap(initialLeap), isJumping(false), jumpHeight(jumpHeight), groundLevel(groundLevel), velocity(0) {}
 
-        void jump();
+        int jump();
         int getY() const { return leap; }
 };
 
-void Capivara::jump() {
+int Capivara::jump() {
     // Verifique se o botão está pressionado
     if (digitalRead(button::azul) == LOW && !isJumping) {
         isJumping = true;
-        velocity = -10; // Valor negativo para iniciar o pulo
+        velocity = -12; // Valor negativo para iniciar o pulo
     }
 
     // Atualiza a posição vertical da bolinha
@@ -62,6 +38,6 @@ void Capivara::jump() {
             velocity = 0;
         }
     }
-
+    return leap;
     //Serial.println(leap); // Imprime a posição da bolinha para debug
 }
