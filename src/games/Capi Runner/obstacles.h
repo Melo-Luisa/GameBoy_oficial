@@ -14,6 +14,8 @@ class obstacles{
         int getVX() const {return vx;}
 
         void setX(int newX) { x = newX; }
+        void setVX(int newVX){vx = newVX;}
+
 
 
 };
@@ -21,7 +23,7 @@ class obstacles{
 /*Move para frente, inicia em 480 (direita) e termina em < 0*/
 void obstacles::move(){
     x -= vx;
-    if(x == -85){
+    if(x <= 0){
         x = 490;
     }   
 }

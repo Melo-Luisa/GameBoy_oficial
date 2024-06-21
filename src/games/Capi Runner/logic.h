@@ -25,9 +25,11 @@ class logic{
 
         bool colision();
         
-        int score(int placar);
+        void score();
 
         int getplacar() const;
+
+        void level_speed();
 
 
 
@@ -78,38 +80,63 @@ void logic::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
     }
     
     obstaculosSprite.pushSprite(obst.getX(), 250);
-    //Serial.println(obst.getX());
+    Serial.println(obst.getX());
 }
 
-/*Verifica se houve colisão com obstaculos*/
+/*Verifica se houve colisão com obstaculos
+@note Ta quase - arrumar a bolinha*/
 bool logic::colision(){
     bool colisao = false;
-    if( capi.getY() <= 0 && obst.getX() <= 5){
+    if( capi.getY() == 0 && obst.getX() == 5){
         colisao = true;
-        Serial.println("Colidiu");
+        //Serial.println("Colidiu");
     }
     
     return colisao;
 
 }
 
-/*Contador de pontuação*/
-int logic::score(int placar){
+/*Contador de pontuação
+@note funciona*/
+void logic::score(){
     placar += 1;
     if(colision()){
         placar = 0;
     }
+    //Serial.println(placar);
 }
 
 int logic::getplacar() const {return placar;}
 
 void logic::drawScore(TFT_eSprite &scoreSprite){
 
-    scoreSprite.fillSprite(TFT_ORANGE);
+    scoreSprite.fillSprite(TFT_BLACK);
     scoreSprite.setTextColor(TFT_WHITE);
-    scoreSprite.drawString(String("ola"), 20,25,6);
+    scoreSprite.drawString(String(getplacar()), 20,25,6);
 
     scoreSprite.pushSprite(200,10);
 
 
 }
+
+/*Vai aumentando a velocidade conforme vai passando com mais pontuação */
+void logic::level_speed() {
+    switch (getplacar() / 100) {
+        case 0:
+            obst.setVX(10);
+            break;
+        case 1:
+            obst.setVX(15);
+            break;
+        case 2:
+            obst.setVX(20);
+            break;
+        case 3:
+            obst.setVX(25);
+            break;
+        default:
+            obst.setVX(30);  // Para pontuações acima de 300
+            break;
+    }
+}
+

@@ -33,7 +33,7 @@ void setup() {
     obstaculosSprite.createSprite(40,65);
 
     scoreSprite.setColorDepth(8);
-    scoreSprite.createSprite(100,100);
+    scoreSprite.createSprite(150,70);
     scoreSprite.setTextDatum(MC_DATUM); 
 
 }
@@ -44,7 +44,8 @@ void loop() {
     mylogic.drawObstacles(obstaculosSprite, numObstaculos);
     mylogic.colision();
     //mylogic.randomObstaculos(numObstaculos);
-    //mylogic.score(placar);
-    //mylogic.drawScore(scoreSprite);
+    mylogic.score();
+    mylogic.drawScore(scoreSprite);
+    mylogic.level_speed();
 
 }
