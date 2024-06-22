@@ -1,60 +1,42 @@
 #include <Arduino.h>
+#include <TFT_eSPI.h>
+#include <SPI.h>
 
-// Estrutura da pergunta
-struct Pergunta {
-    const char* enunciado;
-    const char* alternativas[4];
-    int respostaCorreta;
-};
+#include "juizQuiz.h"
+#include "config.h"
 
-// Vetor de perguntas
-Pergunta perguntas[] = {
-    {
-        "Qual é a capital da França?",
-        {"Berlim", "Madrid", "Paris", "Lisboa"},
-        2
-    },
-    {
-        "Qual é o maior planeta do sistema solar?",
-        {"Terra", "Marte", "Júpiter", "Saturno"},
-        2
-    }
-};
 
-// Função para exibir uma pergunta
-void exibirPergunta(const Pergunta& pergunta) {
-    Serial.println(pergunta.enunciado);
-    for (int i = 0; i < 4; ++i) {
-        Serial.print(i + 1);
-        Serial.print(". ");
-        Serial.println(pergunta.alternativas[i]);
-    }
-}
+
+TFT_eSPI tft = TFT_eSPI();  // Inicialização da tela
+
+int alternativa_index = 0;
+
+JuizQuiz quiz(perguntas, sizeof(perguntas) / sizeof(perguntas[0]));
 
 void setup() {
     Serial.begin(115200);
-    delay(1000);
+    tft.init();
+    tft.setRotation(1);
+    tft.fillScreen(TFT_BLACK);
+    quiz.showIntros(tft);
+    quiz.drawQuestions(tft);
 
-    for (auto& pergunta : perguntas) {
-        exibirPergunta(pergunta);
-        Serial.println("Escolha uma alternativa (1-4):");
-        
-        while (!Serial.available()) {
-            // Aguarda até que o usuário insira uma resposta
-        }
-
-        int respostaUsuario = Serial.parseInt() - 1;
-
-        if (respostaUsuario == pergunta.respostaCorreta) {
-            Serial.println("Correto!");
-        } else {
-            Serial.print("Errado! A resposta correta é: ");
-            Serial.println(pergunta.alternativas[pergunta.respostaCorreta]);
-        }
-        Serial.println();
-    }
 }
 
-void loop() {
-    // O código do quiz está no setup()
+
+
+void loop(){
+    if (!quiz.isFinished()) {
+        quiz.trackPosition(tft, alternativa_index);
+        quiz.select(tft, alternativa_index);
+        //Serial.println(alternativa_index);
+    } else {
+        tft.fillScreen(TFT_BLACK);
+        tft.setTextColor(TFT_WHITE);
+        tft.drawString("Fim do Quiz!", 10, 10, 2);
+        tft.drawString("Pontuacao: " + String(quiz.score()), 10, 30, 2);
+        while (true) {
+            delay(1000); // Para evitar reinicialização constante
+        }
+    }
 }
