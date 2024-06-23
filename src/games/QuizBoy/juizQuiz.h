@@ -26,6 +26,8 @@ class JuizQuiz{
     unsigned long lastDebounceTime = 0;
     const unsigned long debounceDelay = 200;
 
+    int distancia_alternativas = 70;
+
 
     public:
     //funções
@@ -58,10 +60,28 @@ JuizQuiz::JuizQuiz(Pergunta p[], int total):pontuacao(0), perguntaAtual(0), tota
 int JuizQuiz::showIntros(TFT_eSPI &d){
     //mostrar algumas falas do gameboy. Como se fosee o GB falando com o jogador
     //Essas falas serão antes e depois 
+    d.setTextSize(4);
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
-    d.drawString("Bem-vindo ao Quiz!", 10, 10, 2);
-    d.drawString("Pressione o botão para começar", 10, 30, 2);
+
+    d.setCursor(100, 20);
+    d.println("Bem-Vindo ao");
+
+    d.setCursor(150, 100);
+    d.setTextColor(d.color565(255, 150, 0));
+    d.println("QuizBoy");
+
+    d.setTextColor(TFT_WHITE);
+    d.setCursor(60, 200);
+    d.setTextSize(2);
+    d.println("Acha Mesmo que Sabe Mais que O");
+    d.setCursor(190, 230);
+    d.println("GameBoy?");
+
+    d.setCursor(30, 290);
+    d.setTextSize(2);
+    d.println("Pressione o Joystick para Descobrir");
+
     // Espera pelo botão do joystick
     while (joy.read_button_central() == HIGH) {
         delay(100);
@@ -75,23 +95,18 @@ void JuizQuiz::drawQuestions(TFT_eSPI &d) {
     d.setTextColor(TFT_WHITE);
     d.drawString(perguntas[perguntaAtual].enunciado, 10, 10, 2);
     for (int i = 0; i < MAX_ALTERNATIVAS; ++i) {
-        if (i == alternativa_index) {
-            d.setTextColor(TFT_YELLOW);
-        } else {
-            d.setTextColor(TFT_WHITE);
-        }
-        d.drawString(String(i + 1) + ". " + perguntas[perguntaAtual].alternativas[i], 10, 30 + 20 * i, 2);
+        d.drawString(String(i + 1) + ". " + perguntas[perguntaAtual].alternativas[i], 10, (distancia_alternativas * i)+50, 2);
     }
 }
 
 void JuizQuiz::updateAlternative(TFT_eSPI &d, int prev_index, int current_index) {
     // Atualiza a cor da alternativa anterior
     d.setTextColor(TFT_WHITE);
-    d.drawString(String(prev_index + 1) + ". " + perguntas[perguntaAtual].alternativas[prev_index], 10, 30 + 20 * prev_index, 2);
+    d.drawString(String(prev_index + 1) + ". " + perguntas[perguntaAtual].alternativas[prev_index], 10, (distancia_alternativas * prev_index)+50, 2);
 
     // Atualiza a cor da alternativa atual
     d.setTextColor(TFT_YELLOW);
-    d.drawString(String(current_index + 1) + ". " + perguntas[perguntaAtual].alternativas[current_index], 10, 30 + 20 * current_index, 2);
+    d.drawString(String(current_index + 1) + ". " + perguntas[perguntaAtual].alternativas[current_index], 10, (distancia_alternativas * current_index)+50, 2);
 }
 
 
