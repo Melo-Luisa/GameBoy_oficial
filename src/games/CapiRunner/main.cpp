@@ -10,6 +10,9 @@ TFT_eSprite capiSprite = TFT_eSprite(&d);
 TFT_eSprite obstaculosSprite = TFT_eSprite(&d);
 TFT_eSprite scoreSprite = TFT_eSprite(&d);
 
+TFT_eSprite backgroundSprite = TFT_eSprite(&d);
+
+
 int x = 490, vx = 5;
 int numObstaculos;
 int placar = 0;
@@ -36,6 +39,9 @@ void setup() {
     scoreSprite.setColorDepth(8);
     scoreSprite.createSprite(230,70);
     scoreSprite.setTextDatum(MC_DATUM); 
+
+    backgroundSprite.setColorDepth(8);
+    backgroundSprite.createSprite(230,70);
 
 }
 

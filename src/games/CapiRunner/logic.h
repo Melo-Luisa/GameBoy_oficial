@@ -7,12 +7,7 @@
 #include "capivara_final.h"
 #include "tree_final.h"
 
-#define MAX_OBSTACULOS 2
 
-struct Obstacle {
-    int x;
-    int y;
-};
 
 class logic{
     private:
@@ -22,16 +17,6 @@ class logic{
         int leap, jump, level;
         obstacles obst;
         Capivara capi; 
-
-        Obstacle obstaculos[MAX_OBSTACULOS] = {
-            {5, 10},   // Posição do primeiro obstáculo
-            {5, 15}   // Posição do segundo obstáculo
-        };
-
-        Obstacle obstaculos_size[MAX_OBSTACULOS] = {
-            {10, 15},   // tamanho do primeiro obstáculo
-            {10,15}   // tamanho do segundo obstáculo
-        };
 
     public:
         logic(int x, int vx, int numObstaculos): numObstaculos(numObstaculos), obst(x, vx), capi(leap, jump, level){}
@@ -49,6 +34,7 @@ class logic{
         int getHighScore() const;
 
         void level_speed();
+        void background();
 
 
 
@@ -56,6 +42,10 @@ class logic{
 
 };
 
+void logic::background(){
+    
+
+}
 
 /*Desenhar na tela a capivara*/
 void logic::drawCapi(TFT_eSprite &capiSprite){
@@ -69,9 +59,6 @@ void logic::drawCapi(TFT_eSprite &capiSprite){
 
 }
 
-// void setupRandom() {
-//     randomSeed(analogRead(0));
-// }
 
 int logic::randomObstaculos(int numObstaculos){
     numObstaculos = random(1, 3);
@@ -84,18 +71,11 @@ int logic::randomObstaculos(int numObstaculos){
 void logic::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
     obst.move();
     obstaculosSprite.fillSprite(TFT_BLACK);
-    Serial.println(numObstaculos);
-    // for (int i = 0; i <= numObstaculos; i++) {
-    //     int color = (i == 0) ? TFT_WHITE : TFT_WHITE;
-    //     obstaculosSprite.fillRect(obstaculos[i].x, obstaculos[i].y, obstaculos_size[i].x, obstaculos_size[i].y, color);
-    // }
+
     obstaculosSprite.setSwapBytes(true);
-    //obstaculosSprite.fillCircle(30,  capi.getY() + 65, 10, TFT_WHITE);
     obstaculosSprite.pushImage(0,25,60,60,tree_final);
 
-    //obstaculosSprite.pushSprite(obst.getX(), 250);
     obstaculosSprite.pushSprite(obst.getX(), 250);
-    //Serial.println(obst.getX());
 }
 
 /*Verifica se houve colisão com obstaculosc:\Users\luhco\Downloads\tree_final.c
@@ -104,7 +84,6 @@ bool logic::colision(){
     bool colisao = false;
     if(capi.getY() == 0 && obst.getX() <= obst.getVX()){
         colisao = true;
-        //Serial.println("Colidiu");
     }
     
     return colisao;
@@ -121,20 +100,17 @@ void logic::score(){
         }
         placar = 0;
     }
-    //Serial.println(placar);
 }
 
 int logic::getplacar() const {return placar;}
 int logic::getHighScore() const {return highScore;}
 
 void logic::drawScore(TFT_eSprite &scoreSprite) {
-    scoreSprite.fillSprite(TFT_BLACK);
-    scoreSprite.setTextColor(TFT_WHITE);
+    scoreSprite.fillSprite(TFT_WHITE);
+    scoreSprite.setTextColor(TFT_BLACK);
 
-    // Desenha o placar atual
     scoreSprite.drawString("Score: " + String(getplacar()), 110, 20, 4);
 
-    // Desenha o melhor placar
     scoreSprite.drawString("High Score: " + String(getHighScore()), 120, 55, 4);
 
     scoreSprite.pushSprite(100, 10);
