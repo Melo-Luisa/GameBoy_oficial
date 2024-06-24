@@ -19,21 +19,22 @@ logic mylogic(x, vx, numObstaculos);
 void setup() {
     Serial.begin(115200);
     d.init();
-    d.fillScreen(TFT_ORANGE);
+    d.fillScreen(TFT_BLACK);
     d.setRotation(1);
     d.setSwapBytes(true);
 
     pinMode(button::azul, INPUT);
 
     capiSprite.setColorDepth(8);
-    capiSprite.createSprite(70,100);
     capiSprite.setSwapBytes(true);
+    capiSprite.createSprite(70,150);
+  
 
     obstaculosSprite.setColorDepth(8);
-    obstaculosSprite.createSprite(40,65);
+    obstaculosSprite.createSprite(85,70);
 
     scoreSprite.setColorDepth(8);
-    scoreSprite.createSprite(150,70);
+    scoreSprite.createSprite(230,70);
     scoreSprite.setTextDatum(MC_DATUM); 
 
 }
@@ -43,7 +44,7 @@ void loop() {
     mylogic.drawCapi(capiSprite);
     mylogic.drawObstacles(obstaculosSprite, numObstaculos);
     mylogic.colision();
-    //mylogic.randomObstaculos(numObstaculos);
+    mylogic.randomObstaculos(numObstaculos);
     mylogic.score();
     mylogic.drawScore(scoreSprite);
     mylogic.level_speed();

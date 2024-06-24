@@ -4,16 +4,34 @@
 #include  "config.h"
 #include "obstacles.h"
 #include "capivara.h"
-#include "img_capi.h"
+#include "capivara_final.h"
+#include "tree_final.h"
+
+#define MAX_OBSTACULOS 2
+
+struct Obstacle {
+    int x;
+    int y;
+};
 
 class logic{
     private:
         bool gameTwoOn;
-        int numObstaculos, placar = 0;
+        int numObstaculos, placar = 0, highScore;
         int x,vx;
         int leap, jump, level;
         obstacles obst;
         Capivara capi; 
+
+        Obstacle obstaculos[MAX_OBSTACULOS] = {
+            {5, 10},   // Posição do primeiro obstáculo
+            {5, 15}   // Posição do segundo obstáculo
+        };
+
+        Obstacle obstaculos_size[MAX_OBSTACULOS] = {
+            {10, 15},   // tamanho do primeiro obstáculo
+            {10,15}   // tamanho do segundo obstáculo
+        };
 
     public:
         logic(int x, int vx, int numObstaculos): numObstaculos(numObstaculos), obst(x, vx), capi(leap, jump, level){}
@@ -28,8 +46,11 @@ class logic{
         void score();
 
         int getplacar() const;
+        int getHighScore() const;
 
         void level_speed();
+
+
 
 
 
@@ -40,12 +61,11 @@ class logic{
 void logic::drawCapi(TFT_eSprite &capiSprite){
     capi.jump();
     capiSprite.fillSprite(TFT_BLACK);
-    capiSprite.fillCircle(30,  capi.getY() + 65, 10, TFT_WHITE);
-    //capiSprite.pushImage(0, 0, 96, 96, img_capi);
-    /*X = 0
-    Y = */
-    capiSprite.pushSprite(0, 220);
-    //Serial.println(capi.getY());
+    capiSprite.setSwapBytes(true);
+    //capiSprite.fillCircle(30,  capi.getY() + 65, 10, TFT_WHITE);
+    capiSprite.pushImage(0,capi.getY()+75,60,60,capivara_final);
+    capiSprite.pushSprite(0, 190);
+
 
 }
 
@@ -64,30 +84,25 @@ int logic::randomObstaculos(int numObstaculos){
 void logic::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
     obst.move();
     obstaculosSprite.fillSprite(TFT_BLACK);
+    Serial.println(numObstaculos);
+    // for (int i = 0; i <= numObstaculos; i++) {
+    //     int color = (i == 0) ? TFT_WHITE : TFT_WHITE;
+    //     obstaculosSprite.fillRect(obstaculos[i].x, obstaculos[i].y, obstaculos_size[i].x, obstaculos_size[i].y, color);
+    // }
+    obstaculosSprite.setSwapBytes(true);
+    //obstaculosSprite.fillCircle(30,  capi.getY() + 65, 10, TFT_WHITE);
+    obstaculosSprite.pushImage(0,25,60,60,tree_final);
 
-    obstaculosSprite.fillRect(5, 10, obs::obs_width, obs::obs_height, TFT_WHITE);
-    //Serial.println(numObstaculos);
-    
-    //Se o número for 2, desenhar um segundo retângulo
-    if (numObstaculos == 2) {
-        // Você pode ajustar as coordenadas do segundo retângulo conforme necessário
-        int secondRectX = 70; // Posição x do segundo retângulo
-        int secondRectY = 25; // Posição y do segundo retângulo (mesma linha)
-        obstaculosSprite.fillRect(secondRectX, secondRectY, obs::obs_width_1, obs::obs_height_1, TFT_RED);
-        //obstaculosSprite.pushSprite(obst.getX(), 150);
-
-       
-    }
-    
+    //obstaculosSprite.pushSprite(obst.getX(), 250);
     obstaculosSprite.pushSprite(obst.getX(), 250);
-    Serial.println(obst.getX());
+    //Serial.println(obst.getX());
 }
 
-/*Verifica se houve colisão com obstaculos
-@note Ta quase - arrumar a bolinha*/
+/*Verifica se houve colisão com obstaculosc:\Users\luhco\Downloads\tree_final.c
+@note FUNCIONA*/
 bool logic::colision(){
     bool colisao = false;
-    if( capi.getY() == 0 && obst.getX() == 5){
+    if(capi.getY() == 0 && obst.getX() <= obst.getVX()){
         colisao = true;
         //Serial.println("Colidiu");
     }
@@ -100,23 +115,29 @@ bool logic::colision(){
 @note funciona*/
 void logic::score(){
     placar += 1;
-    if(colision()){
+    if (colision()) {
+        if (placar > highScore) {
+            highScore = placar;  // Atualiza o melhor placar
+        }
         placar = 0;
     }
     //Serial.println(placar);
 }
 
 int logic::getplacar() const {return placar;}
+int logic::getHighScore() const {return highScore;}
 
-void logic::drawScore(TFT_eSprite &scoreSprite){
-
+void logic::drawScore(TFT_eSprite &scoreSprite) {
     scoreSprite.fillSprite(TFT_BLACK);
     scoreSprite.setTextColor(TFT_WHITE);
-    scoreSprite.drawString(String(getplacar()), 20,25,6);
 
-    scoreSprite.pushSprite(200,10);
+    // Desenha o placar atual
+    scoreSprite.drawString("Score: " + String(getplacar()), 110, 20, 4);
 
+    // Desenha o melhor placar
+    scoreSprite.drawString("High Score: " + String(getHighScore()), 120, 55, 4);
 
+    scoreSprite.pushSprite(100, 10);
 }
 
 /*Vai aumentando a velocidade conforme vai passando com mais pontuação */
