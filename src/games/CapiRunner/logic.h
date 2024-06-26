@@ -1,17 +1,15 @@
 #pragma once
 #include <stdlib.h>
 
-#include  "config.h"
 #include "obstacles.h"
 #include "capivara.h"
 #include "capivara_final.h"
-#include "tree_final.h"
+#include "tree_final.h" 
 
 
 
-class logic{
+class JuizCapi{
     private:
-        bool gameTwoOn;
         int numObstaculos, placar = 0, highScore;
         int x,vx;
         int leap, jump, level;
@@ -19,10 +17,10 @@ class logic{
         Capivara capi; 
 
     public:
-        logic(int x, int vx, int numObstaculos): numObstaculos(numObstaculos), obst(x, vx), capi(leap, jump, level){}
+        JuizCapi(int x, int vx, int numObstaculos): numObstaculos(numObstaculos), obst(x, vx), capi(leap, jump, level){}
         void drawCapi(TFT_eSprite &capiSprite);
         void drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos);
-        void drawBackground();
+
         void drawScore(TFT_eSprite &scoreSprite);
         int randomObstaculos(int numObstaculos);
 
@@ -34,7 +32,6 @@ class logic{
         int getHighScore() const;
 
         void level_speed();
-        void background();
 
 
 
@@ -42,25 +39,21 @@ class logic{
 
 };
 
-void logic::background(){
-    
-
-}
 
 /*Desenhar na tela a capivara*/
-void logic::drawCapi(TFT_eSprite &capiSprite){
+void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
     capi.jump();
     capiSprite.fillSprite(TFT_BLACK);
     capiSprite.setSwapBytes(true);
     //capiSprite.fillCircle(30,  capi.getY() + 65, 10, TFT_WHITE);
     capiSprite.pushImage(0,capi.getY()+75,60,60,capivara_final);
-    capiSprite.pushSprite(0, 190);
+    capiSprite.pushSprite(10, 190);
 
 
 }
 
 
-int logic::randomObstaculos(int numObstaculos){
+int JuizCapi::randomObstaculos(int numObstaculos){
     numObstaculos = random(1, 3);
     //Serial.println(numObstaculos);
     return numObstaculos;
@@ -68,7 +61,7 @@ int logic::randomObstaculos(int numObstaculos){
 
 /*Desenhar na tela os obstaculos
 @note quadrados de inicio, alguma forma a mais? Arvores, desenho empilhada?*/
-void logic::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
+void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
     obst.move();
     obstaculosSprite.fillSprite(TFT_BLACK);
 
@@ -78,9 +71,9 @@ void logic::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
     obstaculosSprite.pushSprite(obst.getX(), 250);
 }
 
-/*Verifica se houve colisão com obstaculosc:\Users\luhco\Downloads\tree_final.c
+/*Verifica se houve colisão com obstaculos
 @note FUNCIONA*/
-bool logic::colision(){
+bool JuizCapi::colision(){
     bool colisao = false;
     if(capi.getY() == 0 && obst.getX() <= obst.getVX()){
         colisao = true;
@@ -92,20 +85,20 @@ bool logic::colision(){
 
 /*Contador de pontuação
 @note funciona*/
-void logic::score(){
+void JuizCapi::score(){
     placar += 1;
     if (colision()) {
         if (placar > highScore) {
-            highScore = placar;  // Atualiza o melhor placar
+            highScore = placar;  
         }
         placar = 0;
     }
 }
 
-int logic::getplacar() const {return placar;}
-int logic::getHighScore() const {return highScore;}
+int JuizCapi::getplacar() const {return placar;}
+int JuizCapi::getHighScore() const {return highScore;}
 
-void logic::drawScore(TFT_eSprite &scoreSprite) {
+void JuizCapi::drawScore(TFT_eSprite &scoreSprite) {
     scoreSprite.fillSprite(TFT_WHITE);
     scoreSprite.setTextColor(TFT_BLACK);
 
@@ -117,7 +110,7 @@ void logic::drawScore(TFT_eSprite &scoreSprite) {
 }
 
 /*Vai aumentando a velocidade conforme vai passando com mais pontuação */
-void logic::level_speed() {
+void JuizCapi::level_speed() {
     switch (getplacar() / 100) {
         case 0:
             obst.setVX(10);

@@ -16,7 +16,7 @@ TFT_eSprite backgroundSprite = TFT_eSprite(&d);
 int x = 490, vx = 5;
 int numObstaculos;
 int placar = 0;
-logic mylogic(x, vx, numObstaculos);
+JuizCapi mylogic(x, vx, numObstaculos);
 
 
 void setup() {
@@ -40,8 +40,9 @@ void setup() {
     scoreSprite.createSprite(230,70);
     scoreSprite.setTextDatum(MC_DATUM); 
 
-    backgroundSprite.setColorDepth(8);
-    backgroundSprite.createSprite(230,70);
+    // backgroundSprite.setColorDepth(8);
+    // backgroundSprite.setSwapBytes(true);
+    // backgroundSprite.createSprite(420,60);
 
 }
 
@@ -54,5 +55,6 @@ void loop() {
     mylogic.score();
     mylogic.drawScore(scoreSprite);
     mylogic.level_speed();
+    //mylogic.background(backgroundSprite);
 
 }

@@ -29,7 +29,7 @@ int Capivara::jump() {
     // Atualiza a posição vertical da bolinha
     if (isJumping) {
         leap += velocity;
-        velocity += 1; // Aceleração para simular gravidade
+        velocity += 2; // Aceleração para simular gravidade
 
         // Verifica se a bolinha chegou ao chão
         if (leap >= groundLevel) {
