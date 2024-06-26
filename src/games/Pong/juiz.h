@@ -12,7 +12,7 @@ class Juiz{
 
     private:
 
-        bool gameOn ;
+        bool gamePongOn ;
         int countBlack = 0; int countWhite = 0;
         int  coordY, coordY_button;
         int x, y,vx,vy,circleRadius;
@@ -26,7 +26,7 @@ class Juiz{
             this->countWhite = countWhite;
         }
 
-        void end(TFT_eSprite &abertura, int &countBlack, int &countWhite, bool &gameOn);
+        void end(TFT_eSprite &abertura, bool &gameOn);
         void init(TFT_eSprite &abertura); 
         void draw_Ball(TFT_eSprite &ball); // desenha bola
         void placar(TFT_eSprite &placar, int countBlack, int countWhite); // desenha placar
@@ -35,7 +35,7 @@ class Juiz{
         boolean hit_superior();
         boolean hit_inferior();
         void atingir(); // verifica se atingiu
-        void count(); //conta os pontos
+        void count(TFT_eSprite &abertura); //conta os pontos
         
         void draw_joy( TFT_eSprite &barra_joy);
         void draw_button( TFT_eSprite &barra_button, int coordY_button);
@@ -50,11 +50,11 @@ class Juiz{
 @param int  countBlack, countWhite
 @param bool  gameOn
 */
-void Juiz::end(TFT_eSprite &abertura, int &countBlack, int &countWhite, bool &gameOn){
+void Juiz::end(TFT_eSprite &abertura, bool &gameOn){
     abertura.fillScreen(TFT_BLACK);
     abertura.drawString("Fim de Jogo" ,367/2, 120,4);
-    delay(1000);
-    gameOn = false;
+    gamePongOn = false;
+    Serial.println("End");
 
     
 }
@@ -124,7 +124,7 @@ void Juiz::atingir() {
 - Primeiro lado sendo da esquerda
 - Segundo sendo o lado direito 
 @note Alterar o nome da função*/
-void Juiz::count() {
+void Juiz::count(TFT_eSprite &abertura) {
     if (bolinha.getX() < 0) { 
         bolinha.setX(tela::width - 25); 
         countWhite += 1;
@@ -132,18 +132,18 @@ void Juiz::count() {
         if (countWhite == 10 || countBlack == 10) {
             countBlack = 0;
             countWhite = 0;
-            //end(abertura, countBlack, countWhite, gameOn); 
+        
 
         }
-    } else if (bolinha.getX() >= tela::width + bolinha.getCircleRadius()) { // Verifica se a bola passou da borda direita
-        bolinha.setX(bolinha.getCircleRadius()); // Coloca a bola perto da borda esquerda
-        //bolinha.setY(tela::height / 2); // Centraliza a bola verticalmente
+    } else if (bolinha.getX() >= tela::width + bolinha.getCircleRadius()) { 
+        bolinha.setX(bolinha.getCircleRadius()); // Coloca a bola perto da
         countBlack += 1;
 
         if (countBlack == 10 || countWhite == 10) {
             countBlack = 0;
             countWhite = 0;
-            //end(abertura, countBlack, countWhite, gameOn); 
+            //end(abertura, gamePongOn); 
+            abertura.deleteSprite();
         }
     }
 }

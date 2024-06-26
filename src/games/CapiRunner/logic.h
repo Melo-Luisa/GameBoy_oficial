@@ -42,11 +42,12 @@ class JuizCapi{
 
 /*Desenhar na tela a capivara*/
 void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
+    Serial.println("estou entrando na função drawCapi");
     capi.jump();
     capiSprite.fillSprite(TFT_BLACK);
     capiSprite.setSwapBytes(true);
-    //capiSprite.fillCircle(30,  capi.getY() + 65, 10, TFT_WHITE);
-    capiSprite.pushImage(0,capi.getY()+75,60,60,capivara_final);
+    //capiSprite.fillCircle(30,  capi.getY() + 75, 10, TFT_WHITE);
+    capiSprite.pushImage(0,capi.getY(),60,60,capivara_final);
     capiSprite.pushSprite(10, 190);
 
 

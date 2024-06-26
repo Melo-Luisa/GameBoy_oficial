@@ -53,6 +53,8 @@ int coordY_button = 100;
 int capix = 490; 
 int capivx = 5;
 int numObstaculos;
+int placarCapi = 0;
+int leap, jump, level;
 
 Juiz juizPong(x, y, vx, vy, circleRadius, coordY, coordY_button);
 
@@ -62,6 +64,7 @@ Menu menu(geral, games, settings, credits, geral_index, games_index, settings_in
 
 bool gamePongOn = false;
 bool gameCapiOn = false;
+bool menuOn = true; 
 
 
 void setup() {
@@ -124,23 +127,28 @@ void loop(){
      
 
   if(gamePongOn){
-    //Serial.println("Funciona");
-   
+    menuOn = false;
     if(var){
-      menu.backgroundPong(d);
+      menu.backgroundPong(d,abertura);
       var = false;
       
     }
-     
+   
     juizPong.draw_Ball(ball); // desenha bola
     juizPong.draw_button( barra_button, coordY_button);
     juizPong.placar(placar, countBlack, countWhite); // desenha placar
     juizPong.atingir(); // verifica se atingiu
-    juizPong.count(); // conta os pontos
+    juizPong.count(abertura); // conta os pontos
     juizPong.draw_joy(barra_joy);
+    if(juizPong.getCountBlack() == 10|| juizPong.getCountWhite() == 10){
+      gamePongOn = false;
+      menu.backgroundEndPong(d, gamePongOn);
+      menuOn = true;
+    }
   }
-
-  if(gameCapiOn){
+  
+  if (gameCapiOn){
+    menuOn = false;
     if(capi){
       menu.backgroundCapi(d);
       capi = false;

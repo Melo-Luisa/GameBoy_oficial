@@ -22,6 +22,7 @@ class Menu{
 
         bool gamePongOn;
         bool gameCapiOn;
+        bool menuOn; // só para acessar o menu novamente
         
         //começa em 1 pra já ter algo pré selecionado
         int geral_index ;
@@ -47,10 +48,11 @@ class Menu{
 
         void drawMenuGames(TFT_eSprite &game, int &games_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
 
-        void select(int games_index, bool &gamePongOn,bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game);
+        void select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game);
         void trackPosition(bool &games, int &games_index);
 
-        void backgroundPong(TFT_eSPI &d);
+        void backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura);
+        void backgroundEndPong(TFT_eSPI &d, bool &gamePongOn);
         void backgroundCapi(TFT_eSPI &d);
 
         //PÓS 11/06
@@ -61,27 +63,45 @@ class Menu{
     
 };
 
-void Menu::backgroundPong(TFT_eSPI &d){
+void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
     //d.fillScreen(TFT_BLACK);
-
+    d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
-    d.setTextSize(3);
+    d.setTextSize(1);
     // Define a cor e o tamanho do texto
     d.setTextDatum(TC_DATUM);
-    
-    d.drawString("PONG", 367/2, 120,4); // Desenha o texto "PONG"
+    d.setCursor(200, 120, 4);
+    String name = "PONG";
+    for (int i = 0; i < name.length(); i++) {
+        d.print(name[i]);
+        delay(100);
+    }
 
+    d.drawCentreString("Utilize o joystick para CIMA e BAIXO para controlar a barra da esquerda.", 245,150,2);
+
+    d.drawCentreString(" E os Botões CIMA e BAIXO para controlar a barra da direita.", 245, 170,2);
+    d.drawCentreString("Evite que a bolinha passe para o outro lado.", 245, 190,2);
+    d.drawCentreString("- Quem chegar em 10 Pontos primeiro ganha!", 245,210,2);
+    delay(6500);
     d.fillScreen(TFT_BLACK);
     
 }
+void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
+    d.fillScreen(TFT_BLACK);
+    d.drawString("Fim de Jogo" ,367/2, 120,4);
+    gamePongOn = false;
+    menuOn = true;
+
+}
 
 void Menu::backgroundCapi(TFT_eSPI &d){
+    d.fillScreen(TFT_ORANGE);
     d.setTextColor(TFT_WHITE);
-    d.setTextSize(3);
+    d.setTextSize(1);
     d.setTextDatum(TC_DATUM);
-    d.drawString("Capi Runner", 367/2, 120,4); // Desenha o texto "PONG"
-
-    d.fillScreen(TFT_BLACK);
+    d.drawString("Capi Runner", 200, 120,4); 
+    delay(1000);
+    d.fillScreen(TFT_ORANGE);
 }
 
 void Menu::init(TFT_eSPI &d) {
@@ -153,7 +173,7 @@ void Menu::drawMenuGames(TFT_eSprite &game, int &games_index) {
         game.println(" PONG ");
     }
 
-    game.setCursor(180, 40); // Define a posição do cursor para o segundo item
+    game.setCursor(150, 40); // Define a posição do cursor para o segundo item
 
     if (games_index == 1) {
         game.setTextColor(TFT_WHITE, TFT_BLACK);
@@ -164,7 +184,7 @@ void Menu::drawMenuGames(TFT_eSprite &game, int &games_index) {
         game.println(" CAPI RUNNER ");
     }
 
-    game.setCursor(300, 40); // Define a posição do cursor para o terceiro item
+    game.setCursor(350, 40); // Define a posição do cursor para o terceiro item
 
     if (games_index == 2) {
         game.setTextColor(TFT_WHITE, TFT_BLACK);
@@ -179,26 +199,24 @@ void Menu::drawMenuGames(TFT_eSprite &game, int &games_index) {
         
     
 }
-
-void Menu::select(int games_index,bool &gamePongOn, bool var, bool &gameCapiOn,bool capi, TFT_eSprite &game ){
+void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game ){
     if(joyzinho.read_button_central() == LOW){
         if(games){
             switch(games_index){
                 case 0:
-                    //Serial.println("Pong");
-                    game.deleteSprite();
                     gamePongOn = true;
                     var = true;
+                    game.deleteSprite();
                     
                     break;
             
                 case 1:
-                    game.deleteSprite();
+                    //ame.deleteSprite();
                     gameCapiOn = true;
                     capi = true;
+                    game.deleteSprite();
                     break;
                 case 2:
-            
                     Serial.println("Tetris");
                     break;
             }
