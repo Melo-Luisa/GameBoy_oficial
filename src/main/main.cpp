@@ -125,8 +125,14 @@ void loop(){
   menu.trackPosition(games, games_index);
 
      
+  Serial.println("Estado dos jogos:");
+  Serial.print("gamePongOn: ");
+  Serial.println(gamePongOn);
+  Serial.print("gameCapiOn: ");
+  Serial.println(gameCapiOn);
 
   if(gamePongOn){
+     
     menuOn = false;
     if(var){
       menu.backgroundPong(d,abertura);
@@ -140,25 +146,28 @@ void loop(){
     juizPong.atingir(); // verifica se atingiu
     juizPong.count(abertura); // conta os pontos
     juizPong.draw_joy(barra_joy);
-    if(juizPong.getCountBlack() == 10|| juizPong.getCountWhite() == 10){
+    if(juizPong.getCountBlack() < 9 || juizPong.getCountWhite() < 9){
       gamePongOn = false;
       menu.backgroundEndPong(d, gamePongOn);
       menuOn = true;
     }
   }
   
-  if (gameCapiOn){
+  else if (gameCapiOn){
+  
     menuOn = false;
     if(capi){
       menu.backgroundCapi(d);
       capi = false;
     }
+    numObstaculos = juizcapi.randomObstaculos(0);
     juizcapi.drawCapi(capiSprite);
     juizcapi.drawObstacles(obstaculosSprite, numObstaculos);
     juizcapi.colision();
     juizcapi.score();
     juizcapi.drawScore(scoreSprite);
-    juizcapi.level_speed();
+
+    //juizcapi.level_speed();
   }
 
 

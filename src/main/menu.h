@@ -101,7 +101,7 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     d.setTextDatum(TC_DATUM);
     d.drawString("Capi Runner", 200, 120,4); 
     delay(1000);
-    d.fillScreen(TFT_ORANGE);
+    d.fillScreen(TFT_BLACK);
 }
 
 void Menu::init(TFT_eSPI &d) {
@@ -123,8 +123,8 @@ void Menu::init(TFT_eSPI &d) {
 }
 
 void Menu::trackPosition(bool &games, int &games_index) {
-    int valuejoyzinhoX = joyzinho.read_raw_X();
-    Direction directionX = joyzinho.getDirectionX(valuejoyzinhoX);
+    int valuejoyzinhoX = joyzinho.read_raw_Y();
+    Direction directionX = joyzinho.getDirectionY(valuejoyzinhoX);
 
     unsigned long currentTime = millis();
 
@@ -133,14 +133,14 @@ void Menu::trackPosition(bool &games, int &games_index) {
 
         
         if(games){
-            if (directionX == RIGHT) {
+            if (directionX == DOWN) {
                 games_index++;
                 if (games_index > 2) {
                     games_index = 0;
                 }
             }
 
-            if (directionX == LEFT) {
+            if (directionX == UP) {
                 games_index--;
                 if (games_index < 0) {
                     games_index = 2;

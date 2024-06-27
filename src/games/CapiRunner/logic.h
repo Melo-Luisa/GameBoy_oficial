@@ -44,10 +44,11 @@ class JuizCapi{
 void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
     Serial.println("estou entrando na função drawCapi");
     capi.jump();
-    capiSprite.fillSprite(TFT_BLACK);
+  
     capiSprite.setSwapBytes(true);
     //capiSprite.fillCircle(30,  capi.getY() + 75, 10, TFT_WHITE);
     capiSprite.pushImage(0,capi.getY(),60,60,capivara_final);
+    capiSprite.fillSprite(TFT_BLACK);
     capiSprite.pushSprite(10, 190);
 
 
@@ -63,6 +64,8 @@ int JuizCapi::randomObstaculos(int numObstaculos){
 /*Desenhar na tela os obstaculos
 @note quadrados de inicio, alguma forma a mais? Arvores, desenho empilhada?*/
 void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
+     Serial.println("estou entrando na função drawOBSTACULOS");
+
     obst.move();
     obstaculosSprite.fillSprite(TFT_BLACK);
 
@@ -100,6 +103,8 @@ int JuizCapi::getplacar() const {return placar;}
 int JuizCapi::getHighScore() const {return highScore;}
 
 void JuizCapi::drawScore(TFT_eSprite &scoreSprite) {
+    Serial.println("estou entrando na função drawScore");
+
     scoreSprite.fillSprite(TFT_WHITE);
     scoreSprite.setTextColor(TFT_BLACK);
 
