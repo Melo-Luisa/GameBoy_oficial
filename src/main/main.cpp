@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include <SPI.h>
+#include <stdlib.h>
 
 #include <config.h>
 #include <joystick.h>
@@ -22,6 +23,8 @@ TFT_eSprite abertura = TFT_eSprite(&d);
 TFT_eSprite capiSprite = TFT_eSprite(&d);
 TFT_eSprite obstaculosSprite = TFT_eSprite(&d);
 TFT_eSprite scoreSprite = TFT_eSprite(&d);
+
+//QUIZ
 
 /*MENU*/
 bool geral = false; //inicia no menu inicial
@@ -96,17 +99,19 @@ void setup() {
   barra_button.setColorDepth(8);
   barra_button.createSprite(100, 100);
 
+  //CAPI
+
   capiSprite.setColorDepth(8);
   capiSprite.setSwapBytes(true);
   capiSprite.createSprite(70,150);
-
 
   obstaculosSprite.setColorDepth(8);
   obstaculosSprite.createSprite(85,70);
 
   scoreSprite.setColorDepth(8);
+  scoreSprite.setTextDatum(MC_DATUM);
   scoreSprite.createSprite(230,70);
-  scoreSprite.setTextDatum(MC_DATUM); 
+  
 
   pinMode(button::azul, INPUT_PULLUP);
   pinMode(button::vermelho, INPUT_PULLUP);
@@ -124,15 +129,8 @@ void loop(){
   menu.drawMenuGames(game, games_index);
   menu.trackPosition(games, games_index);
 
-     
-  Serial.println("Estado dos jogos:");
-  Serial.print("gamePongOn: ");
-  Serial.println(gamePongOn);
-  Serial.print("gameCapiOn: ");
-  Serial.println(gameCapiOn);
 
-  if(gamePongOn){
-     
+  while(gamePongOn){
     menuOn = false;
     if(var){
       menu.backgroundPong(d,abertura);
@@ -146,26 +144,26 @@ void loop(){
     juizPong.atingir(); // verifica se atingiu
     juizPong.count(abertura); // conta os pontos
     juizPong.draw_joy(barra_joy);
-    if(juizPong.getCountBlack() < 9 || juizPong.getCountWhite() < 9){
+    if(juizPong.getCountBlack() > 9 || juizPong.getCountWhite() > 9){
       gamePongOn = false;
       menu.backgroundEndPong(d, gamePongOn);
       menuOn = true;
     }
   }
   
-  else if (gameCapiOn){
-  
+  while(gameCapiOn){
+    juizcapi.drawCapi(capiSprite);
     menuOn = false;
     if(capi){
-      menu.backgroundCapi(d);
+      //menu.backgroundCapi(d);
       capi = false;
     }
-    numObstaculos = juizcapi.randomObstaculos(0);
-    juizcapi.drawCapi(capiSprite);
-    juizcapi.drawObstacles(obstaculosSprite, numObstaculos);
-    juizcapi.colision();
-    juizcapi.score();
-    juizcapi.drawScore(scoreSprite);
+    //juizPong.draw_Ball(ball);
+   // juizcapi.drawObstacles(obstaculosSprite);
+    
+    // juizcapi.colision();
+    // juizcapi.score();
+    // juizcapi.drawScore(scoreSprite);
 
     //juizcapi.level_speed();
   }

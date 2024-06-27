@@ -16,7 +16,7 @@ TFT_eSprite backgroundSprite = TFT_eSprite(&d);
 int x = 490, vx = 5;
 int numObstaculos;
 int placar = 0;
-JuizCapi mylogic(x, vx, numObstaculos);
+Juiz mylogic(x, vx, numObstaculos);
 
 
 void setup() {
@@ -47,11 +47,11 @@ void setup() {
 }
 
 void loop() {
-    numObstaculos = mylogic.randomObstaculos(0);
+    //numObstaculos = mylogic.randomObstaculos(0);
     mylogic.drawCapi(capiSprite);
-    mylogic.drawObstacles(obstaculosSprite, numObstaculos);
+    mylogic.drawObstacles(obstaculosSprite);
     mylogic.colision();
-    mylogic.randomObstaculos(numObstaculos);
+    //mylogic.randomObstaculos(numObstaculos);
     mylogic.score();
     mylogic.drawScore(scoreSprite);
     mylogic.level_speed();

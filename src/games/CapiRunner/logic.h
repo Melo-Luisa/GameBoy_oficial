@@ -19,7 +19,7 @@ class JuizCapi{
     public:
         JuizCapi(int x, int vx, int numObstaculos): numObstaculos(numObstaculos), obst(x, vx), capi(leap, jump, level){}
         void drawCapi(TFT_eSprite &capiSprite);
-        void drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos);
+        void drawObstacles(TFT_eSprite &obstaculosSprite);
 
         void drawScore(TFT_eSprite &scoreSprite);
         int randomObstaculos(int numObstaculos);
@@ -42,14 +42,15 @@ class JuizCapi{
 
 /*Desenhar na tela a capivara*/
 void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
-    Serial.println("estou entrando na função drawCapi");
+    Serial.println("Desenhando Capivara");
     capi.jump();
-  
+    capiSprite.fillSprite(TFT_PURPLE);
     capiSprite.setSwapBytes(true);
-    //capiSprite.fillCircle(30,  capi.getY() + 75, 10, TFT_WHITE);
-    capiSprite.pushImage(0,capi.getY(),60,60,capivara_final);
-    capiSprite.fillSprite(TFT_BLACK);
-    capiSprite.pushSprite(10, 190);
+    //capiSprite.fillCircle(0,  capi.getY(), 10, TFT_WHITE);
+    capiSprite.pushImage(10,capi.getY(),60,60,capivara_final);
+    capiSprite.pushSprite(0, 0);
+    Serial.println("Desenhada Capivara"); 
+
 
 
 }
@@ -63,8 +64,8 @@ int JuizCapi::randomObstaculos(int numObstaculos){
 
 /*Desenhar na tela os obstaculos
 @note quadrados de inicio, alguma forma a mais? Arvores, desenho empilhada?*/
-void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
-     Serial.println("estou entrando na função drawOBSTACULOS");
+void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite) {
+    Serial.println("Desenhando OBSTACULOS");
 
     obst.move();
     obstaculosSprite.fillSprite(TFT_BLACK);
@@ -73,6 +74,8 @@ void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
     obstaculosSprite.pushImage(0,25,60,60,tree_final);
 
     obstaculosSprite.pushSprite(obst.getX(), 250);
+    Serial.println("Desenhado OBSTACULOS");
+
 }
 
 /*Verifica se houve colisão com obstaculos
@@ -103,7 +106,7 @@ int JuizCapi::getplacar() const {return placar;}
 int JuizCapi::getHighScore() const {return highScore;}
 
 void JuizCapi::drawScore(TFT_eSprite &scoreSprite) {
-    Serial.println("estou entrando na função drawScore");
+    Serial.println("Desenhando Score");
 
     scoreSprite.fillSprite(TFT_WHITE);
     scoreSprite.setTextColor(TFT_BLACK);
@@ -113,6 +116,8 @@ void JuizCapi::drawScore(TFT_eSprite &scoreSprite) {
     scoreSprite.drawString("High Score: " + String(getHighScore()), 120, 55, 4);
 
     scoreSprite.pushSprite(100, 10);
+    Serial.println("Desenhando Score");
+
 }
 
 /*Vai aumentando a velocidade conforme vai passando com mais pontuação */

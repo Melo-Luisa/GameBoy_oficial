@@ -7,6 +7,7 @@
 #include <SPI.h>
 #include "games/Pong/juiz.h"
 #include "games/CapiRunner/logic.h"
+#include "games/QuizBoy/juizQuiz.h"
 #include "config.h"
 #include "joystick.h"
 
@@ -22,6 +23,7 @@ class Menu{
 
         bool gamePongOn;
         bool gameCapiOn;
+        bool gameQuizOn;
         bool menuOn; // só para acessar o menu novamente
         
         //começa em 1 pra já ter algo pré selecionado
@@ -31,9 +33,13 @@ class Menu{
         bool var, capi;
         int x, y,vx,vy,circleRadius, coordY, coordY_button;
         int capix, capivx, numObstaculos;
+        int total;
         Joystick joyzinho;
         Juiz juiz;
         JuizCapi juizcapi;
+        JuizQuiz juizquiz;
+        Pergunta perguntas[10];
+
 
     
         unsigned long lastDebounceTime = 0;
@@ -41,7 +47,7 @@ class Menu{
 
     public:
         Menu(bool geral, bool games, bool settings, bool credits, int geral_index, int games_index, int setting_index)
-        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz( x,  y,  vx,  vy,  circleRadius, coordY, coordY_button), juizcapi(capix, capivx, numObstaculos){}
+        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz( x,  y,  vx,  vy,  circleRadius, coordY, coordY_button), juizcapi(capix, capivx, numObstaculos),juizquiz(perguntas, total) {}
 
         //FUNCIONA
         void init(TFT_eSPI &d);/*função já existente pra desenhar a inicialização*/
@@ -101,7 +107,7 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     d.setTextDatum(TC_DATUM);
     d.drawString("Capi Runner", 200, 120,4); 
     delay(1000);
-    d.fillScreen(TFT_BLACK);
+    //d.fillScreen(TFT_ORANGE);
 }
 
 void Menu::init(TFT_eSPI &d) {
@@ -206,6 +212,7 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
                 case 0:
                     gamePongOn = true;
                     var = true;
+                    gameCapiOn = false;
                     game.deleteSprite();
                     
                     break;
@@ -213,6 +220,7 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
                 case 1:
                     //ame.deleteSprite();
                     gameCapiOn = true;
+                    gamePongOn = false;
                     capi = true;
                     game.deleteSprite();
                     break;
