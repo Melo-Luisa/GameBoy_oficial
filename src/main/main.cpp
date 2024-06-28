@@ -19,10 +19,12 @@ TFT_eSprite barra_button = TFT_eSprite(&d);
 TFT_eSprite placar = TFT_eSprite(&d);
 TFT_eSprite abertura = TFT_eSprite(&d);
 
-//CAPIRUUNER
+
+//capi
 TFT_eSprite capiSprite = TFT_eSprite(&d);
 TFT_eSprite obstaculosSprite = TFT_eSprite(&d);
 TFT_eSprite scoreSprite = TFT_eSprite(&d);
+
 
 //QUIZ
 
@@ -52,12 +54,11 @@ int countWhite = 0; // contador de pontos branco
 int coordY = 100;
 int coordY_button = 100;
 
-/*CAPI RUNNER*/
-int capix = 490; 
-int capivx = 5;
+/*capi*/
+int capix = 490, capivx = 5;
 int numObstaculos;
-int placarCapi = 0;
-int leap, jump, level;
+int capiplacar = 0;
+
 
 Juiz juizPong(x, y, vx, vy, circleRadius, coordY, coordY_button);
 
@@ -86,20 +87,18 @@ void setup() {
   abertura.setColorDepth(8);
   abertura.createSprite(367, 300); //faixa na tela
 
-  ball.setColorDepth(8);
-  ball.createSprite(65, 65);
+ // ball.setColorDepth(8);
+ // ball.createSprite(65, 65);
 
-  placar.setColorDepth(8);
-  placar.createSprite(120, 50);
-  placar.setTextDatum(MC_DATUM); 
+ // placar.setColorDepth(8);
+ // placar.createSprite(120, 50);
+ // placar.setTextDatum(MC_DATUM); 
 
-  barra_joy.setColorDepth(8);
-  barra_joy.createSprite(85, 130);
+ // barra_joy.setColorDepth(8);
+ // barra_joy.createSprite(85, 130);
 
-  barra_button.setColorDepth(8);
-  barra_button.createSprite(100, 100);
-
-  //CAPI
+ // barra_button.setColorDepth(8);
+ // barra_button.createSprite(100, 100);
 
   capiSprite.setColorDepth(8);
   capiSprite.setSwapBytes(true);
@@ -109,8 +108,9 @@ void setup() {
   obstaculosSprite.createSprite(85,70);
 
   scoreSprite.setColorDepth(8);
-  scoreSprite.setTextDatum(MC_DATUM);
   scoreSprite.createSprite(230,70);
+  scoreSprite.setTextDatum(MC_DATUM); 
+
   
 
   pinMode(button::azul, INPUT_PULLUP);
@@ -150,23 +150,24 @@ void loop(){
       menuOn = true;
     }
   }
-  
+
   while(gameCapiOn){
-    juizcapi.drawCapi(capiSprite);
     menuOn = false;
     if(capi){
-      //menu.backgroundCapi(d);
+      menu.backgroundCapi(d);
       capi = false;
     }
-    //juizPong.draw_Ball(ball);
-   // juizcapi.drawObstacles(obstaculosSprite);
-    
-    // juizcapi.colision();
-    // juizcapi.score();
-    // juizcapi.drawScore(scoreSprite);
-
-    //juizcapi.level_speed();
+    juizcapi.drawCapi(capiSprite);
+    juizcapi.drawObstacles(obstaculosSprite);
+    juizcapi.colision();
+    juizcapi.score();
+    juizcapi.drawScore(scoreSprite);
+    juizcapi.level_speed();
   }
+  
+
+
+
 
 
 }

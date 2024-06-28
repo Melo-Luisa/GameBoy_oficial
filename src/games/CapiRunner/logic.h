@@ -3,6 +3,7 @@
 
 #include "obstacles.h"
 #include "capivara.h"
+//imagens
 #include "capivara_final.h"
 #include "tree_final.h" 
 
@@ -44,11 +45,11 @@ class JuizCapi{
 void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
     Serial.println("Desenhando Capivara");
     capi.jump();
-    capiSprite.fillSprite(TFT_PURPLE);
-    capiSprite.setSwapBytes(true);
-    //capiSprite.fillCircle(0,  capi.getY(), 10, TFT_WHITE);
-    capiSprite.pushImage(10,capi.getY(),60,60,capivara_final);
-    capiSprite.pushSprite(0, 0);
+    capiSprite.fillSprite(TFT_BLACK);
+    //capiSprite.setSwapBytes(true);
+    //capiSprite.fillCircle(30,  capi.getY()+75, 10, TFT_WHITE);
+    capiSprite.pushImage(30,capi.getY()+75,60,60,capivara_final);
+    capiSprite.pushSprite(0, 190);
     Serial.println("Desenhada Capivara"); 
 
 

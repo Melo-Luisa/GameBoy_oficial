@@ -107,7 +107,7 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     d.setTextDatum(TC_DATUM);
     d.drawString("Capi Runner", 200, 120,4); 
     delay(1000);
-    //d.fillScreen(TFT_ORANGE);
+    d.fillScreen(TFT_ORANGE);
 }
 
 void Menu::init(TFT_eSPI &d) {
@@ -245,7 +245,6 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
 
 void Menu::drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index) {
     text.fillSprite(TFT_WHITE);
-    
 
     if (geral_index == 0) {
         text.setTextColor(TFT_WHITE, TFT_BLACK);
