@@ -11,7 +11,7 @@ TFT_eSPI tft = TFT_eSPI();  // Inicialização da tela
 
 int alternativa_index = 0;
 
-JuizQuiz quiz(perguntas, sizeof(perguntas) / sizeof(perguntas[0]));
+JuizQuiz quiz(perguntas, 5);
 
 void setup() {
     Serial.begin(115200);
@@ -20,6 +20,7 @@ void setup() {
     tft.fillScreen(TFT_BLACK);
     quiz.showIntros(tft);
     quiz.drawQuestions(tft);
+    randomSeed(analogRead(0));
 
 }
 
@@ -33,8 +34,8 @@ void loop(){
     } else {
         tft.fillScreen(TFT_BLACK);
         tft.setTextColor(TFT_WHITE);
-        tft.drawString("Fim do Quiz!", 10, 10, 2);
-        tft.drawString("Pontuacao: " + String(quiz.score()), 10, 30, 2);
+        tft.drawString("Fim do Quiz!", 50, 10, 2);
+        tft.drawString("Pontuacao: " + String(quiz.score()), 40, 50, 2);
         while (true) {
             delay(1000); // Para evitar reinicialização constante
         }

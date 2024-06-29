@@ -5,16 +5,16 @@
 #include "questions.h"
 #include "joystick.h"
 
-#define MAX_PERGUNTAS 10
+#define MAX_PERGUNTAS 20
 #define MAX_ALTERNATIVAS 3
-#define MAX_CHAR 100
+
 
 
 class JuizQuiz{
     //variaveis
     private:
     Joystick joy;
-    Pergunta perguntas[10];
+    Pergunta perguntas[MAX_PERGUNTAS];
     int pontuacao;
     int perguntaAtual;
     int totalPerguntas;
@@ -26,7 +26,7 @@ class JuizQuiz{
     unsigned long lastDebounceTime = 0;
     const unsigned long debounceDelay = 200;
 
-    int distancia_alternativas = 70;
+    int distancia_alternativas = 40;
 
 
     public:
@@ -47,12 +47,24 @@ class JuizQuiz{
 
     bool isFinished();
 
+    void shuffleQuestions();
+
 };
 
 
 JuizQuiz::JuizQuiz(Pergunta p[], int total):pontuacao(0), perguntaAtual(0), totalPerguntas(total), alternativa_index(0), joy(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy) {
     for(int i=0; i < total; i++){
         perguntas[i] = p[i];
+    }
+    shuffleQuestions(); //embaralha as perguntas
+}
+
+void JuizQuiz::shuffleQuestions() {
+    for (int i = totalPerguntas - 1; i > 0; i--) {
+        int j = random(0, i + 1);
+        Pergunta temp = perguntas[i];
+        perguntas[i] = perguntas[j];
+        perguntas[j] = temp;
     }
 }
 
@@ -93,23 +105,27 @@ int JuizQuiz::showIntros(TFT_eSPI &d){
 void JuizQuiz::drawQuestions(TFT_eSPI &d) {
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
-    d.drawString("FUNCIONAA?!", 10, 10, 2); //ok, deu boa, EH AQUI QUE VAI CHAMAR A FUNÇÃO DE CADA PERGUNTA
-    //TODO -> RETIRAR O ENUNCIADO DO QUESTIONS.H (TEM QUE MEXER NA STRUCT E TALVEZ NO INDICE DE ALGUMA COISA AQUI)
-    //TODO -> CRIAR A ESTRUTURA DE FUNÇÕES E O VETOR DE FUNÇÕES
-    //E SE?? ->> DENTRO DA STRUCT COLOCAR AS FUNÇõES DE CADA PERGUNTA???? USARIA A MESMA ESTRUTURA DE DADOS
+
+    if (perguntas[perguntaAtual].func != nullptr) {
+        perguntas[perguntaAtual].func(d); // Chama a função associada à pergunta
+    } else {
+        Serial.println("Função da pergunta não definida.");
+    }
+    d.setTextSize(3);
     for (int i = 0; i < MAX_ALTERNATIVAS; ++i) {
-        d.drawString(String(i + 1) + ". " + perguntas[perguntaAtual].alternativas[i], 10, (distancia_alternativas * i)+50, 2);
+        d.drawString(String(i + 1) + ". " + perguntas[perguntaAtual].alternativas[i], 10, (distancia_alternativas * i) + 200);
     }
 }
 
 void JuizQuiz::updateAlternative(TFT_eSPI &d, int prev_index, int current_index) {
+    d.setTextSize(3);
     // Atualiza a cor da alternativa anterior
     d.setTextColor(TFT_WHITE);
-    d.drawString(String(prev_index + 1) + ". " + perguntas[perguntaAtual].alternativas[prev_index], 10, (distancia_alternativas * prev_index)+50, 2);
+    d.drawString(String(prev_index + 1) + ". " + perguntas[perguntaAtual].alternativas[prev_index], 10, (distancia_alternativas * prev_index)+200);
 
     // Atualiza a cor da alternativa atual
     d.setTextColor(TFT_YELLOW);
-    d.drawString(String(current_index + 1) + ". " + perguntas[perguntaAtual].alternativas[current_index], 10, (distancia_alternativas * current_index)+50, 2);
+    d.drawString(String(current_index + 1) + ". " + perguntas[perguntaAtual].alternativas[current_index], 10, (distancia_alternativas * current_index)+200);
 }
 
 
@@ -163,10 +179,12 @@ void JuizQuiz::select(TFT_eSPI &d, int &alternativa_index) {
         Serial.println(respostaSelecionada);
 
         if (respostaSelecionada == respostaCorreta) {
+            d.fillScreen(TFT_BLACK);
             pontuacao++;
             d.setTextColor(TFT_GREEN);
             d.drawString("Correto!", 10, 110, 2);
         } else {
+            d.fillScreen(TFT_BLACK);
             d.setTextColor(TFT_RED);
             d.drawString("Errado!", 10, 110, 2);
             d.setTextColor(TFT_WHITE);
@@ -195,5 +213,5 @@ int JuizQuiz::score(){
 }
 
 bool JuizQuiz::isFinished(){
-     return perguntaAtual >= totalPerguntas;
+     return perguntaAtual >= 5;
 }
