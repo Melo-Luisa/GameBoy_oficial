@@ -92,7 +92,7 @@ void setup() {
 
   pinMode(button::azul, INPUT_PULLUP);
   pinMode(button::vermelho, INPUT_PULLUP);
-  pinMode(button::branco, INPUT_PULLUP);
+  pinMode(button::verde, INPUT_PULLUP);
 
   menu.init(d);
   

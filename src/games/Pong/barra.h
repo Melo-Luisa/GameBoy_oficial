@@ -50,18 +50,18 @@ int Barra::move_joy(){
 }
 
 int Barra::move_button() {
-    if (digitalRead(button::azul) == LOW) { // botão azul pressionado
-        if (coordY_button + bar::square_Height <= 290) {
+    //cima
+    if (digitalRead(button::verde) == LOW) { 
+        if (coordY_button + bar::square_Height <= 250) {
             coordY_button += 10;
         }
-        //Serial.println(coordY_button);
     }
-    else if (digitalRead(button::vermelho) == LOW) { // botão amarelo pressionado
+    //baixo
+    else if (digitalRead(button::azul) == LOW) { // botão amarelo pressionado
         coordY_button -= 15;
         if (coordY_button + bar::square_Height == 50) { 
             coordY_button += 15;
         }
-        Serial.println(coordY_button);
     }
 
     return coordY_button;
