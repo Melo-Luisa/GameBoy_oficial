@@ -93,7 +93,10 @@ int JuizQuiz::showIntros(TFT_eSPI &d){
 void JuizQuiz::drawQuestions(TFT_eSPI &d) {
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
-    d.drawString(perguntas[perguntaAtual].enunciado, 10, 10, 2);
+    d.drawString("FUNCIONAA?!", 10, 10, 2); //ok, deu boa, EH AQUI QUE VAI CHAMAR A FUNÇÃO DE CADA PERGUNTA
+    //TODO -> RETIRAR O ENUNCIADO DO QUESTIONS.H (TEM QUE MEXER NA STRUCT E TALVEZ NO INDICE DE ALGUMA COISA AQUI)
+    //TODO -> CRIAR A ESTRUTURA DE FUNÇÕES E O VETOR DE FUNÇÕES
+    //E SE?? ->> DENTRO DA STRUCT COLOCAR AS FUNÇõES DE CADA PERGUNTA???? USARIA A MESMA ESTRUTURA DE DADOS
     for (int i = 0; i < MAX_ALTERNATIVAS; ++i) {
         d.drawString(String(i + 1) + ". " + perguntas[perguntaAtual].alternativas[i], 10, (distancia_alternativas * i)+50, 2);
     }
