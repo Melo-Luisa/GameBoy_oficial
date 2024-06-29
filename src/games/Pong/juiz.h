@@ -125,8 +125,8 @@ void Juiz::atingir() {
 - Segundo sendo o lado direito 
 @note Alterar o nome da função*/
 void Juiz::count(TFT_eSprite &abertura) {
-    if (bolinha.getX() < 0) { 
-        bolinha.setX(tela::width - 25); 
+    if (bolinha.getX() < -35) { 
+        bolinha.setX(tela::width - 45); 
         countWhite += 1;
 
         if (countWhite == 10 || countBlack == 10) {
@@ -135,8 +135,8 @@ void Juiz::count(TFT_eSprite &abertura) {
         
 
         }
-    } else if (bolinha.getX() >= tela::width + bolinha.getCircleRadius()) { 
-        bolinha.setX(bolinha.getCircleRadius()); // Coloca a bola perto da
+    } else if (bolinha.getX() >= tela::width + bolinha.getCircleRadius() ) { 
+        bolinha.setX(bolinha.getCircleRadius()+30); // Coloca a bola perto da
         countBlack += 1;
 
         if (countBlack == 10 || countWhite == 10) {
@@ -165,8 +165,8 @@ int Juiz::getCountBlack() const {
 void Juiz::draw_joy( TFT_eSprite &barra_joy){
     barra.move_joy();
     barra_joy.fillSprite(TFT_BLACK);
-    barra_joy.fillRect(25, 25, bar::square_Width, bar::square_Height, TFT_WHITE);
-    barra_joy.pushSprite(10, barra.move_joy());
+    barra_joy.fillRect(15, 25, bar::square_Width, bar::square_Height, TFT_WHITE);
+    barra_joy.pushSprite(0, barra.move_joy());
     
 }
 
@@ -178,6 +178,7 @@ void Juiz::draw_button(TFT_eSprite &barra_button, int coordY_button ){
     barra_button.fillSprite(TFT_BLACK);
     barra_button.fillRect(20, 20, bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_button.pushSprite(440, barra.move_button());
+    //Serial.println(barra.move_button());
 }
 
 /*Função tem como objetivo desenhar na tela a bola
@@ -188,6 +189,7 @@ void Juiz::draw_Ball(TFT_eSprite &ball){
     ball.fillSprite(TFT_BLACK);
     ball.fillCircle(20, 20, bolinha.getCircleRadius(), TFT_RED);
     ball.pushSprite(bolinha.getX(), bolinha.getY());
+    Serial.println(bolinha.getX());
     
 }
 

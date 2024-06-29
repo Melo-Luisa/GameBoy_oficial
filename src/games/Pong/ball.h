@@ -31,7 +31,7 @@ void Ball::move() {
     x += vx;
     y += vy;
    // Colisão com a parede superior
-    if (y - circleRadius <= 0) {
+    if (y - circleRadius < 0) {
         vy = -vy;
         y = circleRadius;
     }

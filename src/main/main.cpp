@@ -119,10 +119,10 @@ void loop(){
       placar.setTextDatum(MC_DATUM); 
 
       barra_joy.setColorDepth(8);
-      barra_joy.createSprite(85, 130);
+      barra_joy.createSprite(85, 180);
 
       barra_button.setColorDepth(8);
-      barra_button.createSprite(100, 100);
+      barra_button.createSprite(100, 180);
       var = false;
 
       

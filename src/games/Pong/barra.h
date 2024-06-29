@@ -24,14 +24,14 @@ class Barra{
 
 
 int Barra::move_joy(){
-    int valueY = analogRead(joystick::eixo_y); //joystick se refere ao namespace
-    Direction directionY = joy.getDirectionY(valueY);
+    int valueY = analogRead(joystick::eixo_x); //joystick se refere ao namespace
+    Direction directionY = joy.getDirectionX(valueY);
     
     switch (directionY) {
-        case UP:
+        case LEFT:
             coordY -= 10;
             break;
-        case DOWN:
+        case RIGHT:
             coordY += 10;
             break;
         case NONE:
@@ -51,18 +51,19 @@ int Barra::move_joy(){
 
 int Barra::move_button() {
     //cima
-    if (digitalRead(button::verde) == LOW) { 
-        if (coordY_button + bar::square_Height <= 250) {
+    if (digitalRead(button::azul) == LOW) { 
+        if (coordY_button + bar::square_Height <= 290) {
             coordY_button += 10;
         }
     }
     //baixo
-    else if (digitalRead(button::azul) == LOW) { // botão amarelo pressionado
+    else if (digitalRead(button::verde) == LOW) { // botão amarelo pressionado
         coordY_button -= 15;
-        if (coordY_button + bar::square_Height == 50) { 
+        if (coordY_button + bar::square_Height <= 5) { 
             coordY_button += 15;
         }
     }
 
     return coordY_button;
+    //Serial.println(coordY_button);
 }
