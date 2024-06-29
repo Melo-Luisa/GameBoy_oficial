@@ -24,6 +24,7 @@ TFT_eSprite abertura = TFT_eSprite(&d);
 TFT_eSprite capiSprite = TFT_eSprite(&d);
 TFT_eSprite obstaculosSprite = TFT_eSprite(&d);
 TFT_eSprite scoreSprite = TFT_eSprite(&d);
+TFT_eSprite groundSprite = TFT_eSprite(&d);
 
 
 //QUIZ
@@ -87,30 +88,6 @@ void setup() {
   abertura.setColorDepth(8);
   abertura.createSprite(367, 300); //faixa na tela
 
- // ball.setColorDepth(8);
- // ball.createSprite(65, 65);
-
- // placar.setColorDepth(8);
- // placar.createSprite(120, 50);
- // placar.setTextDatum(MC_DATUM); 
-
- // barra_joy.setColorDepth(8);
- // barra_joy.createSprite(85, 130);
-
- // barra_button.setColorDepth(8);
- // barra_button.createSprite(100, 100);
-
-  capiSprite.setColorDepth(8);
-  capiSprite.setSwapBytes(true);
-  capiSprite.createSprite(70,150);
-
-  obstaculosSprite.setColorDepth(8);
-  obstaculosSprite.createSprite(85,70);
-
-  scoreSprite.setColorDepth(8);
-  scoreSprite.createSprite(230,70);
-  scoreSprite.setTextDatum(MC_DATUM); 
-
   
 
   pinMode(button::azul, INPUT_PULLUP);
@@ -134,7 +111,20 @@ void loop(){
     menuOn = false;
     if(var){
       menu.backgroundPong(d,abertura);
+      ball.setColorDepth(8);
+      ball.createSprite(65, 65);
+
+      placar.setColorDepth(8);
+      placar.createSprite(120, 50);
+      placar.setTextDatum(MC_DATUM); 
+
+      barra_joy.setColorDepth(8);
+      barra_joy.createSprite(85, 130);
+
+      barra_button.setColorDepth(8);
+      barra_button.createSprite(100, 100);
       var = false;
+
       
     }
    
@@ -155,14 +145,30 @@ void loop(){
     menuOn = false;
     if(capi){
       menu.backgroundCapi(d);
+      capiSprite.setColorDepth(8);
+      capiSprite.setSwapBytes(true);
+      capiSprite.createSprite(70,130);
+
+      obstaculosSprite.setColorDepth(8);
+      obstaculosSprite.createSprite(85,70);
+
+      scoreSprite.setColorDepth(8);
+      scoreSprite.createSprite(230,70);
+      scoreSprite.setTextDatum(MC_DATUM);
+
+      groundSprite.setColorDepth(8);
+      groundSprite.setSwapBytes(true);
+      groundSprite.createSprite(85, 70);
       capi = false;
     }
     juizcapi.drawCapi(capiSprite);
     juizcapi.drawObstacles(obstaculosSprite);
+    //juizcapi.background(groundSprite);
     juizcapi.colision();
     juizcapi.score();
     juizcapi.drawScore(scoreSprite);
     juizcapi.level_speed();
+   
   }
   
 

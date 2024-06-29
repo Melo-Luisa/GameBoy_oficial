@@ -101,13 +101,22 @@ void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
 }
 
 void Menu::backgroundCapi(TFT_eSPI &d){
-    d.fillScreen(TFT_ORANGE);
+    d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
     d.setTextSize(1);
     d.setTextDatum(TC_DATUM);
-    d.drawString("Capi Runner", 200, 120,4); 
-    delay(1000);
-    d.fillScreen(TFT_ORANGE);
+    d.setCursor(150,120,4);
+    String name = "CAPI RUNNER";
+    for(int i = 0; i< name.length();i++){
+        d.print(name[i]);
+        delay(300);
+    }
+    d.drawCentreString("Utilize o botão VERDE para pular para CIMA.", 245,150,2);
+    d.drawCentreString(" E evite colidir com o tronco.", 245, 170,2);
+    d.drawCentreString(" Marque a maior pontuação!", 245, 190,2);
+    d.drawCentreString("PARA SAIR: APERTE AMARELO", 240, 210,2);
+    delay(6000);
+    d.fillScreen(TFT_BLACK);
 }
 
 void Menu::init(TFT_eSPI &d) {

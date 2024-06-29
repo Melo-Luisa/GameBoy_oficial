@@ -6,6 +6,7 @@
 //imagens
 #include "capivara_final.h"
 #include "tree_final.h" 
+#include "back_final.h" 
 
 
 
@@ -21,7 +22,7 @@ class JuizCapi{
         JuizCapi(int x, int vx, int numObstaculos): numObstaculos(numObstaculos), obst(x, vx), capi(leap, jump, level){}
         void drawCapi(TFT_eSprite &capiSprite);
         void drawObstacles(TFT_eSprite &obstaculosSprite);
-
+        void background(TFT_eSprite &groundSprite);
         void drawScore(TFT_eSprite &scoreSprite);
         int randomObstaculos(int numObstaculos);
 
@@ -48,12 +49,26 @@ void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
     capiSprite.fillSprite(TFT_BLACK);
     //capiSprite.setSwapBytes(true);
     //capiSprite.fillCircle(30,  capi.getY()+75, 10, TFT_WHITE);
-    capiSprite.pushImage(30,capi.getY()+75,60,60,capivara_final);
-    capiSprite.pushSprite(0, 190);
+    capiSprite.pushImage(5,capi.getY()+75,60,60,capivara_final);
+    capiSprite.pushSprite(0, 70);
     Serial.println("Desenhada Capivara"); 
 
 
 
+}
+
+void JuizCapi::background(TFT_eSprite &groundSprite){
+    int backX = 470;
+    int backVX = 5;
+    backX -= backVX;
+    if(backX < 0){
+        backX = 480;
+    } 
+    groundSprite.fillScreen(TFT_BLACK);
+    groundSprite.setSwapBytes(true);
+    groundSprite.pushImage(0,0,60,60,back_final);
+    groundSprite.pushSprite(obst.getX(),150);
+        
 }
 
 
@@ -74,7 +89,7 @@ void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite) {
     obstaculosSprite.setSwapBytes(true);
     obstaculosSprite.pushImage(0,25,60,60,tree_final);
 
-    obstaculosSprite.pushSprite(obst.getX(), 250);
+    obstaculosSprite.pushSprite(obst.getX(), 130);
     Serial.println("Desenhado OBSTACULOS");
 
 }
