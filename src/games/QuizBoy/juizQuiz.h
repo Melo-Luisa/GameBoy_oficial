@@ -30,7 +30,11 @@ class JuizQuiz{
     int distancia_alternativas = 40;
 
 
+    int red = 255; // Starting color
+    int green = 0;
+    int blue = 0;
 
+int step = 10; // Step value for color change
     public:
     //funções
     JuizQuiz(Pergunta p[], int total);
@@ -51,6 +55,8 @@ class JuizQuiz{
 
     bool isFinished();
 
+    void updateColor(TFT_eSPI &d);
+
 
 };
 
@@ -59,6 +65,30 @@ JuizQuiz::JuizQuiz(Pergunta p[], int total):pontuacaoJogador(0), pontuacaoGB(0),
     for(int i=0; i < total; i++){
         perguntas[i] = p[i];
     }
+}
+
+void JuizQuiz::updateColor(TFT_eSPI &d) {
+  if (red == 255 && green < 255 && blue == 0) {
+    green += step; // Increase green
+  } else if (green == 255 && red > 0 && blue == 0) {
+    red -= step; // Decrease red
+  } else if (green == 255 && blue < 255 && red == 0) {
+    blue += step; // Increase blue
+  } else if (blue == 255 && green > 0 && red == 0) {
+    green -= step; // Decrease green
+  } else if (blue == 255 && red < 255 && green == 0) {
+    red += step; // Increase red
+  } else if (red == 255 && blue > 0 && green == 0) {
+    blue -= step; // Decrease blue
+  }
+  
+  // Ensure color values stay within bounds
+  red = constrain(red, 0, 255);
+  green = constrain(green, 0, 255);
+  blue = constrain(blue, 0, 255);
+  
+  uint16_t color = d.color565(red, green, blue);
+  d.fillScreen(color); // Update the screen with the new color
 }
 
 
