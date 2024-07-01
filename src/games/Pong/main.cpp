@@ -13,7 +13,6 @@ TFT_eSprite barra_button = TFT_eSprite(&d);
 TFT_eSprite placar = TFT_eSprite(&d);
 TFT_eSprite abertura = TFT_eSprite(&d);
 
-//compila
 
 int x = 0; // valor inicial de x
 int y = 0; // valor inicial de y
@@ -24,7 +23,7 @@ int countBlack = 0; // contador de pontos preto
 int countWhite = 0; // contador de pontos branco
 int coordY = 100;
 
-bool gameOn = true;
+
 
 Juiz meujuiz(x, y, vx, vy, circleRadius, coordY);
         
@@ -44,7 +43,7 @@ void setup() {
     ball.createSprite(40, 40);
 
     placar.setColorDepth(8);
-    placar.createSprite(120, 50);
+    placar.createSprite(150, 50);
     placar.setTextDatum(MC_DATUM); 
 
     barra_joy.setColorDepth(8);
