@@ -109,9 +109,6 @@ void loop(){
     menu.drawMenuGames(game, games_index);
     menu.trackPosition(games, games_index);
   
-  
- 
-
 
     while(gamePongOn){
       menuOn = false;
@@ -140,18 +137,20 @@ void loop(){
       juizPong.atingir(); // verifica se atingiu
       juizPong.count(abertura); // conta os pontos
       juizPong.draw_joy(barra_joy);
-      if(juizPong.getCountBlack() > 9 || juizPong.getCountWhite() > 9){
+      if(juizPong.getCountBlack() == 5 || juizPong.getCountWhite() == 5){
         gamePongOn = false;
         menu.backgroundEndPong(d, gamePongOn);
         menuOn = true;
       }
-      if(digitalRead(button::amarelo) == LOW){
+      else if(digitalRead(button::amarelo) == LOW){
         gamePongOn = false;
         Serial.println("saindo");
         menuOn = true;
-        game.init();
-        text.init();
-        //game.begin();
+        d.fillScreen(TFT_WHITE);
+        menu.drawMenuGames(game, games_index);
+        countBlack = 0;
+        countWhite = 0;
+
         break;
       }
     }
@@ -183,8 +182,22 @@ void loop(){
       juizcapi.score();
       juizcapi.drawScore(scoreSprite);
       juizcapi.level_speed();
+
+      if(digitalRead(button::amarelo) == LOW){
+        gameCapiOn = false;
+        Serial.println("saindo");
+        menuOn = true;
+        // game.init();
+        // game.setRotation(2);
+        d.fillScreen(TFT_WHITE);
+  
+
+        //game.begin();
+        break;
+      }
     
     }
+   
   
 
   }
