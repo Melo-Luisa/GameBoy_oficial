@@ -1,273 +1,82 @@
-//#include <Arduino.h>
-#include <TFT_eSPI.h> 
+#include <Arduino.h>
+#include <TFT_eSPI.h>
 #include <SPI.h>
-#define EIXO_X  33
-#define EIXO_Y  32
 
+#include "juiz.h"
+#include "config.h"
+#include "joystick.h"
 
-TFT_eSPI d = TFT_eSPI();  //init display
-
+TFT_eSPI d = TFT_eSPI();
 TFT_eSprite ball = TFT_eSprite(&d);
-TFT_eSprite barra1 = TFT_eSprite(&d);
-TFT_eSprite barra2 = TFT_eSprite(&d);
+TFT_eSprite barra_joy = TFT_eSprite(&d);
+TFT_eSprite barra_button = TFT_eSprite(&d);
 TFT_eSprite placar = TFT_eSprite(&d);
-
-//Ball Settings
-int circleRadius =10; 
-int vx = 10, vy = 10; //velocidade da bolinha
-int x = 100, y = 50;
-
-int square_Width = 10;
-int square_Height = 60;
-
-//Barra joystick
-int coordX_B1 = 15;
-int coordY_B1 = 100;
-
-int coordY_B1_atual = 100;
-int coordY_B1_antiga = 100;
+TFT_eSprite abertura = TFT_eSprite(&d);
 
 
-//Barra botoes
-int coordY_B2 = 100; //eh y
-
-int botao_azul = 34; //azul
-int botao_amarelo = 35; // amarelo
-
-//SCORE PLAYERS
-int countBlack = 0;
-int countWhite = 0;
+int x = 0; // valor inicial de x
+int y = 0; // valor inicial de y
+int vx = 5; // valor inicial de vx
+int vy = 5; // valor inicial de vy
+int circleRadius = 10; // raio do círculo
+int countBlack = 0; // contador de pontos preto
+int countWhite = 0; // contador de pontos branco
+int coordY = 100;
 
 
 
-void update_Score(){
-    
-
-    Serial.print(countWhite);
-    Serial.print("X");
-    Serial.print(countBlack);
-    Serial.println();
-
-    placar.fillSprite(TFT_BLUE); //ao trocar de blue pra black ele não apaga o numero anterior e sobrepoe - resolver
-    // Desenhe texto no sprite
-    //Os ultimos argumentos de drawString (7 e 4) são os tipos de fontes
-    //Consultar User_Setup.h, linha 310 p/ mais inf
-    placar.setTextColor(TFT_WHITE);
-    placar.drawString(String(countBlack), 20, 25, 7);
-    placar.drawString("x", 70, 25, 4);
-    placar.drawString(String(countWhite), 120, 25, 7);
-
-    // Exiba o sprite na tela
-    placar.pushToSprite(&ball,85, 5, TFT_BLACK);
-
-
-}
-
-
-boolean hit_direita() {
-
-    boolean result_dir = false;
-
-    //COLISÃO BARRA DIREITA
-    if ( (x + circleRadius) >= 300 && (y >= ((coordY_B2)) && y <= (coordY_B2+square_Height))) {
-        result_dir = true;
-        //Serial.println("Bateu direita");
-    }   
-    
-    return result_dir;
-    
-}
-
-boolean hit_esquerda(){
-    boolean result_esq = false;
-    //COLISÃO BARRA ESQUERDA
-    if ((x) <= 30 && (y >= ((coordY_B1 ))  && y <= (coordY_B1+square_Height))) {
-        result_esq = true;
-        //Serial.println("Bateu Esquerda");
-    }
-    return result_esq;
-}
-
-
-
-void ball_a(){
-    //--------------BOLINHA---------------
-
-    ball.fillCircle(x, y, circleRadius, TFT_BLACK);
-    
-    if (y <= 0 || y >= d.height() - circleRadius) {
-        vy = -vy;
-    }
-   
-   
-    x += vx;
-    y += vy;
-
-   
-    if (x <= 0) { // esquerda
-        x = d.width() - circleRadius;
-        countWhite +=1;
-       
-        if(countWhite == 10){
-            countBlack = 0;
-            countWhite = 0;
-        }
-    } else if (x >= d.width() +20 ) {
-        x = circleRadius;
-        countBlack += 1;
+Juiz meujuiz(x, y, vx, vy, circleRadius, coordY);
         
-        if(countBlack == 10){
-
-            countBlack = 0;
-            countWhite = 0;
-        }
-    }
-
-    
-    if(hit_direita()){
-        vx = -vx;
-        vy = -vy;
-
-    }
-    if(hit_esquerda()){
-        vx = -vx;
-        vy = -vy;
-    }
-
-    ball.fillCircle(x, y, circleRadius, TFT_RED);
-    ball.pushSprite(0, 0);
-
-
-   
-}
-
-
-
-void joystick_m(){
-    
-    //----------------BARRA JOYSTICK-------------
-
-
-    //coordenadas do joystick
-    coordY_B1 = 100;//map(analogRead(EIXO_Y), 0, 4095, 0, 220);
-
-    coordY_B1_antiga = 100;//map(analogRead(EIXO_Y), 0, 4095, 0, 220);
-
-    //barra do joystick
-    barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_WHITE);
-    barra1.pushToSprite(&ball, 0, 0);
-    barra1.fillRect(15, coordY_B1, square_Width, square_Height, TFT_BLACK);
-    //Serial.println(analogRead(EIXO_Y));
-
-    coordY_B1_atual = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
-    //cima
-    if(coordY_B1_atual > coordY_B1_antiga){
-        coordY_B1 += 10;
-    }//baixo
-    if(coordY_B1_atual < coordY_B1_antiga){
-        coordY_B1 -= 10;
-
-    }
-    
-
-}
-
-void button_m(){
-    //----------------BARRA BOTOES-------------
-    //baixo
-    if(digitalRead(botao_azul) == 0){ //se o botao azul for apertado 
-        if(coordY_B2+(square_Height) <= 230){ 
-            coordY_B2 += 10;
-        }
-    
-    }
-    else if(digitalRead(botao_amarelo) == 0){ //se o botao azul for apertado 
-        coordY_B2 -= 10;
-        if(coordY_B2+(square_Height) == 50){ 
-            coordY_B2 += 10;
-        }
-    
-    }
-    
-
-    //barra do botoes
-    barra2.fillRect(80, coordY_B2, square_Width, square_Height, TFT_WHITE);
-    barra2.pushToSprite(&ball, 220, 0);
-    barra2.fillRect(80, coordY_B2, square_Width, square_Height, TFT_BLACK);
-}
+Joystick joy(32, 33, 25);
 
 
 void setup() {
     Serial.begin(115200);
     d.init();
-    d.fillScreen(TFT_BLACK);
-    d.setRotation(1); //origem fita verde
+    d.fillScreen(TFT_ORANGE);
+    d.setRotation(1);
 
-    //Ball sprite
+    abertura.setColorDepth(8);
+    abertura.createSprite(367, 300); //faixa na tela
+
     ball.setColorDepth(8);
-    ball.createSprite(320, 240);
+    ball.createSprite(40, 40);
 
-    //Barra 1 Sprite
-    barra1.setColorDepth(8);
-    barra1.createSprite(50, 240);
-
-    //Barra 2 Sprite
-    barra2.setColorDepth(8);
-    barra2.createSprite(100, 240);
-    
-    //Placar
     placar.setColorDepth(8);
     placar.createSprite(150, 50);
     placar.setTextDatum(MC_DATUM); 
 
-    //joystick
-    //pinMode(EIXO_X, INPUT);
-    pinMode(EIXO_Y, INPUT);
-    //buttons
-    pinMode(botao_azul, INPUT_PULLUP);
-    pinMode(botao_amarelo, INPUT_PULLUP);
- }
-void loop() {
-    //--------------BOLINHA---------------
-    ball_a(); 
-    //----------------BARRA JOYSTICK-------------
-    joystick_m();
-    //-----------------BARRA BOTOES-----------------
-    button_m();
-    update_Score();
-    //delay(10);
-    
+    barra_joy.setColorDepth(8);
+    barra_joy.createSprite(50, 100);
 
+    barra_button.setColorDepth(8);
+    barra_button.createSprite(100, 100);
+
+    pinMode(button::azul, INPUT_PULLUP);
+    pinMode(button::vermelho, INPUT_PULLUP);
+    //meujuiz.validation(gameOn, abertura);
+    meujuiz.init(abertura);
+    delay(1000);
+    d.fillScreen(TFT_BLACK);
 }
 
+void loop() {
+        
+        
+        int xAxisValue = analogRead(32);
+        int yAxisValue = analogRead(33);
+
+        joy.checkAndPrintDirections(xAxisValue, yAxisValue);
+        meujuiz.draw_Ball(ball); // desenha bola
+        meujuiz.draw_button( barra_button, coordY);
+        meujuiz.placar(placar, countBlack, countWhite); // desenha placar
+        // //meujuiz.hit_esquerda(); // retorna valor se atingiu esq
+        // //meujuiz.hit_direita(); // retorna valor se atingiu na dire
+        meujuiz.atingir(); // verifica se atingiu
+        meujuiz.count(); // conta os pontos
+        meujuiz.draw_joy(barra_joy);
 
 
 
-
-// /* CODIGO EXEMPLO DAS SPRITES
-
-//     img.fillCircle(x, 50, 10, TFT_BLACK); //desenha um circulo preto pra apagar o antigo
-//     //atualiza as coordenadas pra ele se mover
-//     x=x+1;
-//     if(x>320){
-//       x=0;
-//     }
-
-//     img.fillCircle(x, 50, 10, TFT_WHITE); //circulo branco, que está aparecendo
-//     img.fillRect(18, 70, 100, 100, TFT_BLACK); //retangulo preto pra apagar os numeros antigos
-//     img.drawString(String(x), 20, 74, 7); //posicao do circulo
-
-// */
-// /*---------- CHATGPT TOQUE --------------
-// coordX_B2 = map(analogRead(EIXO_X), 0, 4095, 0, 300); 
-// coordY_B2 = map(analogRead(EIXO_Y), 0, 4095, 0, 220);
-// Serial.print(analogRead(EIXO_X));
-// Serial.println(analogRead(EIXO_Y));
-// if (x + circleRadius >= coordX_B1 && x - circleRadius <= coordX_B1 + square_Width &&
-//     y + circleRadius >= coordY_B1 && y - circleRadius <= coordY_B1 + square_Height) {
-//     // Inverte a velocidade da bola
-//     x -= vx;
-//     y -= vy;
-
-//     Serial.print("Toquei");
-// }*/
+    
+}

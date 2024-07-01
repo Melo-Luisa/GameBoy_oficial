@@ -1,171 +1,198 @@
-
-
-
-#include <TFT_eSPI.h> // Graphics and font library for ILI9341 driver chip
+#include <Arduino.h>
+#include <TFT_eSPI.h>
 #include <SPI.h>
+#include <stdlib.h>
 
-#include "inputs.h"
-#include "initGB_black.h"
+#include <config.h>
+#include <joystick.h>
+#include "menu.h"
 
-
+//MENU
 TFT_eSPI d = TFT_eSPI();  // Define Display
+TFT_eSprite text = TFT_eSprite(&d);
+TFT_eSprite game = TFT_eSprite(&d);
 
-TFT_eSprite initWord = TFT_eSprite(&d); //Sprite "GAMEBOY" init function
+//PONG
+TFT_eSprite ball = TFT_eSprite(&d);
+TFT_eSprite barra_joy = TFT_eSprite(&d);
+TFT_eSprite barra_button = TFT_eSprite(&d);
+TFT_eSprite placar = TFT_eSprite(&d);
+TFT_eSprite abertura = TFT_eSprite(&d);
 
 
+//capi
+TFT_eSprite capiSprite = TFT_eSprite(&d);
+TFT_eSprite obstaculosSprite = TFT_eSprite(&d);
+TFT_eSprite scoreSprite = TFT_eSprite(&d);
+TFT_eSprite groundSprite = TFT_eSprite(&d);
 
-int menuIndex = 0;
 
-void init();
-void drawMenu();
-void menu();
+//QUIZ
+
+/*MENU*/
+bool geral = false; //inicia no menu inicial
+bool games = true; //menu games
+bool settings = false; //menu settings
+bool credits = false; //menu credits
+
+bool var = true;
+bool capi = true;
+
+//começa em 1 pra já ter algo pré selecionado
+int geral_index = 0;
+int games_index = 0;
+int settings_index = 1;
+
+
+/*PONG*/
+int x = 0; // valor inicial de x
+int y = 0; // valor inicial de y
+int vx = 10; // valor inicial de vx
+int vy = 10; // valor inicial de vy
+int circleRadius = 10; // raio do círculo
+int countBlack = 0; // contador de pontos preto
+int countWhite = 0; // contador de pontos branco
+int coordY = 100;
+int coordY_button = 100;
+
+/*capi*/
+int capix = 490, capivx = 5;
+int numObstaculos;
+int capiplacar = 0;
+
+
+Juiz juizPong(x, y, vx, vy, circleRadius, coordY, coordY_button);
+
+JuizCapi juizcapi(capix, capivx, numObstaculos);
+
+Menu menu(geral, games, settings, credits, geral_index, games_index, settings_index);
+
+bool gamePongOn = false;
+bool gameCapiOn = false;
+bool menuOn = true; 
+
 
 void setup() {
+  Serial.begin(115200);
   d.init();
   d.setRotation(1);
   d.setSwapBytes(true);
+  d.fillScreen(TFT_BLACK);
 
-  //TEXTO ANIMADO INICIALIZAÇÃO
-  initWord.setColorDepth(8);
-  initWord.createSprite(320, 240);
+  text.setColorDepth(8);
+  text.createSprite(480, 100); //faixa na tela
 
-  pinMode(botaoA, INPUT_PULLUP);
+  game.setColorDepth(8);
+  game.createSprite(480, 100); //faixa na tela4
+  game.setRotation(1);
 
-  init();
-  delay(1000);
-  //d.fillScreen(TFT_BLACK);
-}
-
-void loop() {
-  drawMenu();
-  menu();
-  
-}
-
-void init() {
-  d.pushImage(0,0,320,240,initGB_black);
-  d.setCursor(105, 105, 2);
-  d.setTextColor(TFT_WHITE);
-  d.setTextSize(2);
-  
-
-  String word = "GAMEBOY";
-
-  for (int i = 0; i < word.length(); i++) {
-    d.print(word[i]);
-    delay(100);
-  }
-
-  delay(1000);
-}
-//menu 
-void drawMenu() {
-  d.fillScreen(TFT_WHITE);
-
-  d.setTextColor(TFT_BLACK);
-  d.setTextSize(2);
-  d.setCursor(60, 20);
-  d.print("MENU");
-
-  d.setCursor(60, 80);
-  if (menuIndex == 0) {
-    d.setTextColor(TFT_WHITE, TFT_BLACK);
-    d.println(" GAMES ");
-    d.setTextColor(TFT_BLACK);
-  } else {
-    d.println(" GAMES ");
-  }
-
-  d.setCursor(60, 120);
-  if (menuIndex == 1) {
-    d.setTextColor(TFT_WHITE, TFT_BLACK);
-    d.println(" SETTINGS ");
-    d.setTextColor(TFT_BLACK);
-  } else {
-    d.println(" SETTINGS ");
-  }
-
-  d.setCursor(60, 150);
-  if (menuIndex == 2) {
-    d.setTextColor(TFT_WHITE, TFT_BLACK);
-    d.println(" CREDITS ");
-    d.setTextColor(TFT_BLACK);
-  } else {
-    d.println(" CREDITS ");
-  }
-  d.fillCircle(200, 225, 10, TFT_RED);
-  d.setCursor(60, 255);
-  d.print("select");
-  delay(1000);
+  abertura.setColorDepth(8);
+  abertura.createSprite(367, 300); //faixa na tela
 
   
+
+  pinMode(button::azul, INPUT_PULLUP);
+  pinMode(button::vermelho, INPUT_PULLUP);
+  pinMode(button::verde, INPUT_PULLUP);
+  pinMode(button::amarelo, INPUT_PULLUP);
+
+  menu.init(d);
+  
+
+
 }
 
-//Faz as funções do menu
-void menu(){
-   if (analogRead(eixoY) == 4095) { // Botão do joystick para cima
-    menuIndex--;
-    if (menuIndex < 0) {
-      menuIndex = 2;
+void loop(){
+  while (menuOn)
+  {
+    menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game);
+    menu.drawMenuGames(game, games_index);
+    menu.trackPosition(games, games_index);
+  
+  
+ 
+
+
+    while(gamePongOn){
+      menuOn = false;
+      if(var){
+        menu.backgroundPong(d,abertura);
+        ball.setColorDepth(8);
+        ball.createSprite(65, 65);
+
+        placar.setColorDepth(8);
+        placar.createSprite(120, 50);
+        placar.setTextDatum(MC_DATUM); 
+
+        barra_joy.setColorDepth(8);
+        barra_joy.createSprite(85, 180);
+
+        barra_button.setColorDepth(8);
+        barra_button.createSprite(100, 180);
+        var = false;
+
+        
+      }
+    
+      juizPong.draw_Ball(ball); // desenha bola
+      juizPong.draw_button( barra_button, coordY_button);
+      juizPong.placar(placar, countBlack, countWhite); // desenha placar
+      juizPong.atingir(); // verifica se atingiu
+      juizPong.count(abertura); // conta os pontos
+      juizPong.draw_joy(barra_joy);
+      if(juizPong.getCountBlack() > 9 || juizPong.getCountWhite() > 9){
+        gamePongOn = false;
+        menu.backgroundEndPong(d, gamePongOn);
+        menuOn = true;
+      }
+      if(digitalRead(button::amarelo) == LOW){
+        gamePongOn = false;
+        Serial.println("saindo");
+        menuOn = true;
+        game.init();
+        text.init();
+        //game.begin();
+        break;
+      }
     }
-    drawMenu();
-    delay(200); // Aguarde um curto período para evitar pressionamentos repetidos
+
+    while(gameCapiOn){
+      menuOn = false;
+      if(capi){
+        menu.backgroundCapi(d);
+        capiSprite.setColorDepth(8);
+        capiSprite.setSwapBytes(true);
+        capiSprite.createSprite(70,130);
+
+        obstaculosSprite.setColorDepth(8);
+        obstaculosSprite.createSprite(85,70);
+
+        scoreSprite.setColorDepth(8);
+        scoreSprite.createSprite(230,70);
+        scoreSprite.setTextDatum(MC_DATUM);
+
+        groundSprite.setColorDepth(8);
+        groundSprite.setSwapBytes(true);
+        groundSprite.createSprite(85, 70);
+        capi = false;
+      }
+      juizcapi.drawCapi(capiSprite);
+      juizcapi.drawObstacles(obstaculosSprite);
+      //juizcapi.background(groundSprite);
+      juizcapi.colision();
+      juizcapi.score();
+      juizcapi.drawScore(scoreSprite);
+      juizcapi.level_speed();
+    
+    }
+  
+
   }
 
-  if (analogRead(eixoY) == 0) { // Botão do joystick para baixo
-    menuIndex++;
-    if (menuIndex > 2) {
-      menuIndex = 0;
-    }
-    drawMenu();
-    delay(200); // Aguarde um curto período para evitar pressionamentos repetidos
-  }
 
-  // Lógica para executar a ação selecionada no menu
-  if (digitalRead(botaoA) == HIGH) {
-    // Executar a ação com base na opção selecionada no menu
-    Serial.print("Funciona");
-    switch (menuIndex) {
-      case 0:
-        d.print("Acesso 1");
-        delay(7000);
-        //Serial.print("Funciona1");
-        break;
-      case 1:
-        d.print("Acesso 2");
-        //Serial.print("Funciona2");
-        delay(5000);
-        break;
-      case 2:
-        d.print("Acesso 3");
-        delay(5000);
-        //rial.println("Funciona3");
-        break;
-    }
-    // Após executar a ação, redesenhar o menu
-    drawMenu();
-    delay(200); // Aguarde um curto período para evitar pressionamentos repetidos
-  }
+
 }
 
 
-void joy(){
-   if(digitalRead(botaoA) == 0){
 
-    d.println("Botao Joy acionado");
-  }
-  //EIXO Y
-  if(analogRead(eixoY) == 4095){
-    d.println("Cima acionado");
-  }
-  if (analogRead(eixoY) == 0){
-    d.println("Baixo acionado");
-  }
-  //EIXO X
-   if(analogRead(eixoX) == 4095){
-    d.println("Direita acionado");
-  }
-  if (analogRead(eixoX) == 0){
-    d.println("Esquerda acionado");
-  }
-}
+
