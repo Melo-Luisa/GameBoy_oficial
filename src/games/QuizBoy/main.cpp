@@ -72,6 +72,7 @@ void loop(){
 
         while (true) {
             delay(1000); // Para evitar reinicialização constante
+            Serial.println("teste");
         }
     }
     
