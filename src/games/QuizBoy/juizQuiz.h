@@ -5,17 +5,18 @@
 #include "questions.h"
 #include "joystick.h"
 
-#define MAX_PERGUNTAS 10
+#define MAX_PERGUNTAS 20
 #define MAX_ALTERNATIVAS 3
-#define MAX_CHAR 100
+
 
 
 class JuizQuiz{
     //variaveis
     private:
     Joystick joy;
-    Pergunta perguntas[10];
-    int pontuacao;
+    Pergunta perguntas[MAX_PERGUNTAS];
+    int pontuacaoJogador;
+    int pontuacaoGB;
     int perguntaAtual;
     int totalPerguntas;
 
@@ -26,9 +27,14 @@ class JuizQuiz{
     unsigned long lastDebounceTime = 0;
     const unsigned long debounceDelay = 200;
 
-    int distancia_alternativas = 70;
+    int distancia_alternativas = 40;
 
 
+    int red = 255; // Starting color
+    int green = 0;
+    int blue = 0;
+
+int step = 10; // Step value for color change
     public:
     //funções
     JuizQuiz(Pergunta p[], int total);
@@ -43,17 +49,46 @@ class JuizQuiz{
 
     void select(TFT_eSPI &d, int &alternativa_index);
 
-    int score();
+    int scoreJogador();
+
+    int scoreGB();
 
     bool isFinished();
+
+    void updateColor(TFT_eSPI &d);
+
 
 };
 
 
-JuizQuiz::JuizQuiz(Pergunta p[], int total):pontuacao(0), perguntaAtual(0), totalPerguntas(total), alternativa_index(0), joy(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy) {
+JuizQuiz::JuizQuiz(Pergunta p[], int total):pontuacaoJogador(0), pontuacaoGB(0), perguntaAtual(0), totalPerguntas(total), alternativa_index(0), joy(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy) {
     for(int i=0; i < total; i++){
         perguntas[i] = p[i];
     }
+}
+
+void JuizQuiz::updateColor(TFT_eSPI &d) {
+  if (red == 255 && green < 255 && blue == 0) {
+    green += step; // Increase green
+  } else if (green == 255 && red > 0 && blue == 0) {
+    red -= step; // Decrease red
+  } else if (green == 255 && blue < 255 && red == 0) {
+    blue += step; // Increase blue
+  } else if (blue == 255 && green > 0 && red == 0) {
+    green -= step; // Decrease green
+  } else if (blue == 255 && red < 255 && green == 0) {
+    red += step; // Increase red
+  } else if (red == 255 && blue > 0 && green == 0) {
+    blue -= step; // Decrease blue
+  }
+  
+  // Ensure color values stay within bounds
+  red = constrain(red, 0, 255);
+  green = constrain(green, 0, 255);
+  blue = constrain(blue, 0, 255);
+  
+  uint16_t color = d.color565(red, green, blue);
+  d.fillScreen(color); // Update the screen with the new color
 }
 
 
@@ -93,20 +128,27 @@ int JuizQuiz::showIntros(TFT_eSPI &d){
 void JuizQuiz::drawQuestions(TFT_eSPI &d) {
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
-    d.drawString(perguntas[perguntaAtual].enunciado, 10, 10, 2);
+
+    if (perguntas[perguntaAtual].func != nullptr) {
+        perguntas[perguntaAtual].func(d); // Chama a função associada à pergunta
+    } else {
+        Serial.println("Função da pergunta não definida.");
+    }
+    d.setTextSize(3);
     for (int i = 0; i < MAX_ALTERNATIVAS; ++i) {
-        d.drawString(String(i + 1) + ". " + perguntas[perguntaAtual].alternativas[i], 10, (distancia_alternativas * i)+50, 2);
+        d.drawString(String(i + 1) + ". " + perguntas[perguntaAtual].alternativas[i], 10, (distancia_alternativas * i) + 200);
     }
 }
 
 void JuizQuiz::updateAlternative(TFT_eSPI &d, int prev_index, int current_index) {
+    d.setTextSize(3);
     // Atualiza a cor da alternativa anterior
     d.setTextColor(TFT_WHITE);
-    d.drawString(String(prev_index + 1) + ". " + perguntas[perguntaAtual].alternativas[prev_index], 10, (distancia_alternativas * prev_index)+50, 2);
+    d.drawString(String(prev_index + 1) + ". " + perguntas[perguntaAtual].alternativas[prev_index], 10, (distancia_alternativas * prev_index)+200);
 
     // Atualiza a cor da alternativa atual
     d.setTextColor(TFT_YELLOW);
-    d.drawString(String(current_index + 1) + ". " + perguntas[perguntaAtual].alternativas[current_index], 10, (distancia_alternativas * current_index)+50, 2);
+    d.drawString(String(current_index + 1) + ". " + perguntas[perguntaAtual].alternativas[current_index], 10, (distancia_alternativas * current_index)+200);
 }
 
 
@@ -160,15 +202,21 @@ void JuizQuiz::select(TFT_eSPI &d, int &alternativa_index) {
         Serial.println(respostaSelecionada);
 
         if (respostaSelecionada == respostaCorreta) {
-            pontuacao++;
+            d.fillScreen(TFT_BLACK);
+            pontuacaoJogador++;
             d.setTextColor(TFT_GREEN);
-            d.drawString("Correto!", 10, 110, 2);
-        } else {
-            d.setTextColor(TFT_RED);
-            d.drawString("Errado!", 10, 110, 2);
+            d.drawString("Correto!", 180, 120, 2);
             d.setTextColor(TFT_WHITE);
-            d.drawString("Resposta correta: ", 10, 130, 2);
-            d.drawString(perguntas[perguntaAtual].alternativas[respostaCorreta], 10, 150, 2);
+            d.drawString("Ponto pra Você!", 150, 200, 2);
+        } else {
+            pontuacaoGB++;
+            d.fillScreen(TFT_BLACK);
+            d.setTextColor(TFT_RED);
+            d.drawString("Errado!", 180, 100, 2);
+            d.setTextColor(TFT_WHITE);
+            d.drawString("Ponto pro GameBoy", 80, 150, 2);
+            d.drawString("Resposta correta: ", 80, 200, 2);
+            d.drawString(perguntas[perguntaAtual].alternativas[respostaCorreta], 80, 250, 2);
         }
 
         perguntaAtual++;
@@ -187,10 +235,15 @@ void JuizQuiz::select(TFT_eSPI &d, int &alternativa_index) {
 
 
 
-int JuizQuiz::score(){
-    return pontuacao;
+int JuizQuiz::scoreJogador(){
+    return pontuacaoJogador;
+}
+
+
+int JuizQuiz::scoreGB(){
+    return pontuacaoGB;
 }
 
 bool JuizQuiz::isFinished(){
-     return perguntaAtual >= totalPerguntas;
+     return perguntaAtual >= 5;
 }

@@ -31,6 +31,7 @@ class JuizCapi{
         void score();
 
         int getplacar() const;
+        void setplacar(int valor){placar = valor;}
         int getHighScore() const;
 
         void level_speed();
@@ -58,12 +59,7 @@ void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
 }
 
 void JuizCapi::background(TFT_eSprite &groundSprite){
-    int backX = 470;
-    int backVX = 5;
-    backX -= backVX;
-    if(backX < 0){
-        backX = 480;
-    } 
+    
     groundSprite.fillScreen(TFT_BLACK);
     groundSprite.setSwapBytes(true);
     groundSprite.pushImage(0,0,60,60,back_final);

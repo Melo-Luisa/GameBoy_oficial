@@ -84,7 +84,6 @@ void setup() {
 
   game.setColorDepth(8);
   game.createSprite(480, 100); //faixa na tela4
-  game.setRotation(1);
 
   abertura.setColorDepth(8);
   abertura.createSprite(367, 300); //faixa na tela
@@ -103,91 +102,106 @@ void setup() {
 }
 
 void loop(){
-  while (menuOn)
-  {
+  label:
     menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game);
     menu.drawMenuGames(game, games_index);
     menu.trackPosition(games, games_index);
-  
-  
- 
+  while(gamePongOn){
+      
+    if(var){
+      menu.backgroundPong(d,abertura);
+      ball.setColorDepth(8);
+      ball.createSprite(65, 65);
 
+      placar.setColorDepth(8);
+      placar.createSprite(120, 50);
+      placar.setTextDatum(MC_DATUM); 
 
-    while(gamePongOn){
-      menuOn = false;
-      if(var){
-        menu.backgroundPong(d,abertura);
-        ball.setColorDepth(8);
-        ball.createSprite(65, 65);
+      barra_joy.setColorDepth(8);
+      barra_joy.createSprite(85, 180);
 
-        placar.setColorDepth(8);
-        placar.createSprite(120, 50);
-        placar.setTextDatum(MC_DATUM); 
+      barra_button.setColorDepth(8);
+      barra_button.createSprite(100, 180);
+      var = false;
 
-        barra_joy.setColorDepth(8);
-        barra_joy.createSprite(85, 180);
-
-        barra_button.setColorDepth(8);
-        barra_button.createSprite(100, 180);
-        var = false;
-
-        
-      }
-    
-      juizPong.draw_Ball(ball); // desenha bola
-      juizPong.draw_button( barra_button, coordY_button);
-      juizPong.placar(placar, countBlack, countWhite); // desenha placar
-      juizPong.atingir(); // verifica se atingiu
-      juizPong.count(abertura); // conta os pontos
-      juizPong.draw_joy(barra_joy);
-      if(juizPong.getCountBlack() > 9 || juizPong.getCountWhite() > 9){
-        gamePongOn = false;
-        menu.backgroundEndPong(d, gamePongOn);
-        menuOn = true;
-      }
-      if(digitalRead(button::amarelo) == LOW){
-        gamePongOn = false;
-        Serial.println("saindo");
-        menuOn = true;
-        game.init();
-        text.init();
-        //game.begin();
-        break;
-      }
+      
     }
-
-    while(gameCapiOn){
-      menuOn = false;
-      if(capi){
-        menu.backgroundCapi(d);
-        capiSprite.setColorDepth(8);
-        capiSprite.setSwapBytes(true);
-        capiSprite.createSprite(70,130);
-
-        obstaculosSprite.setColorDepth(8);
-        obstaculosSprite.createSprite(85,70);
-
-        scoreSprite.setColorDepth(8);
-        scoreSprite.createSprite(230,70);
-        scoreSprite.setTextDatum(MC_DATUM);
-
-        groundSprite.setColorDepth(8);
-        groundSprite.setSwapBytes(true);
-        groundSprite.createSprite(85, 70);
-        capi = false;
-      }
-      juizcapi.drawCapi(capiSprite);
-      juizcapi.drawObstacles(obstaculosSprite);
-      //juizcapi.background(groundSprite);
-      juizcapi.colision();
-      juizcapi.score();
-      juizcapi.drawScore(scoreSprite);
-      juizcapi.level_speed();
-    
+      
+    juizPong.draw_Ball(ball); // desenha bola
+    juizPong.draw_button( barra_button, coordY_button);
+    juizPong.placar(placar, countBlack, countWhite); // desenha placar
+    juizPong.atingir(); // verifica se atingiu
+    juizPong.count(abertura); // conta os pontos
+    juizPong.draw_joy(barra_joy);
+    if(juizPong.getCountBlack() == 5 || juizPong.getCountWhite() == 5){
+      juizPong.setCountBlack(0);
+      juizPong.setCountWhite(0);
+      gamePongOn = false;
+      menu.backgroundEndPong(d, gamePongOn);
+      //menuOn = true;
     }
-  
+    else if(digitalRead(button::amarelo) == LOW){
+      gamePongOn = false;
+      //menuOn = true;
+      d.fillScreen(TFT_WHITE);
+      juizPong.setCountBlack(0);
+      juizPong.setCountWhite(0);
+      game.setColorDepth(8);
+      game.createSprite(480, 100); // faixa na tela
+      menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game);
+      menu.drawMenuGames(game, games_index);
+      menu.trackPosition(games, games_index);
 
+
+      var = true; // Reiniciar as variáveis necessárias
+      break;
+    }
   }
+
+  while(gameCapiOn){
+    menuOn = false;
+    if(capi){
+      menu.backgroundCapi(d);
+      capiSprite.setColorDepth(8);
+      capiSprite.setSwapBytes(true);
+      capiSprite.createSprite(70,130);
+
+      obstaculosSprite.setColorDepth(8);
+      obstaculosSprite.createSprite(85,70);
+
+      scoreSprite.setColorDepth(8);
+      scoreSprite.createSprite(230,70);
+      scoreSprite.setTextDatum(MC_DATUM);
+
+      groundSprite.setColorDepth(8);
+      groundSprite.setSwapBytes(true);
+      groundSprite.createSprite(85, 70);
+
+      capi = false;
+    }
+    juizcapi.drawCapi(capiSprite);
+    juizcapi.drawObstacles(obstaculosSprite);
+    //juizcapi.background(groundSprite);
+    juizcapi.colision();
+    juizcapi.score();
+    juizcapi.drawScore(scoreSprite);
+    juizcapi.level_speed();
+      
+    if(digitalRead(button::amarelo) == LOW){
+      gameCapiOn = false;
+      d.fillScreen(TFT_WHITE);
+      game.setColorDepth(8);
+      game.createSprite(480, 100); // faixa na tela
+      menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game);
+      menu.drawMenuGames(game, games_index);
+      menu.trackPosition(games, games_index);
+      juizcapi.setplacar(0);
+      capiplacar = 0;
+      capi = true;
+      break;
+    }
+  }
+
 
 
 

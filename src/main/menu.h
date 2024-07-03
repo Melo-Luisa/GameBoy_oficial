@@ -94,9 +94,12 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
 }
 void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
     d.fillScreen(TFT_BLACK);
-    d.drawString("Fim de Jogo" ,367/2, 120,4);
+    d.drawCentreString("Fim de Jogo" ,245, 190,4);
+    d.drawCentreString("Logo logo você irá para o menu!" ,245, 210,2);
     gamePongOn = false;
     menuOn = true;
+    delay(1000);
+    d.fillScreen(TFT_WHITE);
 
 }
 
@@ -215,23 +218,28 @@ void Menu::drawMenuGames(TFT_eSprite &game, int &games_index) {
     
 }
 void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game ){
-    if(joyzinho.read_button_central() == LOW){
+    if(joyzinho.read_button_central() == LOW || digitalRead(button::azul) == LOW){
         if(games){
             switch(games_index){
                 case 0:
                     gamePongOn = true;
                     var = true;
                     gameCapiOn = false;
-                    game.deleteSprite();
+                   
+                    //game.deleteSprite();
+                    //game.fillScreen(TFT_BLACK);
                     
                     break;
-            
+
                 case 1:
-                    //ame.deleteSprite();
+            
                     gameCapiOn = true;
                     gamePongOn = false;
                     capi = true;
-                    game.deleteSprite();
+                    
+                    //game.deleteSprite();
+                    //game.fillScreen(TFT_BLACK);
+                
                     break;
                 case 2:
                     Serial.println("Tetris");
@@ -241,14 +249,6 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
     }
 
 }
-
-
-
-
-
-
-
-
 
 
 
