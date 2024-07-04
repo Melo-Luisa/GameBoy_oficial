@@ -8,6 +8,7 @@
 #include "games/Pong/juiz.h"
 #include "games/CapiRunner/logic.h"
 #include "games/QuizBoy/juizQuiz.h"
+#include "games/QuizBoy/questions.h"
 #include "config.h"
 #include "joystick.h"
 
@@ -38,7 +39,7 @@ class Menu{
         Juiz juiz;
         JuizCapi juizcapi;
         JuizQuiz juizquiz;
-        Pergunta perguntas[10];
+        Pergunta perguntas[2];
 
 
     
@@ -47,14 +48,13 @@ class Menu{
 
     public:
         Menu(bool geral, bool games, bool settings, bool credits, int geral_index, int games_index, int setting_index)
-        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz( x,  y,  vx,  vy,  circleRadius, coordY, coordY_button), juizcapi(capix, capivx, numObstaculos),juizquiz(perguntas, total) {}
-
+        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz( x,  y,  vx,  vy,  circleRadius, coordY, coordY_button), juizcapi(capix, capivx, numObstaculos), juizquiz(perguntas, total){}
         //FUNCIONA
         void init(TFT_eSPI &d);/*função já existente pra desenhar a inicialização*/
 
         void drawMenuGames(TFT_eSprite &game, int &games_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
 
-        void select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game);
+        void select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game, bool &gameQuizOn);
         void trackPosition(bool &games, int &games_index);
 
         void backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura);
@@ -65,12 +65,13 @@ class Menu{
         void drawSettings();
         void drawCredits();//Mostra informações dos criadores, além da foto dos dois   
         void drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index);//desenha o menu inicial, com as opções de games, créditos e settings
+        // void PongOn(bool &gamePongOn, TFT_eSPI &d);
+        // void CapiOn(bool &gameCapiOn);
 
     
 };
 
 void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
-    //d.fillScreen(TFT_BLACK);
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
     d.setTextSize(1);
@@ -89,7 +90,7 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
     d.drawCentreString("Evite que a bolinha passe para o outro lado.", 245, 190,2);
     d.drawCentreString("- Quem chegar em 10 Pontos primeiro ganha!", 245,210,2);
     delay(6500);
-    d.fillScreen(TFT_BLACK);
+    //d.fillScreen(TFT_BLACK);
     
 }
 void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
@@ -119,7 +120,7 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     d.drawCentreString(" Marque a maior pontuação!", 245, 190,2);
     d.drawCentreString("PARA SAIR: APERTE AMARELO", 240, 210,2);
     delay(6000);
-    d.fillScreen(TFT_BLACK);
+   // d.fillScreen(TFT_BLACK);
 }
 
 void Menu::init(TFT_eSPI &d) {
@@ -206,49 +207,78 @@ void Menu::drawMenuGames(TFT_eSprite &game, int &games_index) {
 
     if (games_index == 2) {
         game.setTextColor(TFT_WHITE, TFT_BLACK);
-        game.println(" TETRIS ");
+        game.println(" QUIZBOY ");
         game.setTextColor(TFT_BLACK);
         /// Serial.println("tetris");
     } else {
-        game.println(" TETRIS ");
+        game.println(" QUIZBOY ");
     }
 
     game.pushSprite(0, 110);
         
     
 }
-void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game ){
+void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game, bool &gameQuizOn ){
     if(joyzinho.read_button_central() == LOW || digitalRead(button::azul) == LOW){
         if(games){
             switch(games_index){
                 case 0:
                     gamePongOn = true;
-                    var = true;
                     gameCapiOn = false;
-                   
-                    //game.deleteSprite();
-                    //game.fillScreen(TFT_BLACK);
-                    
+                    gameQuizOn = false;
+                    var = true;
+                    // game.fillScreen(TFT_BLACK);
                     break;
 
                 case 1:
             
                     gameCapiOn = true;
                     gamePongOn = false;
+                    gameQuizOn = false;
                     capi = true;
+
+
                     
-                    //game.deleteSprite();
-                    //game.fillScreen(TFT_BLACK);
                 
                     break;
                 case 2:
-                    Serial.println("Tetris");
+                    gameCapiOn = false;
+                    gamePongOn = false;
+                    gameQuizOn = true;
                     break;
             }
         }
     }
 
 }
+// void Menu::PongOn(bool &gamePongOn, TFT_eSPI &d){
+  
+
+//     while (gamePongOn) {
+//         //initializePong();
+//         while (gamePongOn) {
+            
+//         }
+//     }
+// }
+
+// void Menu::CapiOn(bool &gameCapiOn){
+//     juizcapi.drawCapi(capiSprite);
+//     juizcapi.drawObstacles(obstaculosSprite);
+//     juizcapi.colision();
+//     juizcapi.score();
+//     juizcapi.drawScore(scoreSprite);
+//     juizcapi.level_speed();
+
+//     if (digitalRead(button::amarelo) == LOW) {
+//         gameCapiOn = false;
+//         menuOn = true;
+//         d.fillScreen(TFT_WHITE);
+//         juizcapi.setplacar(0);
+//     }
+// }
+
+
 
 
 
