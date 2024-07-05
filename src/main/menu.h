@@ -227,7 +227,7 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
                     gameCapiOn = false;
                     gameQuizOn = false;
                     var = true;
-                    // game.fillScreen(TFT_BLACK);
+                    game.deleteSprite();
                     break;
 
                 case 1:
@@ -238,7 +238,8 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
                     capi = true;
 
 
-                    
+                    game.deleteSprite();
+
                 
                     break;
                 case 2:
