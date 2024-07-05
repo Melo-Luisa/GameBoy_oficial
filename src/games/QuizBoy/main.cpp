@@ -28,7 +28,10 @@ void setup() {
 
 
 void loop(){
+
+
     quiz.initQuiz(tft);
+
     
     
 }

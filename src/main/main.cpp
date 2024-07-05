@@ -114,6 +114,7 @@ void setup() {
 
 
 }
+
 void initializePong(){
  
   menu.backgroundPong(d, abertura);
@@ -134,6 +135,7 @@ void initializePong(){
   barra_joy.setSwapBytes(true);
   barra_joy.createSprite(85, 180);
 }
+
 
 
 void initializeCapi() {
@@ -194,6 +196,7 @@ void capig(){
       juizcapi.score();
       juizcapi.drawScore(scoreSprite);
       juizcapi.level_speed();
+
 
       if (digitalRead(button::amarelo) == LOW) {
         gameCapiOn = false;
