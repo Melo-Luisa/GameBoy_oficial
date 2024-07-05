@@ -79,6 +79,30 @@ void setup() {
   pinMode(button::amarelo, INPUT_PULLUP);
 
   menu.init(d);
+
+
+}
+
+void initializePong(){
+ 
+  menu.backgroundPong(d, abertura);
+  barra_button.setColorDepth(4);
+  barra_button.setSwapBytes(true);
+  barra_button.createSprite(100, 180);
+
+  ball.setColorDepth(8);
+  ball.setSwapBytes(true);
+  ball.createSprite(80, 80);
+
+  placar.setColorDepth(8);
+  placar.setSwapBytes(true);
+  placar.createSprite(120, 50);
+  placar.setTextDatum(MC_DATUM);
+
+  barra_joy.setColorDepth(4);
+  barra_joy.setSwapBytes(true);
+  barra_joy.createSprite(85, 180);
+>>>>>>> a59e38deb4b9230989c52486502c9a7ee4f553a6
 }
 
 void back() {
@@ -128,6 +152,7 @@ void destroyPongSprites() {
   delete placar;
   delete abertura;
 }
+
 
 void initializeCapi() {
   menu.backgroundCapi(d);
@@ -204,10 +229,7 @@ void capig() {
       juizcapi.drawScore(*scoreSprite);
       juizcapi.level_speed();
 
-      // Certifique-se de que os sprites estão sendo empurrados para a tela
-      capiSprite->pushSprite(0, 0);
-      obstaculosSprite->pushSprite(0, 0);
-      scoreSprite->pushSprite(0, 0);
+>>>>>>> a59e38deb4b9230989c52486502c9a7ee4f553a6
 
       if (digitalRead(button::amarelo) == LOW) {
         gameCapiOn = false;

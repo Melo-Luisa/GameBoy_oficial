@@ -56,8 +56,10 @@ int step = 10; // Step value for color change
     bool isFinished();
 
     void updateColor(TFT_eSPI &d);
+
     
     void initQuiz(TFT_eSPI &d);
+
 
 
 };
