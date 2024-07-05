@@ -28,16 +28,10 @@ class Ball{
 
 void Ball::move() {
 
-    // if (y <= 0 || y >= tela::height - circleRadius) { 
-    //     vy = -vy;
-    // }
-    // x += vx;
-    // y += vy;
-   
     x += vx;
     y += vy;
    // Colisão com a parede superior
-    if (y - circleRadius <= 0) {
+    if (y - circleRadius < 0) {
         vy = -vy;
         y = circleRadius;
     }
@@ -48,9 +42,5 @@ void Ball::move() {
         y = 320 - circleRadius;
     }
 
-   // Serial.print("eixo X:"); Serial.println(x);
-    // if (vx == 0 && vy == 0) {
-    //     // A bola está parada, não fazer nada
-    //     return;
-    // }
+   
 }

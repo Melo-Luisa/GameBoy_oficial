@@ -1,25 +1,28 @@
 #pragma once
 #include <stdlib.h>
 
-#include  "config.h"
 #include "obstacles.h"
 #include "capivara.h"
-#include "img_capi.h"
+//imagens
+#include "capivara_final.h"
+#include "tree_final.h" 
+#include "back_final.h" 
 
-class logic{
+
+
+class JuizCapi{
     private:
-        bool gameTwoOn;
-        int numObstaculos, placar = 0;
+        int numObstaculos, placar = 0, highScore;
         int x,vx;
         int leap, jump, level;
         obstacles obst;
         Capivara capi; 
 
     public:
-        logic(int x, int vx, int numObstaculos): numObstaculos(numObstaculos), obst(x, vx), capi(leap, jump, level){}
+        JuizCapi(int x, int vx, int numObstaculos): numObstaculos(numObstaculos), obst(x, vx), capi(leap, jump, level){}
         void drawCapi(TFT_eSprite &capiSprite);
-        void drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos);
-        void drawBackground();
+        void drawObstacles(TFT_eSprite &obstaculosSprite);
+        void background(TFT_eSprite &groundSprite);
         void drawScore(TFT_eSprite &scoreSprite);
         int randomObstaculos(int numObstaculos);
 
@@ -28,8 +31,11 @@ class logic{
         void score();
 
         int getplacar() const;
+        int getHighScore() const;
 
         void level_speed();
+
+
 
 
 
@@ -37,23 +43,36 @@ class logic{
 
 
 /*Desenhar na tela a capivara*/
-void logic::drawCapi(TFT_eSprite &capiSprite){
+void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
+    Serial.println("Desenhando Capivara");
     capi.jump();
     capiSprite.fillSprite(TFT_BLACK);
-    capiSprite.fillCircle(30,  capi.getY() + 65, 10, TFT_WHITE);
-    //capiSprite.pushImage(0, 0, 96, 96, img_capi);
-    /*X = 0
-    Y = */
-    capiSprite.pushSprite(0, 220);
-    //Serial.println(capi.getY());
+    //capiSprite.setSwapBytes(true);
+    //capiSprite.fillCircle(30,  capi.getY()+75, 10, TFT_WHITE);
+    capiSprite.pushImage(5,capi.getY()+75,60,60,capivara_final);
+    capiSprite.pushSprite(0, 70);
+    Serial.println("Desenhada Capivara"); 
+
+
 
 }
 
-// void setupRandom() {
-//     randomSeed(analogRead(0));
-// }
+void JuizCapi::background(TFT_eSprite &groundSprite){
+    int backX = 470;
+    int backVX = 5;
+    backX -= backVX;
+    if(backX < 0){
+        backX = 480;
+    } 
+    groundSprite.fillScreen(TFT_BLACK);
+    groundSprite.setSwapBytes(true);
+    groundSprite.pushImage(0,0,60,60,back_final);
+    groundSprite.pushSprite(obst.getX(),150);
+        
+}
 
-int logic::randomObstaculos(int numObstaculos){
+
+int JuizCapi::randomObstaculos(int numObstaculos){
     numObstaculos = random(1, 3);
     //Serial.println(numObstaculos);
     return numObstaculos;
@@ -61,35 +80,26 @@ int logic::randomObstaculos(int numObstaculos){
 
 /*Desenhar na tela os obstaculos
 @note quadrados de inicio, alguma forma a mais? Arvores, desenho empilhada?*/
-void logic::drawObstacles(TFT_eSprite &obstaculosSprite, int numObstaculos) {
+void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite) {
+    Serial.println("Desenhando OBSTACULOS");
+
     obst.move();
     obstaculosSprite.fillSprite(TFT_BLACK);
 
-    obstaculosSprite.fillRect(5, 10, obs::obs_width, obs::obs_height, TFT_WHITE);
-    //Serial.println(numObstaculos);
-    
-    //Se o número for 2, desenhar um segundo retângulo
-    if (numObstaculos == 2) {
-        // Você pode ajustar as coordenadas do segundo retângulo conforme necessário
-        int secondRectX = 70; // Posição x do segundo retângulo
-        int secondRectY = 25; // Posição y do segundo retângulo (mesma linha)
-        obstaculosSprite.fillRect(secondRectX, secondRectY, obs::obs_width_1, obs::obs_height_1, TFT_RED);
-        //obstaculosSprite.pushSprite(obst.getX(), 150);
+    obstaculosSprite.setSwapBytes(true);
+    obstaculosSprite.pushImage(0,25,60,60,tree_final);
 
-       
-    }
-    
-    obstaculosSprite.pushSprite(obst.getX(), 250);
-    Serial.println(obst.getX());
+    obstaculosSprite.pushSprite(obst.getX(), 130);
+    Serial.println("Desenhado OBSTACULOS");
+
 }
 
 /*Verifica se houve colisão com obstaculos
-@note Ta quase - arrumar a bolinha*/
-bool logic::colision(){
+@note FUNCIONA*/
+bool JuizCapi::colision(){
     bool colisao = false;
-    if( capi.getY() == 0 && obst.getX() == 5){
+    if(capi.getY() == 0 && obst.getX() <= obst.getVX()){
         colisao = true;
-        //Serial.println("Colidiu");
     }
     
     return colisao;
@@ -98,29 +108,36 @@ bool logic::colision(){
 
 /*Contador de pontuação
 @note funciona*/
-void logic::score(){
+void JuizCapi::score(){
     placar += 1;
-    if(colision()){
+    if (colision()) {
+        if (placar > highScore) {
+            highScore = placar;  
+        }
         placar = 0;
     }
-    //Serial.println(placar);
 }
 
-int logic::getplacar() const {return placar;}
+int JuizCapi::getplacar() const {return placar;}
+int JuizCapi::getHighScore() const {return highScore;}
 
-void logic::drawScore(TFT_eSprite &scoreSprite){
+void JuizCapi::drawScore(TFT_eSprite &scoreSprite) {
+    Serial.println("Desenhando Score");
 
-    scoreSprite.fillSprite(TFT_BLACK);
-    scoreSprite.setTextColor(TFT_WHITE);
-    scoreSprite.drawString(String(getplacar()), 20,25,6);
+    scoreSprite.fillSprite(TFT_WHITE);
+    scoreSprite.setTextColor(TFT_BLACK);
 
-    scoreSprite.pushSprite(200,10);
+    scoreSprite.drawString("Score: " + String(getplacar()), 110, 20, 4);
 
+    scoreSprite.drawString("High Score: " + String(getHighScore()), 120, 55, 4);
+
+    scoreSprite.pushSprite(100, 10);
+    Serial.println("Desenhando Score");
 
 }
 
 /*Vai aumentando a velocidade conforme vai passando com mais pontuação */
-void logic::level_speed() {
+void JuizCapi::level_speed() {
     switch (getplacar() / 100) {
         case 0:
             obst.setVX(10);

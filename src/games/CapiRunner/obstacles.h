@@ -12,6 +12,7 @@ class obstacles{
 
         int getX() const {return x;}
         int getVX() const {return vx;}
+       
 
         void setX(int newX) { x = newX; }
         void setVX(int newVX){vx = newVX;}

@@ -8,9 +8,12 @@ namespace joystick{
 }
 
 namespace button{
-    int azul = 34;
-    int vermelho = 39;
-    int branco = 35;
+    int verde = 34;
+    int vermelho = 35;
+    int azul = 39;
+    int amarelo = 36;
+ 
+
 }
 
 namespace bar{
@@ -22,7 +25,7 @@ namespace obs{
     int obs_width = 15;
     int obs_height = 30;
 
-    int obs_width_1 = 15;
+    int obs_width_1 = 25;
     int obs_height_1 = 35;
 }
 
