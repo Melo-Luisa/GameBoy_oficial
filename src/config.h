@@ -8,10 +8,10 @@ namespace joystick{
 }
 
 namespace button{
-    int verde = 34;
-    int vermelho = 35;
-    int azul = 39;
-    int amarelo = 36;
+    int verde = 39;
+    int vermelho = 34;
+    int azul = 36;
+    int amarelo = 35;
  
 
 }

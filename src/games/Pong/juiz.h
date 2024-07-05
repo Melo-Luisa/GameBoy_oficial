@@ -42,6 +42,8 @@ class Juiz{
 
         int getCountWhite() const;
         int getCountBlack() const;
+        void setCountBlack(int value);
+        void setCountWhite(int value);
 
 };
 
@@ -110,11 +112,11 @@ boolean Juiz::hit_direita(int coordY_button) {
 void Juiz::atingir() {
     if (hit_esquerda(coordY)) {
         bolinha.setVX(-bolinha.getvx());
-        bolinha.setVY(-bolinha.getvy());
+        bolinha.setVY(bolinha.getvy());
     }
     if(hit_direita(coordY_button)){
         bolinha.setVX(-bolinha.getvx());
-        bolinha.setVY(-bolinha.getvy());
+        bolinha.setVY(bolinha.getvy());
     }
    
 }
@@ -128,23 +130,9 @@ void Juiz::count(TFT_eSprite &abertura) {
     if (bolinha.getX() < -35) { 
         bolinha.setX(tela::width - 45); 
         countWhite += 1;
-
-        if (countWhite == 10 || countBlack == 10) {
-            countBlack = 0;
-            countWhite = 0;
-        
-
-        }
     } else if (bolinha.getX() >= tela::width + bolinha.getCircleRadius() ) { 
         bolinha.setX(bolinha.getCircleRadius()+30); // Coloca a bola perto da
-        countBlack += 1;
-
-        if (countBlack == 10 || countWhite == 10) {
-            countBlack = 0;
-            countWhite = 0;
-            //end(abertura, gamePongOn); 
-            abertura.deleteSprite();
-        }
+        countBlack += 1;    
     }
 }
 
@@ -160,11 +148,21 @@ int Juiz::getCountBlack() const {
     return countBlack;
 }
 
+void Juiz::setCountBlack(int value) {
+    countBlack = value;
+}
+
+void Juiz::setCountWhite(int value) {
+    countWhite = value;
+}
+
+
+
 /*Função tem como objetivo desenhar na tela a barra do lado esquerdo, dentro da sua sprite mesmo - Joystick
 @param TFT barra_joy*/
 void Juiz::draw_joy( TFT_eSprite &barra_joy){
     barra.move_joy();
-    barra_joy.fillSprite(TFT_BLACK);
+    barra_joy.fillSprite(TFT_RED);
     barra_joy.fillRect(15, 25, bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_joy.pushSprite(0, barra.move_joy());
     
@@ -177,7 +175,7 @@ void Juiz::draw_button(TFT_eSprite &barra_button, int coordY_button ){
     barra.move_joy();
     barra_button.fillSprite(TFT_BLACK);
     barra_button.fillRect(20, 20, bar::square_Width, bar::square_Height, TFT_WHITE);
-    barra_button.pushSprite(410, barra.move_button());
+    barra_button.pushSprite(420, barra.move_button());
     //Serial.println(barra.move_button());
 }
 
@@ -189,7 +187,6 @@ void Juiz::draw_Ball(TFT_eSprite &ball){
     ball.fillSprite(TFT_BLACK);
     ball.fillCircle(20, 20, bolinha.getCircleRadius(), TFT_RED);
     ball.pushSprite(bolinha.getX(), bolinha.getY());
-    Serial.println(bolinha.getX());
     
 }
 

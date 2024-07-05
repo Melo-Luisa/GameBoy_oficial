@@ -57,6 +57,10 @@ int step = 10; // Step value for color change
 
     void updateColor(TFT_eSPI &d);
 
+    
+    void initQuiz(TFT_eSPI &d);
+
+
 
 };
 
@@ -64,6 +68,56 @@ int step = 10; // Step value for color change
 JuizQuiz::JuizQuiz(Pergunta p[], int total):pontuacaoJogador(0), pontuacaoGB(0), perguntaAtual(0), totalPerguntas(total), alternativa_index(0), joy(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy) {
     for(int i=0; i < total; i++){
         perguntas[i] = p[i];
+    }
+}
+
+void JuizQuiz::initQuiz(TFT_eSPI &d){
+        if (!isFinished()) {
+        trackPosition(d, alternativa_index);
+        select(d, alternativa_index);
+        //Serial.println(alternativa_index);
+    } else {
+        d.fillScreen(TFT_BLACK);
+        d.setTextColor(d.color565(255, 150, 0));    
+        d.drawString("The End", 160, 10, 2);
+        if(scoreGB() > scoreJogador()){ //gameboy ganhou
+            d.setTextSize(3);
+            d.setTextColor(TFT_GREEN);
+            d.drawString("GameBoy", 30, 80, 2);
+            d.drawString((String(scoreGB())), 80, 150);
+            d.setTextColor(TFT_WHITE);
+            d.drawString("x", 230, 80, 2);
+            d.setTextColor(TFT_RED);
+            d.drawString("Player", 320, 80, 2);
+            d.drawString(String(scoreJogador()), 360, 150);
+            d.setTextColor(TFT_WHITE);
+            d.setTextSize(2);
+            d.drawString("Aparentemente o GameBoy sabe mais...", 30, 250);
+
+            
+        }else{ //jogador ganhou
+            d.setTextSize(3);
+            d.setTextColor(TFT_RED);
+            d.drawString("GameBoy", 30, 80, 2);
+            d.drawString((String(scoreGB())), 80, 150);
+            d.setTextColor(TFT_WHITE);
+            d.drawString("x", 230, 80, 2);
+            d.setTextColor(TFT_GREEN);
+            d.drawString("Player", 320, 80, 2);
+            d.drawString(String(scoreJogador()), 360, 150);
+            d.setTextColor(TFT_WHITE);   
+            d.setTextSize(2);
+            d.drawString("Tu Realmente Entende de Jogos Hein...", 20, 250);
+        }
+
+        //tft.drawString("Pontuacao Player: " + String(quiz.scoreJogador()), 40, 50, 2);
+        //tft.drawString("Pontuacao GB: " + String(quiz.scoreGB()), 40, 80, 2);
+
+
+        while (true) {
+            delay(1000); // Para evitar reinicialização constante
+            Serial.println("teste");
+        }
     }
 }
 

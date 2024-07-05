@@ -46,10 +46,10 @@ void loop(){
 
 void setup() {
   Serial.begin(115200);
-  pinMode(34, INPUT); //verde
-  pinMode(35, INPUT); //vermelho
-  pinMode(36, INPUT); //amarelo
-  pinMode(39, INPUT); //azul
+  pinMode(34, INPUT); //vermelho
+  pinMode(35, INPUT); //amarelo
+  pinMode(36, INPUT); //azul
+  pinMode(39, INPUT); //verde
 
   
 

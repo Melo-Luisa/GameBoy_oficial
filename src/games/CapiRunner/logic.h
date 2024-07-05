@@ -22,7 +22,6 @@ class JuizCapi{
         JuizCapi(int x, int vx, int numObstaculos): numObstaculos(numObstaculos), obst(x, vx), capi(leap, jump, level){}
         void drawCapi(TFT_eSprite &capiSprite);
         void drawObstacles(TFT_eSprite &obstaculosSprite);
-        void background(TFT_eSprite &groundSprite);
         void drawScore(TFT_eSprite &scoreSprite);
         int randomObstaculos(int numObstaculos);
 
@@ -31,6 +30,7 @@ class JuizCapi{
         void score();
 
         int getplacar() const;
+        void setplacar(int valor){placar = valor;}
         int getHighScore() const;
 
         void level_speed();
@@ -57,19 +57,14 @@ void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
 
 }
 
-void JuizCapi::background(TFT_eSprite &groundSprite){
-    int backX = 470;
-    int backVX = 5;
-    backX -= backVX;
-    if(backX < 0){
-        backX = 480;
-    } 
-    groundSprite.fillScreen(TFT_BLACK);
-    groundSprite.setSwapBytes(true);
-    groundSprite.pushImage(0,0,60,60,back_final);
-    groundSprite.pushSprite(obst.getX(),150);
+// void JuizCapi::background(TFT_eSprite &groundSprite){
+    
+//     groundSprite.fillScreen(TFT_BLACK);
+//     groundSprite.setSwapBytes(true);
+//     groundSprite.pushImage(0,0,60,60,back_final);
+//     groundSprite.pushSprite(obst.getX(),150);
         
-}
+// }
 
 
 int JuizCapi::randomObstaculos(int numObstaculos){
