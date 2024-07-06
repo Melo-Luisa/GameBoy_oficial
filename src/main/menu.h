@@ -48,11 +48,11 @@ class Menu{
 
     public:
         Menu(bool geral, bool games, bool settings, bool credits, int geral_index, int games_index, int setting_index)
-        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz( x,  y,  vx,  vy,  circleRadius, coordY, coordY_button), juizcapi(capix, capivx, numObstaculos), juizquiz(perguntas, total){}
+        : geral(geral), games(games), settings(settings), credits(credits), geral_index(geral_index), settings_index(setting_index), games_index(games_index), joyzinho(joystick::eixo_x, joystick::eixo_y, joystick::botao_joy), juiz( x,  y,  vx,  vy,  circleRadius, coordY, coordY_button), juizcapi(capix, capivx, numObstaculos), juizquiz(perguntas, total){}
         //FUNCIONA
         void init(TFT_eSPI &d);/*função já existente pra desenhar a inicialização*/
 
-        void drawMenuGames(TFT_eSprite *game, int &games_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
+        void drawMenuGames(TFT_eSprite *(&game), int &games_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
         void drawMenuGames_aux(TFT_eSprite &two, int &games_index);
 
         void select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game, bool &gameQuizOn);
@@ -171,52 +171,55 @@ void Menu::trackPosition(bool &games, int &games_index) {
     }
 }
 
-void Menu::drawMenuGames(TFT_eSprite *game, int &games_index) {
-    game->fillSprite(TFT_WHITE);
-    game->setTextSize(2);
+void Menu::drawMenuGames(TFT_eSprite *(&game), int &games_index) {
+    (*game).fillSprite(TFT_WHITE);
+    (*game).setTextSize(2);
 
     // Adiciona o título
-    game->setCursor(40, 10); // Define a posição do cursor para o título
-    game->setTextColor(TFT_BLACK);
-    game->println("GAMES");
+    (*game).setCursor(40, 10); // Define a posição do cursor para o título
+    (*game).setTextColor(TFT_BLACK);
+    (*game).println("GAMES");
 
     // Desenha os itens do menu abaixo do título
-    game->setCursor(40, 40); // Define a posição inicial do cursor para o primeiro item
+    (*game).setCursor(40, 40); // Define a posição inicial do cursor para o primeiro item
+    //Serial.println(games_index);
+
 
     if (games_index == 0) {
-        Serial.println(games_index);
-
-        game->setTextColor(TFT_WHITE, TFT_BLACK);
-        game->println(" PONG ");
-        game->setTextColor(TFT_BLACK);
+        Serial.println("ENTRO NO PONG");
+        (*game).setTextColor(TFT_WHITE, TFT_BLACK);
+        (*game).println(" PONG ");
+        (*game).setTextColor(TFT_BLACK);
         // Serial.println("pong");
     } else {
-        game->println(" PONG ");
+        (*game).println(" PONG ");
     }
 
-    game->setCursor(150, 40); // Define a posição do cursor para o segundo item
+    (*game).setCursor(150, 40); // Define a posição do cursor para o segundo item
 
     if (games_index == 1) {
-        game->setTextColor(TFT_WHITE, TFT_BLACK);
-        game->println(" CAPI RUNNER ");
-        game->setTextColor(TFT_BLACK);
+        Serial.println("ENTRO NO CAPI");
+
+        (*game).setTextColor(TFT_WHITE, TFT_BLACK);
+        (*game).println(" CAPI RUNNER ");
+        (*game).setTextColor(TFT_BLACK);
         // Serial.println("dino");
     } else {
-        game->println(" CAPI RUNNER ");
+        (*game).println(" CAPI RUNNER ");
     }
 
-    game->setCursor(350, 40); // Define a posição do cursor para o terceiro item
+    (*game).setCursor(350, 40); // Define a posição do cursor para o terceiro item
 
     if (games_index == 2) {
-        game->setTextColor(TFT_WHITE, TFT_BLACK);
-        game->println(" QUIZBOY ");
-        game->setTextColor(TFT_BLACK);
+        (*game).setTextColor(TFT_WHITE, TFT_BLACK);
+        (*game).println(" QUIZBOY ");
+        (*game).setTextColor(TFT_BLACK);
         /// Serial.println("tetris");
     } else {
-        game->println(" QUIZBOY ");
+        (*game).println(" QUIZBOY ");
     }
     //Serial.println(games_index);
-    game->pushSprite(0, 110);
+    (*game).pushSprite(0, 110);
 }
 
 // void Menu::drawMenuGames_aux(TFT_eSprite &two, int &games_index) {

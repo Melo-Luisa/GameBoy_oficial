@@ -161,7 +161,7 @@ void initializeCapi() {
 }
 
 void pong(int games_index){
-  games_index = 0;
+  
   while (gamePongOn) {
     initializePong();
     while (gamePongOn) {
@@ -189,6 +189,7 @@ void pong(int games_index){
           juizPong.setCountWhite(0);
           menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
           menu.drawMenuGames(&two, games_index);
+          //Serial.println(games_index);
           menu.trackPosition(games, games_index);
           //Serial.println(games_index_two);
 
@@ -216,7 +217,7 @@ void capig(int games_index){
         d.fillScreen(TFT_WHITE);
         juizcapi.setplacar(0);
         menu.select(games_index_two, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
-        menu.drawMenuGames(&two, games_index);
+        menu.drawMenuGames(*two, games_index);
         menu.trackPosition(games, games_index);
       }
     }
@@ -224,10 +225,11 @@ void capig(int games_index){
 }
 
 void loop() {
-  games_index = 0;
+  //games_index = 0;
   menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
   menu.drawMenuGames(&game, games_index);
   menu.trackPosition(games, games_index);
+  //Serial.println(games_index);
   pong(games_index);
   capig(games_index);
  
