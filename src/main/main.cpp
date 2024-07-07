@@ -252,19 +252,19 @@ void quizG(int games_index){
         gameQuizOn = false;
         menuOn = true;
         menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
-        menu.drawMenuGames(&two, games_index);
+        menu.drawMenuGames(two_aux, games_index);
         menu.trackPosition(games, games_index);
       }
     }
     
   }
   
-
+}
 
 
 void loop() {
   menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
-  menu.drawMenuGames(&game, games_index);
+  menu.drawMenuGames(game_aux, games_index);
   menu.trackPosition(games, games_index);
   pong(games_index);
   capig(games_index);
