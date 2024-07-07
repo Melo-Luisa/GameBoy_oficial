@@ -122,7 +122,7 @@ void setup() {
 
 void initializePong(){
  
-  //menu.backgroundPong(d, abertura);
+  menu.backgroundPong(d, abertura);
   barra_button.setColorDepth(8);
   barra_button.setSwapBytes(true);
   barra_button.createSprite(100, 180);
@@ -144,7 +144,7 @@ void initializePong(){
 
 
 void initializeCapi() {
-  //menu.backgroundCapi(d);
+  menu.backgroundCapi(d);
 
   capiSprite.setColorDepth(8);
   capiSprite.setSwapBytes(true);
@@ -189,9 +189,7 @@ void pong(int games_index){
           juizPong.setCountWhite(0);
           menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
           menu.drawMenuGames(&two, games_index);
-          //Serial.println(games_index);
           menu.trackPosition(games, games_index);
-          //Serial.println(games_index_two);
 
       }
     }
@@ -199,6 +197,8 @@ void pong(int games_index){
 }
 
 void capig(int games_index){
+  menu.drawMenuGames(&two, games_index);
+
   while (gameCapiOn) {
     initializeCapi();
     while (gameCapiOn) {
@@ -255,11 +255,9 @@ void quizG(int games_index){
 }
 
 void loop() {
-  //games_index = 0;
   menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
   menu.drawMenuGames(&game, games_index);
   menu.trackPosition(games, games_index);
-  //Serial.println(games_index);
   pong(games_index);
   capig(games_index);
   quizG(games_index);
