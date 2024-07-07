@@ -44,14 +44,12 @@ class JuizCapi{
 
 /*Desenhar na tela a capivara*/
 void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
-    Serial.println("Desenhando Capivara");
     capi.jump();
     capiSprite.fillSprite(TFT_BLACK);
     //capiSprite.setSwapBytes(true);
     //capiSprite.fillCircle(30,  capi.getY()+75, 10, TFT_WHITE);
     capiSprite.pushImage(5,capi.getY()+75,60,60,capivara_final);
     capiSprite.pushSprite(0, 70);
-    Serial.println("Desenhada Capivara"); 
 
 
 
@@ -76,7 +74,6 @@ int JuizCapi::randomObstaculos(int numObstaculos){
 /*Desenhar na tela os obstaculos
 @note quadrados de inicio, alguma forma a mais? Arvores, desenho empilhada?*/
 void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite) {
-    Serial.println("Desenhando OBSTACULOS");
 
     obst.move();
     obstaculosSprite.fillSprite(TFT_BLACK);
@@ -85,7 +82,6 @@ void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite) {
     obstaculosSprite.pushImage(0,25,60,60,tree_final);
 
     obstaculosSprite.pushSprite(obst.getX(), 130);
-    Serial.println("Desenhado OBSTACULOS");
 
 }
 
@@ -117,7 +113,6 @@ int JuizCapi::getplacar() const {return placar;}
 int JuizCapi::getHighScore() const {return highScore;}
 
 void JuizCapi::drawScore(TFT_eSprite &scoreSprite) {
-    Serial.println("Desenhando Score");
 
     scoreSprite.fillSprite(TFT_WHITE);
     scoreSprite.setTextColor(TFT_BLACK);
@@ -127,7 +122,6 @@ void JuizCapi::drawScore(TFT_eSprite &scoreSprite) {
     scoreSprite.drawString("High Score: " + String(getHighScore()), 120, 55, 4);
 
     scoreSprite.pushSprite(100, 10);
-    Serial.println("Desenhando Score");
 
 }
 

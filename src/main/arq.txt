@@ -11,10 +11,6 @@
 TFT_eSPI d = TFT_eSPI();  // Define Display
 TFT_eSprite text = TFT_eSprite(&d);
 TFT_eSprite game = TFT_eSprite(&d);
-TFT_eSprite two = TFT_eSprite(&d);
-
-TFT_eSprite *game_aux = &game;
-TFT_eSprite *two_aux = &two;
 
 //TELAS NOVAS
 TFT_eSPI p = TFT_eSPI();
@@ -48,7 +44,6 @@ bool capi = true;
 //começa em 1 pra já ter algo pré selecionado
 int geral_index = 0;
 int games_index = 0;
-int games_index_two = 0;
 int settings_index = 1;
 
 
@@ -103,9 +98,6 @@ void setup() {
   game.setColorDepth(8);
   game.createSprite(480, 100); //faixa na tela4
 
-  two.setColorDepth(8);
-  two.createSprite(480, 100);
-
   abertura.setColorDepth(8);
   abertura.createSprite(367, 300); //faixa na tela
 
@@ -123,11 +115,26 @@ void setup() {
 
 }
 
+void back(){
+ //TELAS NOVAS
+  TFT_eSPI p = TFT_eSPI();
+  TFT_eSprite game = TFT_eSprite(&p);
+  game.setColorDepth(8);
+  game.createSprite(480, 100);
+  p.init();
+  p.setRotation(1);
+  p.setSwapBytes(true);
+  menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
+  menu.drawMenuGames(game, games_index);
+  menu.trackPosition(games, games_index);
+  gamePongOn = false;
+  gameCapiOn = false;
+  menuOn = true;
+}
 void initializePong(){
  
   menu.backgroundPong(d, abertura);
-
-  barra_button.setColorDepth(8);
+  barra_button.setColorDepth(4);
   barra_button.setSwapBytes(true);
   barra_button.createSprite(100, 180);
 
@@ -146,9 +153,8 @@ void initializePong(){
 }
 
 
-
 void initializeCapi() {
-  //menu.backgroundCapi(d);
+  menu.backgroundCapi(d);
 
   capiSprite.setColorDepth(8);
   capiSprite.setSwapBytes(true);
@@ -158,14 +164,13 @@ void initializeCapi() {
   obstaculosSprite.setSwapBytes(true);
   obstaculosSprite.createSprite(85, 70);
 
-  scoreSprite.setColorDepth(8);
+  scoreSprite.setColorDepth(4);
   scoreSprite.createSprite(230, 70);
   scoreSprite.setSwapBytes(true);
   scoreSprite.setTextDatum(MC_DATUM);
 }
 
-void pong(int games_index){
-  
+void pong(){
   while (gamePongOn) {
     initializePong();
     while (gamePongOn) {
@@ -177,34 +182,27 @@ void pong(int games_index){
       juizPong.count(abertura);
 
       if (juizPong.getCountBlack() == 5 || juizPong.getCountWhite() == 5) {
-        
+          juizPong.setCountBlack(0);
+          juizPong.setCountWhite(0);
+          //gamePongOn = false;
           gameCapiOn = false;
           menu.backgroundEndPong(d, gamePongOn);
-          juizPong.setCountBlack(0);
-          juizPong.setCountWhite(0);
-
-      } else if (digitalRead(button::amarelo) == LOW) {
-          d.fillScreen(TFT_WHITE);
-          gamePongOn = false;
-          gameCapiOn = false;
           menuOn = true;
-          juizPong.setCountBlack(0);
-          juizPong.setCountWhite(0);
-          menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
-          menu.drawMenuGames(two_aux, games_index);
-          //Serial.println(games_index);
-          menu.trackPosition(games, games_index);
-
-
+          d.fillScreen(TFT_WHITE);
+      } else if (digitalRead(button::amarelo) == LOW){
+        gamePongOn = false;
+        juizPong.setCountBlack(0);
+        juizPong.setCountWhite(0);
+        back();
+        
       }
     }
   }
 }
 
-void capig(int games_index){
 
-  menu.drawMenuGames(two_aux, games_index);
 
+void capig(){
   while (gameCapiOn) {
     initializeCapi();
     while (gameCapiOn) {
@@ -215,59 +213,32 @@ void capig(int games_index){
       juizcapi.drawScore(scoreSprite);
       juizcapi.level_speed();
 
-
       if (digitalRead(button::amarelo) == LOW) {
         gameCapiOn = false;
         gamePongOn = false;
         menuOn = true;
         d.fillScreen(TFT_WHITE);
         juizcapi.setplacar(0);
-        menu.select(games_index_two, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
-
-        menu.drawMenuGames(two_aux, games_index);
-
-        menu.trackPosition(games, games_index);
       }
     }
   }
 }
 
-void initializeQuiz(){
-    quiz.showIntros(d);
-    quiz.drawQuestions(d);
-}
+void loop() {
 
-void quizG(int games_index){
-  while (gameQuizOn){
-    initializeQuiz();
-    while (gameQuizOn){
-      quiz.initQuiz(d);
-      if(quiz.isFinished()){
-        quiz.endQuiz(d);
-        d.fillScreen(TFT_WHITE);
-        gameQuizOn = false;
-        menuOn = true;
-      }else if(digitalRead(button::amarelo) == LOW){
-        d.fillScreen(TFT_WHITE);
-        gameQuizOn = false;
-        menuOn = true;
-        menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
-        menu.drawMenuGames(&two, games_index);
-        menu.trackPosition(games, games_index);
-      }
-    }
-    
-  }
+  menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
+  menu.drawMenuGames(game, games_index);
+  menu.trackPosition(games, games_index);
+  pong();
+  capig();
+  //back();
   
 
 
 
-void loop() {
-  menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
-  menu.drawMenuGames(&game, games_index);
-  menu.trackPosition(games, games_index);
-  pong(games_index);
-  capig(games_index);
-  quizG(games_index);
+
 }
+
+
+
 
