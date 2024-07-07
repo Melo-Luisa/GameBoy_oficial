@@ -13,6 +13,9 @@ TFT_eSprite text = TFT_eSprite(&d);
 TFT_eSprite game = TFT_eSprite(&d);
 TFT_eSprite two = TFT_eSprite(&d);
 
+TFT_eSprite *game_aux = &game;
+TFT_eSprite *two_aux = &two;
+
 //TELAS NOVAS
 TFT_eSPI p = TFT_eSPI();
 
@@ -188,7 +191,7 @@ void pong(int games_index){
           juizPong.setCountBlack(0);
           juizPong.setCountWhite(0);
           menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
-          menu.drawMenuGames(&two, games_index);
+          menu.drawMenuGames(two_aux, games_index);
           //Serial.println(games_index);
           menu.trackPosition(games, games_index);
           //Serial.println(games_index_two);
@@ -199,6 +202,8 @@ void pong(int games_index){
 }
 
 void capig(int games_index){
+  menu.drawMenuGames(two_aux, games_index);
+
   while (gameCapiOn) {
     initializeCapi();
     while (gameCapiOn) {
@@ -217,7 +222,7 @@ void capig(int games_index){
         d.fillScreen(TFT_WHITE);
         juizcapi.setplacar(0);
         menu.select(games_index_two, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
-        menu.drawMenuGames(*two, games_index);
+        menu.drawMenuGames(two_aux, games_index);
         menu.trackPosition(games, games_index);
       }
     }
@@ -227,7 +232,7 @@ void capig(int games_index){
 void loop() {
   //games_index = 0;
   menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
-  menu.drawMenuGames(&game, games_index);
+  menu.drawMenuGames(game_aux, games_index);
   menu.trackPosition(games, games_index);
   //Serial.println(games_index);
   pong(games_index);
