@@ -96,11 +96,23 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
 }
 void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
     d.fillScreen(TFT_BLACK);
-    d.drawCentreString("Fim de Jogo" ,245, 190,4);
-    d.drawCentreString("Logo logo você irá para o menu!" ,245, 210,2);
+    d.drawCentreString("Fim de Jogo" ,245, 100,4);
+    d.drawCentreString("Logo logo você irá para o menu!" ,245, 130,2);
+    d.setTextSize(2);
+    d.setTextColor(TFT_ORANGE);
+    d.drawString("GameBoy", 30, 80, 2);
+    d.drawString((String(juiz.getCountBlack())), 80, 150);
+    d.setTextColor(TFT_WHITE);
+    d.drawString("x", 230, 80, 2);
+    d.setTextColor(TFT_RED);
+    d.drawString("Player", 320, 80, 2);
+    d.drawString(String(juiz.getCountWhite()), 360, 150);
+    d.setTextColor(TFT_WHITE);
+    d.setTextSize(2);
+   
     gamePongOn = false;
     menuOn = true;
-    delay(1000);
+    delay(2000);
     d.fillScreen(TFT_WHITE);
 
 }
@@ -114,7 +126,7 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     String name = "CAPI RUNNER";
     for(int i = 0; i< name.length();i++){
         d.print(name[i]);
-        delay(300);
+        delay(100);
     }
     d.drawCentreString("Utilize o botão VERDE para pular para CIMA.", 245,150,2);
     d.drawCentreString(" E evite colidir com o tronco.", 245, 170,2);
@@ -218,8 +230,11 @@ void Menu::drawMenuGames(TFT_eSprite *game, int &games_index) {
     } else {
         (*game).println(" QUIZBOY ");
     }
+
+    (*game).drawCentreString("Aperte o Botão AZUL para selecionar.", 50,65,2);
     //Serial.println(games_index);
     (*game).pushSprite(0, 110);
+
 }
 
 

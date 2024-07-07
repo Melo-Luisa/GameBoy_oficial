@@ -1,0 +1,39 @@
+void JuizQuiz::endQuiz(TFT_eSPI &d){
+        d.fillScreen(TFT_BLACK);
+        d.setTextColor(d.color565(255, 150, 0));    
+        d.drawString("The End", 160, 10, 2);
+        if(scoreGB() > scoreJogador()){ //gameboy ganhou
+            d.setTextSize(3);
+            d.setTextColor(TFT_GREEN);
+            d.drawString("GameBoy", 30, 80, 2);
+            d.drawString((String(scoreGB())), 80, 150);
+            d.setTextColor(TFT_WHITE);
+            d.drawString("x", 230, 80, 2);
+            d.setTextColor(TFT_RED);
+            d.drawString("Player", 320, 80, 2);
+            d.drawString(String(scoreJogador()), 360, 150);
+            d.setTextColor(TFT_WHITE);
+            d.setTextSize(2);
+            d.drawString("Aparentemente o GameBoy sabe mais...", 30, 250);
+
+            
+        }else{ //jogador ganhou
+            d.setTextSize(3);
+            d.setTextColor(TFT_RED);
+            d.drawString("GameBoy", 30, 80, 2);
+            d.drawString((String(scoreGB())), 80, 150);
+            d.setTextColor(TFT_WHITE);
+            d.drawString("x", 230, 80, 2);
+            d.setTextColor(TFT_GREEN);
+            d.drawString("Player", 320, 80, 2);
+            d.drawString(String(scoreJogador()), 360, 150);
+            d.setTextColor(TFT_WHITE);   
+            d.setTextSize(2);
+            d.drawString("Tu Realmente Entende de Jogos Hein...", 20, 250);
+        }
+    pontuacaoGB = 0;
+    pontuacaoJogador = 0;
+    alternativa_index = 0;
+    perguntaAtual = 0;
+    delay(3000);
+}

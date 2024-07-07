@@ -173,13 +173,12 @@ void pong(int games_index){
       juizPong.count(abertura);
 
       if (juizPong.getCountBlack() == 5 || juizPong.getCountWhite() == 5) {
-          juizPong.setCountBlack(0);
-          juizPong.setCountWhite(0);
-          gamePongOn = false;
+        
           gameCapiOn = false;
           menu.backgroundEndPong(d, gamePongOn);
-          menuOn = true;
-          d.fillScreen(TFT_WHITE);
+          juizPong.setCountBlack(0);
+          juizPong.setCountWhite(0);
+
       } else if (digitalRead(button::amarelo) == LOW) {
           d.fillScreen(TFT_WHITE);
           gamePongOn = false;
