@@ -60,6 +60,8 @@ int step = 10; // Step value for color change
     
     void initQuiz(TFT_eSPI &d);
 
+    void endQuiz(TFT_eSPI &d);
+
 
 
 };
@@ -72,11 +74,13 @@ JuizQuiz::JuizQuiz(Pergunta p[], int total):pontuacaoJogador(0), pontuacaoGB(0),
 }
 
 void JuizQuiz::initQuiz(TFT_eSPI &d){
-        if (!isFinished()) {
+    if (!isFinished()) {
         trackPosition(d, alternativa_index);
         select(d, alternativa_index);
-        //Serial.println(alternativa_index);
-    } else {
+    }
+}
+
+void JuizQuiz::endQuiz(TFT_eSPI &d){
         d.fillScreen(TFT_BLACK);
         d.setTextColor(d.color565(255, 150, 0));    
         d.drawString("The End", 160, 10, 2);
@@ -109,16 +113,11 @@ void JuizQuiz::initQuiz(TFT_eSPI &d){
             d.setTextSize(2);
             d.drawString("Tu Realmente Entende de Jogos Hein...", 20, 250);
         }
-
-        //tft.drawString("Pontuacao Player: " + String(quiz.scoreJogador()), 40, 50, 2);
-        //tft.drawString("Pontuacao GB: " + String(quiz.scoreGB()), 40, 80, 2);
-
-
-        while (true) {
-            delay(1000); // Para evitar reinicialização constante
-            Serial.println("teste");
-        }
-    }
+    pontuacaoGB = 0;
+    pontuacaoJogador = 0;
+    alternativa_index = 0;
+    perguntaAtual = 0;
+    delay(3000);
 }
 
 void JuizQuiz::updateColor(TFT_eSPI &d) {
@@ -242,7 +241,7 @@ void JuizQuiz::trackPosition(TFT_eSPI &d, int &alternativa_index) {
 //Verifica se acertou ou não e manda pro score??
 void JuizQuiz::select(TFT_eSPI &d, int &alternativa_index) {
     static bool buttonWasPressed = false;
-    bool buttonPressed = (joy.read_button_central() == LOW);
+    bool buttonPressed = ((digitalRead(button::azul) == LOW) || joy.read_button_central() == LOW);
 
     if (buttonPressed && !buttonWasPressed) {
         buttonWasPressed = true;

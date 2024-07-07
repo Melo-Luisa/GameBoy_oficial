@@ -91,16 +91,28 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
     d.drawCentreString("Evite que a bolinha passe para o outro lado.", 245, 190,2);
     d.drawCentreString("- Quem chegar em 10 Pontos primeiro ganha!", 245,210,2);
     delay(6500);
-    //d.fillScreen(TFT_BLACK);
+    d.fillScreen(TFT_BLACK);
     
 }
 void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
     d.fillScreen(TFT_BLACK);
-    d.drawCentreString("Fim de Jogo" ,245, 190,4);
-    d.drawCentreString("Logo logo você irá para o menu!" ,245, 210,2);
+    d.drawCentreString("Fim de Jogo" ,245, 100,4);
+    d.drawCentreString("Logo logo você irá para o menu!" ,245, 130,2);
+    d.setTextSize(2);
+    d.setTextColor(TFT_ORANGE);
+    d.drawString("GameBoy", 30, 80, 2);
+    d.drawString((String(juiz.getCountBlack())), 80, 150);
+    d.setTextColor(TFT_WHITE);
+    d.drawString("x", 230, 80, 2);
+    d.setTextColor(TFT_RED);
+    d.drawString("Player", 320, 80, 2);
+    d.drawString(String(juiz.getCountWhite()), 360, 150);
+    d.setTextColor(TFT_WHITE);
+    d.setTextSize(2);
+   
     gamePongOn = false;
     menuOn = true;
-    delay(1000);
+    delay(2000);
     d.fillScreen(TFT_WHITE);
 
 }
@@ -114,14 +126,14 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     String name = "CAPI RUNNER";
     for(int i = 0; i< name.length();i++){
         d.print(name[i]);
-        delay(300);
+        delay(100);
     }
     d.drawCentreString("Utilize o botão VERDE para pular para CIMA.", 245,150,2);
     d.drawCentreString(" E evite colidir com o tronco.", 245, 170,2);
     d.drawCentreString(" Marque a maior pontuação!", 245, 190,2);
     d.drawCentreString("PARA SAIR: APERTE AMARELO", 240, 210,2);
     delay(6000);
-   // d.fillScreen(TFT_BLACK);
+    d.fillScreen(TFT_BLACK);
 }
 
 void Menu::init(TFT_eSPI &d) {
@@ -182,7 +194,6 @@ void Menu::drawMenuGames(TFT_eSprite *(&two_aux), int &games_index) {
 
     // Desenha os itens do menu abaixo do título
     (*two_aux).setCursor(40, 40); // Define a posição inicial do cursor para o primeiro item
-    //Serial.println(games_index);
 
 
     if (games_index == 0) {
@@ -219,54 +230,6 @@ void Menu::drawMenuGames(TFT_eSprite *(&two_aux), int &games_index) {
     //Serial.println(games_index);
     (*two_aux).pushSprite(0, 110);
 }
-
-// void Menu::drawMenuGames_aux(TFT_eSprite *(&two), int &games_index) {
-//     //Serial.println(games_index);
-
-//     (*two).fillSprite(TFT_WHITE);
-//     (*two).setTextSize(2);
-
-//     // Adiciona o título
-//     (*two).setCursor(40, 10); // Define a posição do cursor para o título
-//     (*two).setTextColor(TFT_BLACK);
-//     (*two).println("GAMES");
-
-//     // Desenha os itens do menu abaixo do título
-//     (*two).setCursor(40, 40); // Define a posição inicial do cursor para o primeiro item
-
-//     if (games_index == 0) {
-//         (*two).setTextColor(TFT_WHITE, TFT_BLACK);
-//         (*two).println(" PONG ");
-//         (*two).setTextColor(TFT_BLACK);
-//         // Serial.println("pong");
-//     } else {
-//         (*two).println(" PONG ");
-//     }
-
-//     (*two).setCursor(150, 40); // Define a posição do cursor para o segundo item
-
-//     if (games_index == 1) {
-
-//         (*two).setTextColor(TFT_WHITE, TFT_BLACK);
-//         (*two).println(" CAPI RUNNER ");
-//         (*two).setTextColor(TFT_BLACK);
-//         // Serial.println("dino");
-//     } else {
-//         (*two).println(" CAPI RUNNER ");
-//     }
-
-//     (*two).setCursor(350, 40); // Define a posição do cursor para o terceiro item
-
-//     if (games_index == 2) {
-//         (*two).setTextColor(TFT_WHITE, TFT_BLACK);
-//         (*two).println(" QUIZBOY ");
-//         (*two).setTextColor(TFT_BLACK);
-//         /// Serial.println("tetris");
-//     } else {
-//         (*two).println(" QUIZBOY ");
-//     }
-//     (*two).pushSprite(0, 110);
-// }
 
 
 void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game, bool &gameQuizOn ){
@@ -305,6 +268,8 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
 }
 
 
+#endif
+
 
 /*void Menu::drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index) {
     text.fillSprite(TFT_WHITE);
@@ -341,19 +306,6 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
     text.pushSprite(0, 110);
     
 }*/
-
-
-
-
-
-
-
-#endif
-
-
-
-
-
 
 
 
@@ -406,5 +358,3 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
 
     
         
-
-

@@ -125,7 +125,8 @@ void setup() {
 
 void initializePong(){
  
-  //menu.backgroundPong(d, abertura);
+  menu.backgroundPong(d, abertura);
+
   barra_button.setColorDepth(8);
   barra_button.setSwapBytes(true);
   barra_button.createSprite(100, 180);
@@ -176,13 +177,12 @@ void pong(int games_index){
       juizPong.count(abertura);
 
       if (juizPong.getCountBlack() == 5 || juizPong.getCountWhite() == 5) {
-          juizPong.setCountBlack(0);
-          juizPong.setCountWhite(0);
-          gamePongOn = false;
+        
           gameCapiOn = false;
           menu.backgroundEndPong(d, gamePongOn);
-          menuOn = true;
-          d.fillScreen(TFT_WHITE);
+          juizPong.setCountBlack(0);
+          juizPong.setCountWhite(0);
+
       } else if (digitalRead(button::amarelo) == LOW) {
           d.fillScreen(TFT_WHITE);
           gamePongOn = false;
@@ -194,7 +194,7 @@ void pong(int games_index){
           menu.drawMenuGames(two_aux, games_index);
           //Serial.println(games_index);
           menu.trackPosition(games, games_index);
-          //Serial.println(games_index_two);
+
 
       }
     }
@@ -202,6 +202,7 @@ void pong(int games_index){
 }
 
 void capig(int games_index){
+
   menu.drawMenuGames(two_aux, games_index);
 
   while (gameCapiOn) {
@@ -222,23 +223,51 @@ void capig(int games_index){
         d.fillScreen(TFT_WHITE);
         juizcapi.setplacar(0);
         menu.select(games_index_two, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
+
         menu.drawMenuGames(two_aux, games_index);
+
         menu.trackPosition(games, games_index);
       }
     }
   }
 }
 
-void loop() {
-  //games_index = 0;
-  menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
-  menu.drawMenuGames(game_aux, games_index);
-  menu.trackPosition(games, games_index);
-  //Serial.println(games_index);
-  pong(games_index);
-  capig(games_index);
- 
+void initializeQuiz(){
+    quiz.showIntros(d);
+    quiz.drawQuestions(d);
 }
 
+void quizG(int games_index){
+  while (gameQuizOn){
+    initializeQuiz();
+    while (gameQuizOn){
+      quiz.initQuiz(d);
+      if(quiz.isFinished()){
+        quiz.endQuiz(d);
+        d.fillScreen(TFT_WHITE);
+        gameQuizOn = false;
+        menuOn = true;
+      }else if(digitalRead(button::amarelo) == LOW){
+        d.fillScreen(TFT_WHITE);
+        gameQuizOn = false;
+        menuOn = true;
+        menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
+        menu.drawMenuGames(&two, games_index);
+        menu.trackPosition(games, games_index);
+      }
+    }
+    
+  }
+  
 
+
+
+void loop() {
+  menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
+  menu.drawMenuGames(&game, games_index);
+  menu.trackPosition(games, games_index);
+  pong(games_index);
+  capig(games_index);
+  quizG(games_index);
+}
 
