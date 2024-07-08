@@ -61,6 +61,8 @@ class Menu{
         void backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura);
         void backgroundEndPong(TFT_eSPI &d, bool &gamePongOn);
         void backgroundCapi(TFT_eSPI &d);
+        void backgroundEndCapi(TFT_eSPI &d);
+
 
         //PÓS 11/06
         void drawSettings();
@@ -77,28 +79,29 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
     // Define a cor e o tamanho do texto
     d.setTextDatum(TC_DATUM);
     d.setTextColor(d.color565(255, 150, 0));
-    d.setCursor(170, 20);
+    d.setCursor(200, 20);
     String name = "PONG";
     for (int i = 0; i < name.length(); i++) {
         d.print(name[i]);
         delay(100);
     }
 
-    d.setCursor(10,90);
+    d.setCursor(15,72);
     d.setTextColor(TFT_WHITE);
     d.setTextSize(2);
-    d.println("Utilize o joystick para controlar a barra da esquerda.");
+    d.println("Utilize o joystick para controlar a \nbarra da esquerda.");
 
-    d.setCursor(10,170);
+    d.setCursor(8,155);
     d.setTextSize(2);
-    d.println(" E os Botões para controlar a barra da direita.");
-    // d.setTextColor(TFT_WHITE);
-    // d.drawCentreString("Evite que a bolinha passe para o outro lado.", 60, 200,2);
+    d.println(" E os Botões para controlar a barra \nda direita.");
+    d.setTextColor(TFT_YELLOW);
+    d.drawCentreString("PARA SAIR: BOTAO AMARELO.", 250, 282,2);
     // d.drawCentreString("- Quem chegar em 10 Pontos primeiro ganha!", 245,210,2);
 
-    d.setCursor(30, 290);
+    d.setCursor(35, 230);
+    d.setTextColor(d.color565(255, 150, 0));
     d.setTextSize(2);
-    d.println("Pressione o Joystick para Descobrir");
+    d.println("Pressione o Joystick para jogar");
 
     while (joyzinho.read_button_central() == HIGH) {
         delay(100);
@@ -134,20 +137,54 @@ void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
 void Menu::backgroundCapi(TFT_eSPI &d){
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
-    d.setTextSize(1);
+    d.setTextSize(2);
     d.setTextDatum(TC_DATUM);
-    d.setCursor(150,120,4);
+    d.setTextColor(d.color565(25, 150, 0)); //laranja
+    d.setCursor(170,20);
     String name = "CAPI RUNNER";
     for(int i = 0; i< name.length();i++){
         d.print(name[i]);
         delay(100);
     }
-    d.drawCentreString("Utilize o botão VERDE para pular para CIMA.", 245,150,2);
-    d.drawCentreString(" E evite colidir com o tronco.", 245, 170,2);
-    d.drawCentreString(" Marque a maior pontuação!", 245, 190,2);
-    d.drawCentreString("PARA SAIR: APERTE AMARELO", 240, 210,2);
-    delay(6000);
+
+    d.setCursor(15,72);
+    d.setTextColor(TFT_WHITE);
+    d.setTextSize(2);
+    d.println("Utilize o botão VERDE para pular para CIMA.");
+
+    d.setCursor(8,155);
+    d.setTextSize(2);
+    d.println("Evite colidir com o tronco");
+
+    d.setTextColor(TFT_YELLOW);
+    d.drawCentreString("PARA SAIR: BOTAO AMARELO.", 250, 282,2);
+
+    d.setCursor(35, 230);
+    d.setTextColor(d.color565(255, 150, 0));
+    d.setTextSize(2);
+    d.println("Pressione o Joystick para jogar");
+
+    while (joyzinho.read_button_central() == HIGH) {
+        delay(100);
+    }
+
     d.fillScreen(TFT_BLACK);
+}
+
+void Menu::backgroundEndCapi(TFT_eSPI &d){
+    d.fillScreen(TFT_BLACK);
+    d.drawCentreString("Você bateu!" ,245, 50,4);
+    d.setTextSize(2);
+    d.setTextColor(TFT_ORANGE);
+    d.drawString("Pontuacao:", 245, 150, 2);
+    d.drawString(String(juizcapi.getHighScore()), 245, 180);
+
+    d.setTextColor(TFT_WHITE);
+   
+    gameCapiOn = false;
+    menuOn = true;
+    delay(3500);
+    d.fillScreen(TFT_WHITE);
 }
 
 void Menu::init(TFT_eSPI &d) {
@@ -198,15 +235,15 @@ void Menu::trackPosition(bool &games, int &games_index) {
 }
 
 void Menu::drawMenuGames(TFT_eSprite *(&two_aux), int &games_index) {
+    (*two_aux).setTextFont(2);
     (*two_aux).fillSprite(TFT_WHITE);
     (*two_aux).setTextSize(2);
-
-    // Adiciona o título
-    (*two_aux).setCursor(40, 10); // Define a posição do cursor para o título
+    (*two_aux).setCursor(180, 0); 
     (*two_aux).setTextColor(TFT_BLACK);
     (*two_aux).println("GAMES");
 
-    // Desenha os itens do menu abaixo do título
+    (*two_aux).setTextSize(2);
+
     (*two_aux).setCursor(40, 40); // Define a posição inicial do cursor para o primeiro item
 
 

@@ -215,8 +215,14 @@ void capig(int games_index){
       juizcapi.drawScore(scoreSprite);
       juizcapi.level_speed();
 
+      if(juizcapi.colision()){
+        gameCapiOn = false;
+        gamePongOn = false;
+        menuOn = true;
 
-      if (digitalRead(button::amarelo) == LOW) {
+        menu.backgroundEndCapi(d);
+        juizcapi.setplacar(0);
+      }else if (digitalRead(button::amarelo) == LOW) {
         gameCapiOn = false;
         gamePongOn = false;
         menuOn = true;

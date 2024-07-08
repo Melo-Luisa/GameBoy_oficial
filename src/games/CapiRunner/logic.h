@@ -129,19 +129,19 @@ void JuizCapi::drawScore(TFT_eSprite &scoreSprite) {
 void JuizCapi::level_speed() {
     switch (getplacar() / 100) {
         case 0:
-            obst.setVX(10);
-            break;
-        case 1:
             obst.setVX(15);
             break;
-        case 2:
-            obst.setVX(20);
-            break;
-        case 3:
+        case 1:
             obst.setVX(25);
             break;
+        case 2:
+            obst.setVX(35);
+            break;
+        case 3:
+            obst.setVX(45);
+            break;
         default:
-            obst.setVX(30);  // Para pontuações acima de 300
+            obst.setVX(55);  // Para pontuações acima de 300
             break;
     }
 }
