@@ -127,11 +127,13 @@ void Juiz::atingir() {
 - Segundo sendo o lado direito 
 @note Alterar o nome da função*/
 void Juiz::count(TFT_eSprite &abertura) {
+    //esquerda
     if (bolinha.getX() < -35) { 
         bolinha.setX(tela::width - 45); 
         countWhite += 1;
+    //direita
     } else if (bolinha.getX() >= tela::width + bolinha.getCircleRadius() ) { 
-        bolinha.setX(bolinha.getCircleRadius()+30); // Coloca a bola perto da
+        bolinha.setX(bolinha.getCircleRadius()); // Coloca a bola perto da
         countBlack += 1;    
     }
 }
@@ -162,7 +164,7 @@ void Juiz::setCountWhite(int value) {
 @param TFT barra_joy*/
 void Juiz::draw_joy( TFT_eSprite &barra_joy){
     barra.move_joy();
-    barra_joy.fillSprite(TFT_RED);
+    barra_joy.fillSprite(TFT_BLACK);
     barra_joy.fillRect(15, 25, bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_joy.pushSprite(0, barra.move_joy());
     
@@ -185,7 +187,7 @@ void Juiz::draw_Ball(TFT_eSprite &ball){
      
     bolinha.move();
     ball.fillSprite(TFT_BLACK);
-    ball.fillCircle(20, 20, bolinha.getCircleRadius(), TFT_RED);
+    ball.fillCircle(40, 40, bolinha.getCircleRadius(), TFT_RED);
     ball.pushSprite(bolinha.getX(), bolinha.getY());
     
 }

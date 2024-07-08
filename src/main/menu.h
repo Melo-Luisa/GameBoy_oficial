@@ -66,8 +66,6 @@ class Menu{
         void drawSettings();
         void drawCredits();//Mostra informações dos criadores, além da foto dos dois   
         void drawMenuInicial(TFT_eSPI &d, TFT_eSprite &text, int geral_index);//desenha o menu inicial, com as opções de games, créditos e settings
-        // void PongOn(bool &gamePongOn, TFT_eSPI &d);
-        // void CapiOn(bool &gameCapiOn);
 
     
 };
@@ -75,22 +73,38 @@ class Menu{
 void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
-    d.setTextSize(1);
+    d.setTextSize(2);
     // Define a cor e o tamanho do texto
     d.setTextDatum(TC_DATUM);
-    d.setCursor(200, 120, 4);
+    d.setTextColor(d.color565(255, 150, 0));
+    d.setCursor(170, 20);
     String name = "PONG";
     for (int i = 0; i < name.length(); i++) {
         d.print(name[i]);
         delay(100);
     }
 
-    d.drawCentreString("Utilize o joystick para CIMA e BAIXO para controlar a barra da esquerda.", 245,150,2);
+    d.setCursor(10,90);
+    d.setTextColor(TFT_WHITE);
+    d.setTextSize(2);
+    d.println("Utilize o joystick para controlar a barra da esquerda.");
 
-    d.drawCentreString(" E os Botões CIMA e BAIXO para controlar a barra da direita.", 245, 170,2);
-    d.drawCentreString("Evite que a bolinha passe para o outro lado.", 245, 190,2);
-    d.drawCentreString("- Quem chegar em 10 Pontos primeiro ganha!", 245,210,2);
-    delay(6500);
+    d.setCursor(10,170);
+    d.setTextSize(2);
+    d.println(" E os Botões para controlar a barra da direita.");
+    // d.setTextColor(TFT_WHITE);
+    // d.drawCentreString("Evite que a bolinha passe para o outro lado.", 60, 200,2);
+    // d.drawCentreString("- Quem chegar em 10 Pontos primeiro ganha!", 245,210,2);
+
+    d.setCursor(30, 290);
+    d.setTextSize(2);
+    d.println("Pressione o Joystick para Descobrir");
+
+    while (joyzinho.read_button_central() == HIGH) {
+        delay(100);
+    }
+
+    //delay(6500);
     d.fillScreen(TFT_BLACK);
     
 }

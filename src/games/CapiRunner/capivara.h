@@ -23,7 +23,7 @@ int Capivara::jump() {
     // Verifique se o botão está pressionado
     if (digitalRead(button::verde) == LOW && !isJumping) {
         isJumping = true;
-        velocity = -10; // Valor negativo para iniciar o pulo
+        velocity = -15; // Valor negativo para iniciar o pulo
     }
 
     // Atualiza a posição vertical da bolinha

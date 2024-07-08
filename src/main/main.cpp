@@ -55,8 +55,8 @@ int settings_index = 1;
 /*PONG*/
 int x = 0; // valor inicial de x
 int y = 0; // valor inicial de y
-int vx = 10; // valor inicial de vx
-int vy = 10; // valor inicial de vy
+int vx = 15; // PIOR DOS CASOS VOLTAR PARA 10
+int vy = 15; // valor inicial de vy
 int circleRadius = 10; // raio do círculo
 int countBlack = 0; // contador de pontos preto
 int countWhite = 0; // contador de pontos branco
@@ -140,7 +140,7 @@ void initializePong(){
   placar.createSprite(120, 50);
   placar.setTextDatum(MC_DATUM);
 
-  barra_joy.setColorDepth(4);
+  barra_joy.setColorDepth(8);
   barra_joy.setSwapBytes(true);
   barra_joy.createSprite(85, 180);
 }
@@ -148,7 +148,7 @@ void initializePong(){
 
 
 void initializeCapi() {
-  //menu.backgroundCapi(d);
+  menu.backgroundCapi(d);
 
   capiSprite.setColorDepth(8);
   capiSprite.setSwapBytes(true);
@@ -238,6 +238,7 @@ void initializeQuiz(){
 }
 
 void quizG(int games_index){
+  d.setTextSize(2);
   while (gameQuizOn){
     initializeQuiz();
     while (gameQuizOn){
