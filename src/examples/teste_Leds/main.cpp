@@ -15,7 +15,7 @@ void setup() {
 void loop() {
 
 
-leds[2] = CRGB::Green; //glow 1st led as green
+leds[] = CRGB::White; //glow 1st led as green
 
 FastLED.show(); // apply the function on led strip
 
