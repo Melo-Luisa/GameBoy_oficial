@@ -113,17 +113,19 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
 }
 void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
     d.fillScreen(TFT_BLACK);
-    d.drawCentreString("Fim de Jogo" ,245, 100,4);
-    d.drawCentreString("Logo logo você irá para o menu!" ,245, 130,2);
+    d.drawString("Fim de Jogo" ,245, 100,4);
+    d.drawString("Logo logo você irá para o menu!" ,245, 130,2);
     d.setTextSize(2);
     d.setTextColor(TFT_ORANGE);
-    d.drawString("GameBoy", 30, 80, 2);
+    // d.drawString("GameBoy", 30, 80, 2);
     d.drawString((String(juiz.getCountBlack())), 80, 150);
+    Serial.println(juiz.getCountBlack());
     d.setTextColor(TFT_WHITE);
     d.drawString("x", 230, 80, 2);
     d.setTextColor(TFT_RED);
-    d.drawString("Player", 320, 80, 2);
+    // d.drawString("Player", 320, 80, 2);
     d.drawString(String(juiz.getCountWhite()), 360, 150);
+    Serial.println(juiz.getCountWhite());
     d.setTextColor(TFT_WHITE);
     d.setTextSize(2);
    

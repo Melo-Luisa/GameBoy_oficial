@@ -100,8 +100,7 @@ boolean Juiz::hit_esquerda(int coordY) {
 */
 boolean Juiz::hit_direita(int coordY_button) {
    boolean result_dir = false;
-    if (bolinha.getX() >= 440 &&
-     (bolinha.getY() >= ((barra.move_button())) && bolinha.getY() <= (barra.move_button() + bar::square_Height))) {
+    if (bolinha.getX() + 10 >= 440 && (bolinha.getY() >= ((barra.move_button())) && bolinha.getY() <= (barra.move_button() + bar::square_Height))) {
         result_dir = true;
     }   
     
@@ -111,14 +110,11 @@ boolean Juiz::hit_direita(int coordY_button) {
 
 /*Caso as funções hit_esquerda(), hit_direita() tenham obtido sucesso, a função atingir muda a direção da bola.*/
 void Juiz::atingir() {
-    if (hit_esquerda(coordY)) {
+    if (hit_esquerda(coordY) || hit_direita(coordY)) {
         bolinha.setVX(-bolinha.getvx());
         bolinha.setVY(bolinha.getvy());
     }
-    if(hit_direita(coordY_button)){
-        bolinha.setVX(-bolinha.getvx());
-        bolinha.setVY(bolinha.getvy());
-    }
+   
    
 }
 
@@ -191,6 +187,8 @@ void Juiz::draw_Ball(TFT_eSprite &ball){
     ball.fillSprite(TFT_BLACK);
     ball.fillCircle(40, 40, bolinha.getCircleRadius(), TFT_RED);
     ball.pushSprite(bolinha.getX(), bolinha.getY());
+    Serial.println(bolinha.getX());
+
     
 }
 
