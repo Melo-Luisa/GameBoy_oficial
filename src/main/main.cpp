@@ -243,11 +243,13 @@ void capig(int games_index){
 void initializeQuiz(){
     quiz.showIntros(d);
     quiz.drawQuestions(d);
+    d.setTextSize(2);
 }
 
 void quizG(int games_index){
   d.setTextSize(2);
   while (gameQuizOn){
+    d.setTextSize(2);
     initializeQuiz();
     while (gameQuizOn){
       quiz.initQuiz(d);
@@ -257,6 +259,7 @@ void quizG(int games_index){
         gameQuizOn = false;
         menuOn = true;
       }else if(digitalRead(button::amarelo) == LOW){
+        d.setTextSize(2);
         d.fillScreen(TFT_WHITE);
         gameQuizOn = false;
         menuOn = true;

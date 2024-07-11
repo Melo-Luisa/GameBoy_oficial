@@ -72,6 +72,7 @@ class Menu{
     
 };
 
+
 void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
@@ -89,11 +90,11 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
     d.setCursor(15,72);
     d.setTextColor(TFT_WHITE);
     d.setTextSize(2);
-    d.println("Utilize o joystick para controlar a \nbarra da esquerda.");
+    d.println(" Utilize o joystick para controlar a \n          barra da esquerda.");
 
     d.setCursor(8,155);
     d.setTextSize(2);
-    d.println(" E os Botões para controlar a barra \nda direita.");
+    d.println(" E os Botões para controlar a barra \n              da direita.");
     d.setTextColor(TFT_YELLOW);
     d.drawCentreString("PARA SAIR: BOTAO AMARELO.", 250, 282,2);
     // d.drawCentreString("- Quem chegar em 10 Pontos primeiro ganha!", 245,210,2);
@@ -111,23 +112,23 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
     d.fillScreen(TFT_BLACK);
     
 }
+
 void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
+    d.setTextSize(2);
     d.fillScreen(TFT_BLACK);
-    d.drawString("Fim de Jogo" ,245, 100,4);
-    d.drawString("Logo logo você irá para o menu!" ,245, 130,2);
-    d.setTextSize(2);
+    d.drawCentreString("Fim de Jogo" ,245, 50,4);
+    d.drawCentreString("Voltando para o Menu..." ,245, 250,2);
+    d.setTextSize(4);
     d.setTextColor(TFT_ORANGE);
-    // d.drawString("GameBoy", 30, 80, 2);
-    d.drawString((String(juiz.getCountBlack())), 80, 150);
-    Serial.println(juiz.getCountBlack());
+    //NÃO FUNCIONA
+    d.drawString((String(juiz.getCountBlack())), 130, 120);
     d.setTextColor(TFT_WHITE);
-    d.drawString("x", 230, 80, 2);
+    d.drawString("x", 230, 120, 2);
     d.setTextColor(TFT_RED);
-    // d.drawString("Player", 320, 80, 2);
-    d.drawString(String(juiz.getCountWhite()), 360, 150);
-    Serial.println(juiz.getCountWhite());
-    d.setTextColor(TFT_WHITE);
+    //NÃO FUNCIONA
+    d.drawString(String(juiz.getCountWhite()), 320, 120);
     d.setTextSize(2);
+    d.setTextColor(TFT_WHITE);
    
     gamePongOn = false;
     menuOn = true;
@@ -135,6 +136,7 @@ void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
     d.fillScreen(TFT_WHITE);
 
 }
+
 
 void Menu::backgroundCapi(TFT_eSPI &d){
     d.fillScreen(TFT_BLACK);
@@ -152,14 +154,14 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     d.setCursor(15,72);
     d.setTextColor(TFT_WHITE);
     d.setTextSize(2);
-    d.println("Utilize o botão VERDE para pular para CIMA.");
+    d.println("      Utilize o botao VERDE\n        para pular para CIMA");
 
     d.setCursor(8,155);
     d.setTextSize(2);
-    d.println("Evite colidir com o tronco");
+    d.println("     Evite colidir com o tronco");
 
     d.setTextColor(TFT_YELLOW);
-    d.drawCentreString("PARA SAIR: BOTAO AMARELO.", 250, 282,2);
+    d.drawCentreString("PARA SAIR: BOTAO AMARELO", 250, 282,2);
 
     d.setCursor(35, 230);
     d.setTextColor(d.color565(255, 150, 0));
@@ -175,10 +177,11 @@ void Menu::backgroundCapi(TFT_eSPI &d){
 
 void Menu::backgroundEndCapi(TFT_eSPI &d){
     d.fillScreen(TFT_BLACK);
-    d.drawCentreString("Você bateu!" ,245, 50,4);
+    d.drawCentreString("Voce bateu!" ,245, 50,4);
     d.setTextSize(2);
     d.setTextColor(TFT_ORANGE);
     d.drawString("Pontuacao:", 245, 150, 2);
+    //NÃO FUNCIONA
     d.drawString(String(juizcapi.getHighScore()), 245, 180);
 
     d.setTextColor(TFT_WHITE);
@@ -307,12 +310,13 @@ void Menu::select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn,
 
                     game.deleteSprite();
 
-                
                     break;
+                //QUIZ
                 case 2:
                     gameCapiOn = false;
                     gamePongOn = false;
                     gameQuizOn = true;
+                    game.deleteSprite();
                     break;
             }
         }

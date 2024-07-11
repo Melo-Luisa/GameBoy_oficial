@@ -50,10 +50,16 @@ int Barra::move_joy(){
 }
 
 int Barra::move_button() {
+    coordY_button -= 15;
+    if (coordY_button + bar::square_Height <= 5) { 
+            coordY_button += 15;
+        
+    }
     //cima
     if (digitalRead(button::azul) == LOW) { 
+        coordY_button += 15;
         if (coordY_button + bar::square_Height <= 290) {
-            coordY_button += 10;
+            coordY_button += 15;
         }
     }
     //baixo
@@ -63,6 +69,7 @@ int Barra::move_button() {
             coordY_button += 15;
         }
     }
+   
 
     return coordY_button;
     //Serial.println(coordY_button);

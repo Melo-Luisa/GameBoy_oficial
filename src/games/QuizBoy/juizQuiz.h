@@ -181,6 +181,8 @@ int JuizQuiz::showIntros(TFT_eSPI &d){
 void JuizQuiz::drawQuestions(TFT_eSPI &d) {
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
+    d.setTextSize(2);
+
 
     if (perguntas[perguntaAtual].func != nullptr) {
         perguntas[perguntaAtual].func(d); // Chama a função associada à pergunta
@@ -207,8 +209,8 @@ void JuizQuiz::updateAlternative(TFT_eSPI &d, int prev_index, int current_index)
 
 //Mesma funcão do Menu - Usa o Joy
 void JuizQuiz::trackPosition(TFT_eSPI &d, int &alternativa_index) {
-    int valueJoyX = joy.read_raw_X();
-    Direction directionX = joy.getDirectionX(valueJoyX);
+    int valueJoyX = analogRead(joystick::eixo_y); //joy.read_raw_X();
+    Direction directionX = joy.getDirectionY(valueJoyX);
     unsigned long currentTime = millis();
 
     if (currentTime - lastDebounceTime > debounceDelay) {
@@ -216,14 +218,14 @@ void JuizQuiz::trackPosition(TFT_eSPI &d, int &alternativa_index) {
 
         int prev_index = alternativa_index;
 
-        if (directionX == RIGHT) {
+        if (directionX == UP) {
             alternativa_index++;
             if (alternativa_index >= MAX_ALTERNATIVAS) {
                 alternativa_index = 0;
             }
         }
 
-        if (directionX == LEFT) {
+        if (directionX == DOWN) {
             alternativa_index--;
             if (alternativa_index < 0) {
                 alternativa_index = MAX_ALTERNATIVAS - 1;
