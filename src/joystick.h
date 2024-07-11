@@ -3,7 +3,7 @@
 
 
 
-const int threshold = 1000; // Adjust this threshold as needed
+const int threshold = 250; // Adjust this threshold as needed
 
 enum Direction { NONE, UP, DOWN, LEFT, RIGHT , CENTRAL};
 

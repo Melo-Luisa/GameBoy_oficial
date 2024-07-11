@@ -194,9 +194,11 @@ void pong(int games_index){
           menu.drawMenuGames(two_aux, games_index);
           //Serial.println(games_index);
           menu.trackPosition(games, games_index);
+        }
+      
+      
 
-
-      }
+      
     }
   }
 }
