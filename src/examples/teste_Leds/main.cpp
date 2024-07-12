@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include<FastLED.h> // header file
 
-#define NUM_LEDS 21 // number of led present in your strip - PRIMOS
+#define NUM_LEDS 37 // number of led present in your strip - PRIMOS
 #define LED_PIN 23 // digital pin of your arduino
 
 CRGB leds[NUM_LEDS];

@@ -191,7 +191,8 @@ void JuizQuiz::drawQuestions(TFT_eSPI &d) {
     }
     d.setTextSize(3);
     for (int i = 0; i < MAX_ALTERNATIVAS; ++i) {
-        d.drawString(String(i + 1) + ". " + perguntas[perguntaAtual].alternativas[i], 10, (distancia_alternativas * i) + 200);
+        d.setCursor(10,((distancia_alternativas *i )+ 200));
+        d.println(String(i + 1) + ". " + perguntas[perguntaAtual].alternativas[i]);
     }
 }
 
@@ -199,11 +200,13 @@ void JuizQuiz::updateAlternative(TFT_eSPI &d, int prev_index, int current_index)
     d.setTextSize(3);
     // Atualiza a cor da alternativa anterior
     d.setTextColor(TFT_WHITE);
-    d.drawString(String(prev_index + 1) + ". " + perguntas[perguntaAtual].alternativas[prev_index], 10, (distancia_alternativas * prev_index)+200);
+    d.setCursor(10, (distancia_alternativas * prev_index) + 200);
+    d.println(String(prev_index + 1) + ". " + perguntas[perguntaAtual].alternativas[prev_index]);
 
     // Atualiza a cor da alternativa atual
     d.setTextColor(TFT_YELLOW);
-    d.drawString(String(current_index + 1) + ". " + perguntas[perguntaAtual].alternativas[current_index], 10, (distancia_alternativas * current_index)+200);
+    d.setCursor(10,(distancia_alternativas * current_index) + 200);
+    d.println(String(current_index + 1) + ". " + perguntas[perguntaAtual].alternativas[current_index]);
 }
 
 
@@ -260,18 +263,26 @@ void JuizQuiz::select(TFT_eSPI &d, int &alternativa_index) {
             d.fillScreen(TFT_BLACK);
             pontuacaoJogador++;
             d.setTextColor(TFT_GREEN);
-            d.drawString("Correto!", 180, 120, 2);
+            d.setTextSize(2);
+            d.setCursor(180,120);
+            d.println("Correto!");
             d.setTextColor(TFT_WHITE);
-            d.drawString("Ponto pra Você!", 150, 200, 2);
+            d.setCursor(150,200);
+            d.println("Ponto pra Tu!");
         } else {
             pontuacaoGB++;
             d.fillScreen(TFT_BLACK);
             d.setTextColor(TFT_RED);
-            d.drawString("Errado!", 180, 100, 2);
+            d.setTextSize(2);
+            d.setCursor(180,100);
+            d.println("Errado!");
             d.setTextColor(TFT_WHITE);
-            d.drawString("Ponto pro GameBoy", 80, 150, 2);
-            d.drawString("Resposta correta: ", 80, 200, 2);
-            d.drawString(perguntas[perguntaAtual].alternativas[respostaCorreta], 80, 250, 2);
+            d.setCursor(80,150);
+            d.println("Ponto pro GameBoy");
+            d.setCursor(80,200);
+            d.println("Resposta correta: ");
+            d.setCursor(80,250);
+            d.println(perguntas[perguntaAtual].alternativas[respostaCorreta]);
         }
 
         perguntaAtual++;
