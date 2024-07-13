@@ -40,12 +40,40 @@ class Juiz{
         void draw_joy( TFT_eSprite &barra_joy);
         void draw_button( TFT_eSprite &barra_button, int coordY_button);
 
-        int getCountWhite() const;
-        int getCountBlack() const;
+        int getCountWhite() ;
+        int getCountBlack() ;
         void setCountBlack(int value);
         void setCountWhite(int value);
 
+        void backgroundEndPong(TFT_eSPI &d, bool &gamePongOn);
 };
+
+
+void Juiz::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
+    d.setTextSize(2);
+    d.fillScreen(TFT_BLACK);
+    d.drawCentreString("Fim de Jogo" ,245, 50,4);
+    d.drawCentreString("Voltando para o Menu..." ,245, 250,2);
+    d.setTextSize(4);
+    d.setTextColor(TFT_ORANGE);
+    //NÃO FUNCIONA
+    d.drawString((String(getCountBlack())), 130, 120);
+   // Serial.println(getCountBlack());
+    d.setTextColor(TFT_WHITE);
+    d.drawString("x", 230, 120, 2);
+    d.setTextColor(TFT_RED);
+    //NÃO FUNCIONA
+    d.drawString(String(getCountWhite()), 320, 120);
+    //Serial.println(getCountWhite());
+    d.setTextSize(2);
+    d.setTextColor(TFT_WHITE);
+   
+    gamePongOn = false;
+    //menuOn = true;
+    delay(2000);
+    d.fillScreen(TFT_WHITE);
+
+}
 
 /*Função para o final do jogo - termino
 @param TFT  abertura
@@ -137,13 +165,13 @@ void Juiz::count(TFT_eSprite &abertura) {
 
 
 /*Guarda o valor do placar e retorna na função do placar*/
-int Juiz::getCountWhite() const {
+int Juiz::getCountWhite()  {
     return countWhite;
 }
 
 
 /*Guarda o valor do placar e retorna na função do placar*/
-int Juiz::getCountBlack() const {
+int Juiz::getCountBlack()  {
     return countBlack;
 }
 
@@ -187,7 +215,7 @@ void Juiz::draw_Ball(TFT_eSprite &ball){
     ball.fillSprite(TFT_BLACK);
     ball.fillCircle(40, 40, bolinha.getCircleRadius(), TFT_RED);
     ball.pushSprite(bolinha.getX(), bolinha.getY());
-    Serial.println(bolinha.getX());
+    //Serial.println(bolinha.getX());
 
     
 }

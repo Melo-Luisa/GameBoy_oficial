@@ -51,6 +51,8 @@ int step = 10; // Step value for color change
 
     int scoreJogador();
 
+    void resetQuestion(int valor){perguntaAtual = valor;}
+
     int scoreGB();
 
     bool isFinished();
@@ -72,6 +74,8 @@ JuizQuiz::JuizQuiz(Pergunta p[], int total):pontuacaoJogador(0), pontuacaoGB(0),
         perguntas[i] = p[i];
     }
 }
+
+
 
 void JuizQuiz::initQuiz(TFT_eSPI &d){
     if (!isFinished()) {
@@ -152,7 +156,7 @@ int JuizQuiz::showIntros(TFT_eSPI &d){
     d.fillScreen(TFT_BLACK);
     d.setTextColor(TFT_WHITE);
 
-    d.setCursor(100, 20);
+    d.setCursor(80, 20);
     d.println("Bem-Vindo ao");
 
     d.setCursor(150, 100);
@@ -160,13 +164,13 @@ int JuizQuiz::showIntros(TFT_eSPI &d){
     d.println("QuizBoy");
 
     d.setTextColor(TFT_WHITE);
-    d.setCursor(60, 200);
+    d.setCursor(30, 200);
     d.setTextSize(2);
-    d.println("Acha Mesmo que Sabe Mais que O");
-    d.setCursor(190, 230);
+    d.println("Acha Mesmo que Sabe Mais que o");
+    d.setCursor(180, 230);
     d.println("GameBoy?");
 
-    d.setCursor(30, 290);
+    d.setCursor(20, 280);
     d.setTextSize(2);
     d.println("Pressione o Joystick para Descobrir");
 

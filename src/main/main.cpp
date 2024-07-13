@@ -152,7 +152,7 @@ void initializeCapi() {
 
   capiSprite.setColorDepth(8);
   capiSprite.setSwapBytes(true);
-  capiSprite.createSprite(70, 150);
+  capiSprite.createSprite(100, 150);
 
   obstaculosSprite.setColorDepth(8);
   obstaculosSprite.setSwapBytes(true);
@@ -179,7 +179,7 @@ void pong(int games_index){
       if (juizPong.getCountBlack() == 5 || juizPong.getCountWhite() == 5) {
         
           gameCapiOn = false;
-          menu.backgroundEndPong(d, gamePongOn);
+          juizPong.backgroundEndPong(d, gamePongOn);
           juizPong.setCountBlack(0);
           juizPong.setCountWhite(0);
 
@@ -188,12 +188,13 @@ void pong(int games_index){
           gamePongOn = false;
           gameCapiOn = false;
           menuOn = true;
-          juizPong.setCountBlack(0);
-          juizPong.setCountWhite(0);
+         
           menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
           menu.drawMenuGames(two_aux, games_index);
           //Serial.println(games_index);
           menu.trackPosition(games, games_index);
+          juizPong.setCountBlack(0);
+          juizPong.setCountWhite(0);
         }
       
       
@@ -217,12 +218,13 @@ void capig(int games_index){
       juizcapi.drawScore(scoreSprite);
       juizcapi.level_speed();
 
-      if(juizcapi.colision()){
+      if(juizcapi.colision() == true){
+        
+        juizcapi.backgroundEndCapi(d, gameCapiOn);
         gameCapiOn = false;
         gamePongOn = false;
         menuOn = true;
 
-        menu.backgroundEndCapi(d);
         juizcapi.setplacar(0);
       }else if (digitalRead(button::amarelo) == LOW) {
         gameCapiOn = false;
@@ -266,6 +268,9 @@ void quizG(int games_index){
         menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
         menu.drawMenuGames(two_aux, games_index);
         menu.trackPosition(games, games_index);
+        //adicionar reset
+        quiz.resetQuestion(0);
+
       }
     }
     

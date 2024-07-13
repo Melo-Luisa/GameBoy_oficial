@@ -90,21 +90,21 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
     d.setCursor(15,72);
     d.setTextColor(TFT_WHITE);
     d.setTextSize(2);
-    d.println(" Utilize o joystick para controlar a \n          barra da esquerda.");
+    d.println(" Utilize o Joystick para controlar a \n          barra da esquerda");
 
-    d.setCursor(8,155);
+    d.setCursor(0,155);
     d.setTextSize(2);
-    d.println(" E os Botões para controlar a barra \n              da direita.");
-    d.setTextColor(TFT_YELLOW);
-    d.drawCentreString("PARA SAIR: BOTAO AMARELO.", 250, 282,2);
+    d.println(" O botao para controlar a barra da \n                direita");
+    d.setTextColor(TFT_WHITE);
+    d.drawCentreString("Para sair: Botao Amarelo", 250, 282,2);
     // d.drawCentreString("- Quem chegar em 10 Pontos primeiro ganha!", 245,210,2);
 
-    d.setCursor(35, 230);
+    d.setCursor(10, 230);
     d.setTextColor(d.color565(255, 150, 0));
     d.setTextSize(2);
-    d.println("Pressione o Joystick para jogar");
+    d.println("PRESSIONE O JOYSTICK PARA JOGAR");
 
-    while (joyzinho.read_button_central() == HIGH) {
+    while (joyzinho.read_button_central() == HIGH || button::azul == LOW) {
         delay(100);
     }
 
@@ -115,25 +115,6 @@ void Menu::backgroundPong(TFT_eSPI &d, TFT_eSprite &abertura){
 
 void Menu::backgroundEndPong(TFT_eSPI &d, bool &gamePongOn){
     d.setTextSize(2);
-    d.fillScreen(TFT_BLACK);
-    d.drawCentreString("Fim de Jogo" ,245, 50,4);
-    d.drawCentreString("Voltando para o Menu..." ,245, 250,2);
-    d.setTextSize(4);
-    d.setTextColor(TFT_ORANGE);
-    //NÃO FUNCIONA
-    d.drawString((String(juiz.getCountBlack())), 130, 120);
-    d.setTextColor(TFT_WHITE);
-    d.drawString("x", 230, 120, 2);
-    d.setTextColor(TFT_RED);
-    //NÃO FUNCIONA
-    d.drawString(String(juiz.getCountWhite()), 320, 120);
-    d.setTextSize(2);
-    d.setTextColor(TFT_WHITE);
-   
-    gamePongOn = false;
-    menuOn = true;
-    delay(2000);
-    d.fillScreen(TFT_WHITE);
 
 }
 
@@ -143,7 +124,7 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     d.setTextColor(TFT_WHITE);
     d.setTextSize(2);
     d.setTextDatum(TC_DATUM);
-    d.setTextColor(d.color565(25, 150, 0)); //laranja
+    d.setTextColor(TFT_ORANGE); //laranja
     d.setCursor(170,20);
     String name = "CAPI RUNNER";
     for(int i = 0; i< name.length();i++){
@@ -160,36 +141,23 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     d.setTextSize(2);
     d.println("     Evite colidir com o tronco");
 
-    d.setTextColor(TFT_YELLOW);
-    d.drawCentreString("PARA SAIR: BOTAO AMARELO", 250, 282,2);
+    d.setTextColor(TFT_WHITE);
+    d.drawCentreString("Para sair: Botao Amarelo", 250, 282,2);
 
-    d.setCursor(35, 230);
+    d.setCursor(10, 230);
     d.setTextColor(d.color565(255, 150, 0));
     d.setTextSize(2);
-    d.println("Pressione o Joystick para jogar");
+    d.println("PRESSIONE O JOYSTICK PARA JOGAR");
 
     while (joyzinho.read_button_central() == HIGH) {
         delay(100);
     }
-
+//AQUI PRA MUDAR O FUNDO DA CAPI
     d.fillScreen(TFT_BLACK);
 }
 
 void Menu::backgroundEndCapi(TFT_eSPI &d){
     d.fillScreen(TFT_BLACK);
-    d.drawCentreString("Voce bateu!" ,245, 50,4);
-    d.setTextSize(2);
-    d.setTextColor(TFT_ORANGE);
-    d.drawString("Pontuacao:", 245, 150, 2);
-    //NÃO FUNCIONA
-    d.drawString(String(juizcapi.getHighScore()), 245, 180);
-
-    d.setTextColor(TFT_WHITE);
-   
-    gameCapiOn = false;
-    menuOn = true;
-    delay(3500);
-    d.fillScreen(TFT_WHITE);
 }
 
 void Menu::init(TFT_eSPI &d) {
@@ -244,12 +212,13 @@ void Menu::drawMenuGames(TFT_eSprite *(&two_aux), int &games_index) {
     (*two_aux).fillSprite(TFT_WHITE);
     (*two_aux).setTextSize(2);
     (*two_aux).setCursor(180, 0); 
-    (*two_aux).setTextColor(TFT_BLACK);
-    (*two_aux).println("GAMES");
+    (*two_aux).setTextColor(TFT_BLACK, TFT_ORANGE);
+    (*two_aux).println(" GAMES ");
 
     (*two_aux).setTextSize(2);
 
     (*two_aux).setCursor(40, 40); // Define a posição inicial do cursor para o primeiro item
+    (*two_aux).setTextColor(TFT_BLACK);
 
 
     if (games_index == 0) {
@@ -261,7 +230,7 @@ void Menu::drawMenuGames(TFT_eSprite *(&two_aux), int &games_index) {
         (*two_aux).println(" PONG ");
     }
 
-    (*two_aux).setCursor(150, 40); // Define a posição do cursor para o segundo item
+    (*two_aux).setCursor(135, 40); // Define a posição do cursor para o segundo item
 
     if (games_index == 1) {
 
@@ -273,7 +242,7 @@ void Menu::drawMenuGames(TFT_eSprite *(&two_aux), int &games_index) {
         (*two_aux).println(" CAPI RUNNER ");
     }
 
-    (*two_aux).setCursor(350, 40); // Define a posição do cursor para o terceiro item
+    (*two_aux).setCursor(330, 40); // Define a posição do cursor para o terceiro item
 
     if (games_index == 2) {
         (*two_aux).setTextColor(TFT_WHITE, TFT_BLACK);

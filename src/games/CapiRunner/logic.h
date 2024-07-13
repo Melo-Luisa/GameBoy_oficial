@@ -30,16 +30,30 @@ class JuizCapi{
         void score();
 
         int getplacar() const;
+    
         void setplacar(int valor){placar = valor;}
         int getHighScore() const;
 
         void level_speed();
 
-
+        void backgroundEndCapi(TFT_eSPI &d, bool &gameCapiOn);
 
 
 
 };
+
+
+void JuizCapi::backgroundEndCapi(TFT_eSPI &d, bool &gameCapiOn){
+    d.fillScreen(TFT_BLACK);
+    d.drawCentreString("Voce bateu!" ,245, 120,4);
+    d.setTextSize(2);
+    d.setTextColor(TFT_ORANGE);
+
+    d.setTextColor(TFT_WHITE);
+    gameCapiOn = false; 
+    delay(3500);
+    d.fillScreen(TFT_WHITE);
+}
 
 
 /*Desenhar na tela a capivara*/
