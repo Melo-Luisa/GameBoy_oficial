@@ -192,7 +192,7 @@ void Juiz::draw_joy( TFT_eSprite &barra_joy){
     barra_joy.fillSprite(TFT_BLACK);
     barra_joy.fillRect(20, 55, bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_joy.pushSprite(0, barra.move_joy());
-    Serial.println(barra.move_joy());
+    //Serial.println(barra.move_joy());
     
 }
 
@@ -202,9 +202,9 @@ void Juiz::draw_joy( TFT_eSprite &barra_joy){
 void Juiz::draw_button(TFT_eSprite &barra_button, int coordY_button ){
     barra.move_joy();
     barra_button.fillSprite(TFT_BLACK);
-    barra_button.fillRect(20, 20, bar::square_Width, bar::square_Height, TFT_WHITE);
+    barra_button.fillRect(20, 55, bar::square_Width, bar::square_Height, TFT_WHITE);
     barra_button.pushSprite(420, barra.move_button());
-    //Serial.println(barra.move_button());
+    Serial.println(barra.move_button());
 }
 
 /*Função tem como objetivo desenhar na tela a bola

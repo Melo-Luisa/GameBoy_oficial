@@ -8,9 +8,17 @@
 class Barra{
     private:
        // int coordY_old, coordY_new; //JOYSTICK
-        int coordY, coordY_button; //BUTTON
+        int coordY;
+        int coordY_button = 100; //BUTTON
         int xAxisPin; int yAxisPin, central;
         Joystick joy;
+
+        enum State {
+            STOPPED,
+            MOVING_UP,
+            MOVING_DOWN
+        };
+        State currentState = STOPPED;
     public:
         Barra(int coordY, int coordY_button): coordY(coordY), coordY_button(coordY_button),joy(xAxisPin, yAxisPin, central){}
 
@@ -50,27 +58,46 @@ int Barra::move_joy(){
 }
 
 int Barra::move_button() {
-    coordY_button -= 15;
-    if (coordY_button + bar::square_Height <= 5) { 
-            coordY_button += 15;
-        
-    }
-    //cima
-    if (digitalRead(button::azul) == LOW) { 
-        coordY_button += 15;
-        if (coordY_button + bar::square_Height <= 290) {
-            coordY_button += 15;
-        }
-    }
-    //baixo
-    else if (digitalRead(button::verde) == LOW) { // botão amarelo pressionado
-        coordY_button -= 15;
-        if (coordY_button + bar::square_Height <= 5) { 
-            coordY_button += 15;
-        }
-    }
-   
 
+
+    switch (currentState) {
+        case STOPPED:
+            if (digitalRead(button::verde) == LOW) {
+                currentState = MOVING_UP;
+            } else if (digitalRead(button::azul) == LOW) {
+                currentState = MOVING_DOWN;
+            }
+        break;
+
+        case MOVING_UP:
+            if (digitalRead(button::verde) == HIGH) {
+                currentState = STOPPED;
+            } else {
+                coordY_button+=15;  // Mover a barra para cima
+                //Serial.println("Movendo para cima");
+            }
+        break;
+
+        case MOVING_DOWN:
+            if (digitalRead(button::azul) == HIGH) {
+                currentState = STOPPED;
+            } else {
+                coordY_button-=15;  // Mover a barra para baixo
+                //Serial.println("Movendo para baixo");
+            }
+        break;
+    }
+
+    if (coordY_button < 0) {
+        coordY_button = 0;  // Limite superior
+    }
+    if (coordY_button > 320 - 60) {
+        coordY_button = 320 - 60;  // Limite inferior
+    }
+
+
+    //Serial.println(currentState);
     return coordY_button;
+
     //Serial.println(coordY_button);
 }
