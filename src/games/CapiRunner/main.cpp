@@ -11,7 +11,7 @@ TFT_eSprite obstaculosSprite = TFT_eSprite(&d);
 TFT_eSprite scoreSprite = TFT_eSprite(&d);
 
 
-int x = 490, vx = 5;
+int x = 0, vx = 5;
 int numObstaculos;
 int placar = 0;
 JuizCapi mylogic(x, vx, numObstaculos);

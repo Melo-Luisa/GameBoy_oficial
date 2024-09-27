@@ -44,8 +44,10 @@ class JuizCapi{
 
 
 void JuizCapi::backgroundEndCapi(TFT_eSPI &d, bool &gameCapiOn){
+    
     d.fillScreen(TFT_BLACK);
     d.drawCentreString("Voce bateu!" ,245, 120,4);
+    d.drawCentreString("Score:" + String(getplacar()) ,245, 170,4);
     d.setTextSize(2);
     d.setTextColor(TFT_ORANGE);
 
@@ -53,6 +55,7 @@ void JuizCapi::backgroundEndCapi(TFT_eSPI &d, bool &gameCapiOn){
     gameCapiOn = false; 
     delay(3500);
     d.fillScreen(TFT_WHITE);
+     
 }
 
 
@@ -60,7 +63,7 @@ void JuizCapi::backgroundEndCapi(TFT_eSPI &d, bool &gameCapiOn){
 void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
     capi.jump();
     capiSprite.fillSprite(TFT_BLACK);
-    //capiSprite.setSwapBytes(true);
+    capiSprite.setSwapBytes(true);
     //capiSprite.fillCircle(30,  capi.getY()+75, 10, TFT_WHITE);
     capiSprite.pushImage(5,capi.getY()+75,60,60,capivara_final);
     capiSprite.pushSprite(0, 70);
@@ -69,46 +72,42 @@ void JuizCapi::drawCapi(TFT_eSprite &capiSprite){
 
 }
 
-// void JuizCapi::background(TFT_eSprite &groundSprite){
-    
-//     groundSprite.fillScreen(TFT_BLACK);
-//     groundSprite.setSwapBytes(true);
-//     groundSprite.pushImage(0,0,60,60,back_final);
-//     groundSprite.pushSprite(obst.getX(),150);
-        
-// }
 
-
-int JuizCapi::randomObstaculos(int numObstaculos){
-    numObstaculos = random(1, 3);
-    //Serial.println(numObstaculos);
-    return numObstaculos;
-}
 
 /*Desenhar na tela os obstaculos
 @note quadrados de inicio, alguma forma a mais? Arvores, desenho empilhada?*/
 void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite) {
-
     obst.move();
     obstaculosSprite.fillSprite(TFT_BLACK);
 
-    obstaculosSprite.setSwapBytes(true);
-    obstaculosSprite.pushImage(0,25,60,60,tree_final);
+    // obstaculosSprite.setSwapBytes(true);
+    // obstaculosSprite.pushImage(0,25,60,60,tree_final);
+
+
+    int rectWidth = 60;  // Largura do retângulo
+    int rectHeight = 60; // Altura do retângulo
+    int rectX = 0;       // Posição X do retângulo
+    int rectY = 25;      // Posição Y do retângulo
+    uint16_t rectColor = TFT_WHITE;  // Cor do retângulo
+
+    obstaculosSprite.fillRect(rectX, rectY, rectWidth, rectHeight, rectColor); 
 
     obstaculosSprite.pushSprite(obst.getX(), 130);
-
 }
 
 /*Verifica se houve colisão com obstaculos
 @note FUNCIONA*/
-bool JuizCapi::colision(){
+bool JuizCapi::colision() {
     bool colisao = false;
-    if(capi.getY() == 0 && obst.getX() <= obst.getVX()){
+    const int toleranciaX = 15;  // Defina uma margem de erro para a coordenada X
+    const int toleranciaY = 5;  // Defina uma margem de erro para a coordenada Y
+
+    // Verifica se as coordenadas X e Y estão próximas o suficiente
+    if (abs(capi.getY() - 0) <= toleranciaY && abs(obst.getX() - obst.getVX()) <= toleranciaX) {
         colisao = true;
     }
-    
-    return colisao;
 
+    return colisao;
 }
 
 /*Contador de pontuação
@@ -117,10 +116,13 @@ void JuizCapi::score(){
     placar += 1;
     if (colision()) {
         if (placar > highScore) {
-            highScore = placar;  
+            highScore = placar; 
+            
         }
-        placar = 0;
+         
+       
     }
+   
 }
 
 int JuizCapi::getplacar() const {return placar;}
@@ -141,21 +143,21 @@ void JuizCapi::drawScore(TFT_eSprite &scoreSprite) {
 
 /*Vai aumentando a velocidade conforme vai passando com mais pontuação */
 void JuizCapi::level_speed() {
-    switch (getplacar() / 100) {
+    switch (getplacar()/100 ) {
         case 0:
-            obst.setVX(15);
+            obst.setVX(10);
             break;
         case 1:
-            obst.setVX(25);
+            obst.setVX(20);
             break;
         case 2:
-            obst.setVX(35);
+            obst.setVX(30);
             break;
         case 3:
-            obst.setVX(45);
+            obst.setVX(40);
             break;
         default:
-            obst.setVX(55);  // Para pontuações acima de 300
+            obst.setVX(50);  // Para pontuações acima de 300
             break;
     }
 }

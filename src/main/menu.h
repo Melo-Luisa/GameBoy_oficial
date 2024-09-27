@@ -148,6 +148,8 @@ void Menu::backgroundCapi(TFT_eSPI &d){
     d.setTextColor(d.color565(255, 150, 0));
     d.setTextSize(2);
     d.println("PRESSIONE O JOYSTICK PARA JOGAR");
+    int placar = 0;
+    int x = 490;
 
     while (joyzinho.read_button_central() == HIGH) {
         delay(100);
