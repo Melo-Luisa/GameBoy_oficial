@@ -52,8 +52,7 @@ class Menu{
         //FUNCIONA
         void init(TFT_eSPI &d);/*função já existente pra desenhar a inicialização*/
 
-        void drawMenuGames(TFT_eSprite *(&game), int &games_index);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
-        void drawMenuGames_aux(TFT_eSprite *(&two), int &games_index);
+        void drawMenuGames(TFT_eSprite *(&game), int &games_index, TFT_eSPI &d);//desenha/mostra as imagens com ícone de cada jogo, no subMenu Jogo
 
         void select(int games_index, bool &gamePongOn, bool var, bool &gameCapiOn, bool capi, TFT_eSprite &game, bool &gameQuizOn);
         void trackPosition(bool &games, int &games_index);
@@ -163,10 +162,10 @@ void Menu::backgroundEndCapi(TFT_eSPI &d){
 }
 
 void Menu::init(TFT_eSPI &d) {
-  d.setCursor(150, 120, 2);
-  d.setTextColor(TFT_WHITE);
-  d.setTextSize(3);
-  
+    d.setCursor(150, 120, 2);
+    d.setTextColor(TFT_WHITE);
+    d.setTextSize(3);
+
 
   String word = "GAMEBOY";
 
@@ -175,10 +174,13 @@ void Menu::init(TFT_eSPI &d) {
     delay(100);
   }
 
-  delay(100);
-  d.fillScreen(TFT_WHITE);
+
+    delay(100);
+    d.fillScreen(TFT_WHITE);
 
 }
+
+
 
 void Menu::trackPosition(bool &games, int &games_index) {
     int valuejoyzinhoX = joyzinho.read_raw_Y();
@@ -209,7 +211,19 @@ void Menu::trackPosition(bool &games, int &games_index) {
     }
 }
 
-void Menu::drawMenuGames(TFT_eSprite *(&two_aux), int &games_index) {
+void Menu::drawMenuGames(TFT_eSprite *(&two_aux), int &games_index, TFT_eSPI &d) {
+    //   init(d);
+
+    // bool flag = true;
+
+    // do {
+    //     // Verifica o estado do botão central
+    //     if(joyzinho.read_button_central() == HIGH) {
+    //         flag = false; // Sair do loop quando o botão for pressionado
+    //     }
+    // }
+    // while (joyzinho.read_button_central() == HIGH && flag == true);
+
     (*two_aux).setTextFont(2);
     (*two_aux).fillSprite(TFT_WHITE);
     (*two_aux).setTextSize(2);

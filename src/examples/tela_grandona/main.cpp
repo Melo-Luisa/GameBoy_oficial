@@ -7,7 +7,7 @@ TFT_eSprite ball = TFT_eSprite(&d);
 
 void setup(){
   d.init();
-  d.setRotation(1);
+  d.setRotation(2);
   d.fillScreen(TFT_BLACK);
 
   ball.setColorDepth(8);

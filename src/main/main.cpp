@@ -90,6 +90,8 @@ bool gameQuizOn = false;
 bool menuOn = true; 
 
 
+
+
 void setup() {
   Serial.begin(115200);
   d.init();
@@ -190,7 +192,7 @@ void pong(int games_index){
           menuOn = true;
          
           menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
-          menu.drawMenuGames(two_aux, games_index);
+          menu.drawMenuGames(two_aux, games_index, d);
           //Serial.println(games_index);
           menu.trackPosition(games, games_index);
           juizPong.setCountBlack(0);
@@ -206,7 +208,7 @@ void pong(int games_index){
 
 void capig(int games_index){
 
-  menu.drawMenuGames(two_aux, games_index);
+  menu.drawMenuGames(two_aux, games_index, d);
 
   while (gameCapiOn) {
     initializeCapi();
@@ -234,7 +236,7 @@ void capig(int games_index){
         juizcapi.setplacar(0);
         menu.select(games_index_two, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
 
-        menu.drawMenuGames(two_aux, games_index);
+        menu.drawMenuGames(two_aux, games_index, d);
 
         menu.trackPosition(games, games_index);
       }
@@ -266,7 +268,7 @@ void quizG(int games_index){
         gameQuizOn = false;
         menuOn = true;
         menu.select(games_index, gamePongOn, var, gameCapiOn, capi, two, gameQuizOn);
-        menu.drawMenuGames(two_aux, games_index);
+        menu.drawMenuGames(two_aux, games_index, d);
         menu.trackPosition(games, games_index);
         //adicionar reset
         quiz.resetQuestion(0);
@@ -280,8 +282,9 @@ void quizG(int games_index){
 
 
 void loop() {
+
   menu.select(games_index, gamePongOn, var, gameCapiOn, capi, game, gameQuizOn);
-  menu.drawMenuGames(game_aux, games_index);
+  menu.drawMenuGames(game_aux, games_index, d);
   menu.trackPosition(games, games_index);
   pong(games_index);
   capig(games_index);
