@@ -52,5 +52,4 @@ Um oferecimento:<br>
 
 
 ---
-
-🚀 **Desenvolvido com paixão pela tecnologia e inovação!** 🎮  
+  
