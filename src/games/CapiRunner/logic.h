@@ -5,8 +5,7 @@
 #include "capivara.h"
 //imagens
 #include "capivara_final.h"
-#include "tree_final.h" 
-#include "back_final.h" 
+
 
 
 
@@ -82,7 +81,7 @@ void JuizCapi::drawObstacles(TFT_eSprite &obstaculosSprite) {
     obstaculosSprite.fillSprite(TFT_BLACK);
 
     obstaculosSprite.setSwapBytes(true);
-    obstaculosSprite.pushImage(0,25,60,60,tree_final);
+    // obstaculosSprite.pushImage(0,25,60,60,tree_final);
 
     obstaculosSprite.pushSprite(obst.getX(), 130);
     Serial.println("Desenhado OBSTACULOS");
