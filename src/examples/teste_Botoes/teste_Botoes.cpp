@@ -1,8 +1,5 @@
 #include "botoes.h"
-#include <TFT_eSPI.h> // Graphics and font library for ILI9341 driver chip
-#include <SPI.h>
 
-TFT_eSPI d = TFT_eSPI();  // Invoke library
 
 const int pin_botaoA = 36;
 

@@ -1,3 +1,4 @@
+
 #include <Arduino.h>
 #include<FastLED.h> // header file
 
@@ -13,10 +14,18 @@ void setup() {
 
 void loop() {
 
+
 leds[2] = CRGB::Green; //glow 1st led as green
 
 FastLED.show(); // apply the function on led strip
 
 delay(30);
 
+
+
 }
+
+
+
+
+
