@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
-
 //Inicialização Display
 TFT_eSPI d = TFT_eSPI();
 TFT_eSprite ball = TFT_eSprite(&d);

@@ -1,6 +1,6 @@
 #include <ESP32Servo.h>//INCLUSÃO DA BIBLIOTECA NECESSÁRIA
  
-const int pinoServo = 6; //PINO DIGITAL UTILIZADO PELO SERVO  
+const int pinoServo = 27; //PINO DIGITAL UTILIZADO PELO SERVO  
  
 Servo s; //OBJETO DO TIPO SERVO
 int pos; //POSIÇÃO DO SERVO
